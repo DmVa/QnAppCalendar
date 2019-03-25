@@ -8,10 +8,14 @@
             controller: SchedulerController,
         });
 
-    SchedulerController.inject = ['$scope', '$window', '$document', '$timeout' ];
+    SchedulerController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService' ];
 
-    function SchedulerController($scope, $window, $document, $timeout) {
+    function SchedulerController($scope, $window, $document, $timeout, schedulerDataService) {
         let $ctrl = this;
+        $scope.scheduler = $ctrl.scheduler; //fix old logic (?)
+        $scope.viewModel = $ctrl.viewModel; //fix old logic (?)
+        let scheduler = $window.scheduler;
+
         let _originalEvent = new Map();
 
         $ctrl.handleWrappedError = function(result) {
@@ -52,11 +56,6 @@
 
         };
 
-
-        $scope.scheduler = $ctrl.scheduler; //fix old logic (?)
-        $scope.viewModel = $ctrl.viewModel; //fix old logic (?)
-        let scheduler = $window.scheduler;
-
         scheduler.config.xml_date = "%Y-%m-%d %H:%i";
         scheduler.locale.labels.unit_tab = "Stage";
 
@@ -71,49 +70,29 @@
 
         scheduler.init('scheduler_here', new Date(), "week");
 
-        $.ajax({
-            url: '/ajax/PQAppCalendar.ashx?act=load-appointmens',
-            type: 'post',
-            async: true,
-            contentType: 'application/json; charset=utf-8',
-            data: [],
-            dataType: 'json',
-            success: function (result) {
+        schedulerDataService.loadAppointments()
+            .then(function (result) {
                 if (result.error) {
                     $ctrl.handleWrappedError(result);
                     return;
                 }
                 scheduler.parse(result.data, "json");
-            },
-            error: function (result) {
+            }, function (result) {
                 $ctrl.handleError(result);
                 return;
-            }
-        }
-        );
+            });
 
-       // scheduler.load('/ajax/PQAppCalendar.ashx?act=load-appointmens');
-
-        $.ajax({
-            url: '/ajax/PQAppCalendar.ashx?act=load-units',
-            type: 'post',
-            async: true,
-            contentType: 'application/json; charset=utf-8',
-            data: [],
-            dataType: 'json',
-            success: function (result) {
+        schedulerDataService.loadUnits()
+            .then(function (result) {
                 if (result.error) {
                     $ctrl.handleWrappedError(result);
                     return;
                 }
-                scheduler.updateCollection("units", result.data);
-            },
-            error: function (result) {
-                    $ctrl.handleError(result);
-                    return;
-                }
-            }
-        );
+                scheduler.parse(result.data, "json");
+            }, function (result) {
+                $ctrl.handleError(result);
+                return;
+            });
 
         scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
             _originalEvent.set(ev.appointmnetId, $.extend(true, {}, original));
@@ -128,14 +107,8 @@
             theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
             theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
 
-            $.ajax({
-                url: '/ajax/PQAppCalendar.ashx?act=save-appointment',
-                type: 'post',
-                async: true,
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(theEventCopy),
-                dataType: 'json',
-                success: function (result) {
+            schedulerDataService.saveAppointment()
+                .then(function (result) {
                     if (result.error) {
                         $ctrl.handleWrappedError(result);
                         $ctrl.rollbackEvent(ev);
@@ -144,16 +117,11 @@
 
                     linkToEvent.appointmnetId = result.data.appointmnetId;
                     console.log('saved');
-                },
-                error: function (result) {
+                }, function (result) {
                     $ctrl.handleError(result);
                     $ctrl.rollbackEvent(ev);
-                }
-            });
-            
+                });
         });
     }
-
-  
 }
 )();
