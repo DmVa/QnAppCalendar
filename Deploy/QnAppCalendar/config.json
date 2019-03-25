@@ -1,0 +1,24 @@
+{
+    "id": "9CC2401C-CE84-F641-E1F1-A7627800B7F6",
+    "versionId": "DA77DFAA-C002-27D5-9B51-BDBE75D47A64",
+    "version": "1.0.0",
+    "name": "Cork Board",
+    "description": "",
+    "developer": "preciseq test",
+    "logo": "Logos/calendar.png",
+    "qflowVersions": [
+        "6.1"
+    ],
+    "content": [
+        {
+            "storage": {
+                "name": "QnAppCalendar",
+                "type": "folder",
+                "path": "Storage",
+                "target": "QnAppCalendar",
+                "rollbackAction": "remove",
+                "upgradeAction": "override"
+            }
+        }
+    ]
+}
