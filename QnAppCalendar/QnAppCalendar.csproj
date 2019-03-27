@@ -109,6 +109,7 @@
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_wp.js.map" />
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_year_view.js.map" />
     <Content Include="Ajax\PQAppCalendar.ashx" />
+    <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.css" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -118,6 +119,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.html" />
+    <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.js" />
     <Content Include="components\scheduler\scheduler.module.js" />
     <Content Include="components\scheduler\scheduler.component\scheduler.component.html" />
     <Content Include="components\scheduler\scheduler.component\scheduler.component.js" />
@@ -340,7 +343,7 @@
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_classic.css" />
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_flat.css" />
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_glossy.css" />
-    <Content Include="components\scheduler\services\schedulerData.service.js" />
+    <Content Include="components\scheduler\scheduler.services\schedulerData.service.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,15 @@
+﻿.scheduler-customize-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centered-content {
+    border-style: solid;
+    border-width: 1px;
+    border-color: green;
+    border-radius:10px;
+    width: 50%;
+    height: 80%;
+}
