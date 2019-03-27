@@ -1,5 +1,18 @@
 ﻿<div class="scheduler-customize-container">
-    <div class="centered-content">
-        sd
+    <div class="scheduler-centered-content">
+        <div class="avaiable-container">
+            avilable statuses
+            <div ng-repeat="status in statuses" class="status">
+                {{status.name}}
+            </div>
+        </div>
+        <div class="stages-container">
+            Stages
+            <div class="stage-container">
+                <div ng-repeat="stageobj in stages">
+                    {{stageobj.name}}
+                </div>
+            </div>
+        </div>
     </div>
 </div>

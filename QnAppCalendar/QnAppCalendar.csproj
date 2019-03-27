@@ -121,6 +121,7 @@
   <ItemGroup>
     <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.html" />
     <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.js" />
+    <Content Include="components\scheduler\scheduler.customize\stage.js" />
     <Content Include="components\scheduler\scheduler.module.js" />
     <Content Include="components\scheduler\scheduler.component\scheduler.component.html" />
     <Content Include="components\scheduler\scheduler.component\scheduler.component.js" />
