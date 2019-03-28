@@ -344,6 +344,7 @@
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_classic.css" />
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_flat.css" />
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_glossy.css" />
+    <Content Include="components\scheduler\scheduler.services\draganddrop.js" />
     <Content Include="components\scheduler\scheduler.services\schedulerData.service.js" />
     <Content Include="Web.config" />
   </ItemGroup>

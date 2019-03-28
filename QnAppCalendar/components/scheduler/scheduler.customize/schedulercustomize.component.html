@@ -1,16 +1,24 @@
 ﻿<div class="scheduler-customize-container">
     <div class="scheduler-centered-content">
-        <div class="avaiable-container">
+        <div class="avaiable-container" drop-on-me on-drop="handledrop(event, stageobj, data)">
             avilable statuses
-            <div ng-repeat="status in statuses" class="status">
+            <div ng-repeat="status in statuses" class="status" drag-me="statusid" id="status_{{stagestatus.id}}" statusid="{{stagestatus.id}}" >
                 {{status.name}}
             </div>
         </div>
-        <div class="stages-container">
+
+        <div>
             Stages
-            <div class="stage-container">
-                <div ng-repeat="stageobj in stages">
-                    {{stageobj.name}}
+            <div class="stages-container">
+
+                <div ng-repeat="stageobj in stages" class="stage" drop-on-me on-drop="handledrop(event, stageobj, data)" id="stage_{{stageobj.id}}">
+                    <div>
+                        {{stageobj.name}}
+                    </div>
+
+                    <div ng-repeat="stagestatus in stageobj.statuses" class="status" drag-me="statusid"  id="status_{{stagestatus.id}}" statusid="{{stagestatus.id}}">
+                        {{stagestatus.name}}
+                    </div>
                 </div>
             </div>
         </div>
