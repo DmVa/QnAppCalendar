@@ -122,6 +122,9 @@
     <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.html" />
     <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.js" />
     <Content Include="components\scheduler\scheduler.customize\stage.js" />
+    <Content Include="components\scheduler\scheduler.directives\draganddrop.js" />
+    <Content Include="components\scheduler\scheduler.directives\modal.directive.css" />
+    <Content Include="components\scheduler\scheduler.directives\modal.directive.js" />
     <Content Include="components\scheduler\scheduler.module.js" />
     <Content Include="components\scheduler\scheduler.component\scheduler.component.html" />
     <Content Include="components\scheduler\scheduler.component\scheduler.component.js" />
@@ -345,6 +348,7 @@
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_flat.css" />
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_glossy.css" />
     <Content Include="components\scheduler\scheduler.services\draganddrop.js" />
+    <Content Include="components\scheduler\scheduler.services\modal.service.js" />
     <Content Include="components\scheduler\scheduler.services\schedulerData.service.js" />
     <Content Include="Web.config" />
   </ItemGroup>

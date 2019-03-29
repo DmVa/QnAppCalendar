@@ -1,4 +1,10 @@
-﻿<div class="scheduler-container">
+﻿<div>
+    <button ng-click="$ctrl.openModal('custom-modal-1')">Customize</button>
+</div>
+
+
+
+<div class="scheduler-container">
 
     <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100vh;'>
         <div class="dhx_cal_navline">
@@ -16,3 +22,16 @@
         <div class="dhx_cal_data"></div>
     </div>
 </div>
+
+<modal id="custom-modal-1">
+    <div class="modal">
+        <div class="modal-body">
+            <pq-scheduler-customize></pq-scheduler-customize>
+            <div>
+                <button ng-click="$ctrl.closeModal('custom-modal-1');">Close</button>
+            </div>
+        </div>
+     
+    </div>
+    <div class="modal-background"></div>
+</modal>

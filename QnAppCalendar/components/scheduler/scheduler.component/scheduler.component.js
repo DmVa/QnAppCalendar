@@ -8,15 +8,23 @@
             controller: SchedulerController,
         });
 
-    SchedulerController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService' ];
+    SchedulerController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService', 'modalService'];
 
-    function SchedulerController($scope, $window, $document, $timeout, schedulerDataService) {
+    function SchedulerController($scope, $window, $document, $timeout, schedulerDataService, modalService) {
         let $ctrl = this;
         $scope.scheduler = $ctrl.scheduler; //fix old logic (?)
         $scope.viewModel = $ctrl.viewModel; //fix old logic (?)
         let scheduler = $window.scheduler;
 
         let _originalEvent = new Map();
+
+        $ctrl.openModal = function (id) {
+            modalService.Open(id);
+        };
+
+        $ctrl.closeModal = function closeModal(id) {
+            modalService.Close(id);
+        };
 
         $ctrl.handleWrappedError = function(result) {
             if (result.error) {

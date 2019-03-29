@@ -70,7 +70,8 @@
             let statusObjs = allStatuses.filter(function (item) {
                 return item.id == data;
             });
-            let statusObj = statusObjs[0];
+
+            let statusObj;
             if (statusObjs.length > 0) {
                 statusObj = statusObjs[0];
             }
@@ -88,9 +89,14 @@
                     $ctrl.removeFromArray(previousStage.statuses, statusObj);
                 }
             }
-                        
-            statusObj.stageId = stageobj.id;
-            stageobj.statuses.push(statusObj);
+
+            if (stageobj) {
+                statusObj.stageId = stageobj.id;
+                stageobj.statuses.push(statusObj);
+            }else {
+                statusObj.stageId = -1;
+                availablestatuses.push(statusObj);
+            }
 
             $scope.$apply();
         }

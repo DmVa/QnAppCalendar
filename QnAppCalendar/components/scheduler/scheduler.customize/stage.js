@@ -10,6 +10,7 @@
 }
 
 class Status {
+
     constructor(id, name, isQflow) {
         this.id = id;
         this.name = name;

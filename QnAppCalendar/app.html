@@ -1,26 +1,34 @@
 ﻿<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
-<script src="../components/scheduler/scheduler.module.js"></script>
-<script src="../components/scheduler/scheduler.component/scheduler.component.js"></script>
-<script src="../components/scheduler/scheduler.services/draganddrop.js"></script>
-<script src="../components/scheduler/scheduler.services/schedulerData.service.js"></script>
-<script src="../components/scheduler/scheduler.customize/schedulercustomize.component.js"></script>
-<script src="../components/scheduler/scheduler.customize/stage.js"></script>
+<script type="text/javascript" src="../components/scheduler/scheduler.module.js"></script>
+
+
+<script type="text/javascript" src="../components/scheduler/scheduler.directives/draganddrop.js"></script>
+<script type="text/javascript" src="../components/scheduler/scheduler.directives/modal.directive.js"></script>
+<link href="../components/scheduler/scheduler.directives/modal.directive.css" rel="stylesheet" type="text/css" charset="utf-8">
+
+<script type="text/javascript" src="../components/scheduler/scheduler.services/schedulerData.service.js"></script>
+<script type="text/javascript" src="../components/scheduler/scheduler.services/modal.service.js"></script>
+
+<script type="text/javascript" src="../components/scheduler/scheduler.customize/schedulercustomize.component.js"></script>
+<script type="text/javascript" src="../components/scheduler/scheduler.customize/stage.js"></script>
 
 <link href="../components/scheduler/scheduler.customize/schedulercustomize.component.css" rel="stylesheet" type="text/css" charset="utf-8">
 
+<script type="text/javascript" src="../components/scheduler/scheduler.component/scheduler.component.js"></script>
 
 <script src="../components/dhtmlxscheduler/dhtmlxscheduler.js" charset="utf-8"></script>
 <link href="../components/dhtmlxscheduler/dhtmlxscheduler.css" rel="stylesheet" type="text/css" charset="utf-8">
 <script src="../components/dhtmlxscheduler/ext/dhtmlxscheduler_units.js"></script>
 
 <div ng-strict-di id="scheduler">
-    <pq-scheduler-customize></pq-scheduler-customize>
+    <pq-scheduler></pq-scheduler>
 </div>
 
 <script>
-   
+
 </script>
 <script>
     $(document).ready(function () {
