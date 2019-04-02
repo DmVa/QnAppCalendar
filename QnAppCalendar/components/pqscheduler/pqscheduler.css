@@ -1,0 +1,90 @@
+/* MODAL STYLES
+-------------------------------*/
+modal {
+  /* modals are hidden by default */
+  display: none; }
+
+.modal {
+  /* modal container fixed across whole screen */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* z-index must be higher than .modal-background */
+  z-index: 1000;
+  /* enables scrolling for tall modals */
+  overflow: auto; }
+
+.modal-body {
+  padding: 20px;
+  background: #fff;
+  /* margin exposes part of the modal background */
+  margin: 40px; }
+
+.modal-background {
+  /* modal background fixed across whole screen */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* semi-transparent black  */
+  background-color: #000;
+  opacity: 0.75;
+  /* z-index must be below .modal and above everything else  */
+  z-index: 900; }
+
+body.modal-open {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  overflow: hidden; }
+
+.arrow-left, .arrow-right {
+  position: absolute;
+  top: 70px;
+  z-index: 1000;
+  background-color: white; }
+  .arrow-left:hover, .arrow-right:hover {
+    cursor: pointer; }
+
+.scheduler-customize-container {
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.scheduler-centered-content {
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
+  border-radius: 10px;
+  width: 50%;
+  height: 80%; }
+
+.avaiable-container {
+  float: left;
+  border: 1px solid black;
+  width: 200px;
+  height: 100%; }
+
+.stages-container {
+  border: 1px solid green;
+  height: 95%;
+  overflow: hidden;
+  display: flex;
+  overflow-x: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.stage {
+  background: green;
+  width: 150px;
+  margin: 5px; }
+
+.status {
+  background: brown;
+  margin: 2px 5px 2px 5px; }
+
+
+/*# sourceMappingURL=pqscheduler.css.map*/

@@ -1,4 +1,6 @@
-﻿(function () {
+﻿import './modal.directive.scss';
+
+(function () {
     'use strict';
 
     angular

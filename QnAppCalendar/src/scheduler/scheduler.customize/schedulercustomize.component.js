@@ -1,16 +1,19 @@
-﻿(function () {
+﻿import './schedulercustomize.component.scss';
+
+(function () {
     'use strict';
 
     angular
         .module('scheduler.module')
         .component('pqSchedulerCustomize', {
-            templateUrl: '/components/scheduler/scheduler.customize/schedulercustomize.component.html',
+            templateUrl: '/src/scheduler/scheduler.customize/schedulercustomize.component.html',
             controller: SchedulerCustomizeController
         });
+    
+    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService', 'Stage', 'Status'];
+   
 
-    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService' ];
-
-    function SchedulerCustomizeController($scope, $window, $document, $timeout, schedulerDataService) {
+    function SchedulerCustomizeController($scope, $window, $document, $timeout, schedulerDataService, Stage, Status) {
         let $ctrl = this;
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
@@ -21,7 +24,7 @@
         };
 
         let allStatuses = [];
-
+        
         allStatuses.push(new Status(1, 'In Quees', false));
         allStatuses.push(new Status(2, 'Walk', false))
         allStatuses.push(new Status(3, 'test3', false))
@@ -50,16 +53,6 @@
         });
 
         Array.prototype.push.apply(allStages[0].statuses, statusesStage1);
-
-        //let stage1statuses = [new Stage(1, 'init', stage1statuses);];
-
-        //stage1statuses.push(new Status(1, 'test', true));
-        //stage1statuses.push(new Status(2, 'test2', false));
-
-        //let stage = new Stage(1, 'init', stage1statuses);
-        //stages.push(stage);
-        //let stage2 = new Stage(2, 'complete');
-        //stages.push(stage2);
 
         $scope.stages = allStages;
         $scope.statuses = availablestatuses;

@@ -1,10 +1,12 @@
-﻿(function () {
+﻿import './scheduler.component.scss';
+
+(function () {
     'use strict';
 
     angular
         .module('scheduler.module')
         .component('pqScheduler', {
-            templateUrl: '/components/scheduler/scheduler.component/scheduler.component.html',
+            templateUrl: '/src/scheduler/scheduler.component/scheduler.component.html',
             controller: SchedulerController,
         });
 
@@ -84,7 +86,9 @@
                     $ctrl.handleWrappedError(result);
                     return;
                 }
-                scheduler.parse(result.data, "json");
+                if (result.data) {
+                    scheduler.parse(result.data, "json");
+                }
             }, function (result) {
                 $ctrl.handleError(result);
                 return;

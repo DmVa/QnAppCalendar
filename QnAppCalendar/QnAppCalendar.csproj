@@ -69,7 +69,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="components\scheduler\scheduler.component\scheduler.component.scss" />
+    <Content Include="components\pqscheduler\pqscheduler.css" />
+    <Content Include="components\pqscheduler\pqscheduler.js" />
     <Content Include="components\dhtmlxScheduler\sources\dhtmlxscheduler.js.map" />
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_active_links.js.map" />
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_agenda_view.js.map" />
@@ -109,8 +110,26 @@
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_wp.js.map" />
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_year_view.js.map" />
     <Content Include="Ajax\PQAppCalendar.ashx" />
-    <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.css" />
+    <Content Include="src\pqscheduler.app.js" />
+    <Content Include="src\scheduler\scheduler.component\scheduler.component.html" />
+    <Content Include="src\scheduler\scheduler.component\scheduler.component.js" />
+    <Content Include="components\pqscheduler\pqscheduler.css.map" />
+    <Content Include="components\pqscheduler\pqscheduler.js.map" />
+    <None Include="src\scheduler\scheduler.customize\schedulercustomize.component.scss" />
+    <Content Include="src\scheduler\scheduler.customize\schedulercustomize.component.html" />
+    <Content Include="src\scheduler\scheduler.customize\schedulercustomize.component.js" />
+    <Content Include="src\scheduler\scheduler.customize\stage.js" />
+    <Content Include="src\scheduler\scheduler.customize\status.js" />
+    <Content Include="src\scheduler\scheduler.directives\draganddrop.js" />
+    <None Include="src\scheduler\scheduler.directives\modal.directive.scss" />
+    <Content Include="src\scheduler\scheduler.directives\modal.directive.js" />
+    <Content Include="src\scheduler\scheduler.module.js" />
+    <Content Include="src\scheduler\scheduler.services\modal.service.js" />
+    <Content Include="src\scheduler\scheduler.services\schedulerData.service.js" />
+    <Content Include="webpack.config.js" />
+    <Content Include="package.json" />
     <None Include="packages.config" />
+    <Content Include="src\scheduler\scheduler.component\scheduler.component.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -119,15 +138,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.html" />
-    <Content Include="components\scheduler\scheduler.customize\schedulercustomize.component.js" />
-    <Content Include="components\scheduler\scheduler.customize\stage.js" />
-    <Content Include="components\scheduler\scheduler.directives\draganddrop.js" />
-    <Content Include="components\scheduler\scheduler.directives\modal.directive.css" />
-    <Content Include="components\scheduler\scheduler.directives\modal.directive.js" />
-    <Content Include="components\scheduler\scheduler.module.js" />
-    <Content Include="components\scheduler\scheduler.component\scheduler.component.html" />
-    <Content Include="components\scheduler\scheduler.component\scheduler.component.js" />
     <Content Include="app.html" />
     <Content Include="components\dhtmlxScheduler\dhtmlxscheduler.css" />
     <Content Include="components\dhtmlxScheduler\dhtmlxscheduler.js" />
@@ -347,9 +357,6 @@
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_classic.css" />
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_flat.css" />
     <Content Include="components\dhtmlxScheduler\sources\skins\dhtmlxscheduler_glossy.css" />
-    <Content Include="components\scheduler\scheduler.services\draganddrop.js" />
-    <Content Include="components\scheduler\scheduler.services\modal.service.js" />
-    <Content Include="components\scheduler\scheduler.services\schedulerData.service.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +368,7 @@
       <Name>PQ.QnAppCalendar</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

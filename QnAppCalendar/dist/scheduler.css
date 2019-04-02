@@ -1,0 +1,12 @@
+.aaa {
+  position: absolute; }
+
+arrow-left {
+  top: 70px;
+  z-index: 1000;
+  background-color: white; }
+  arrow-left:hover {
+    cursor: pointer; }
+
+
+/*# sourceMappingURL=scheduler.css.map*/
