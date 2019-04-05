@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using PQ.QnAppCalendar.Utils;
 using QFlow.Library;
 using PQ.QnAppCalendar.Dto;
+using static QFlow.Library.EntityType;
 
 namespace PQ.QnAppCalendar.DataService
 {
@@ -256,15 +257,15 @@ namespace PQ.QnAppCalendar.DataService
 
         public List<AppointmentInfo> GetAppointments(DateTime? from, DateTime? to)
         {
-            var sql = @"select app.AppointmentId, app.AppointmentDate, app.AppointmentDuration,s.ServiceId, s.ServiceName, appType.AppointmentTypeName, customer.FirstName, customer.LastName
+            var sql = @"select app.AppointmentId, app.AppointmentDate, app.AppointmentDuration,s.ServiceId, s.ServiceName, appType.AppointmentTypeName, customer.FirstName, customer.LastName, process.CurrentEntityStatus
 FROM qf.AppointmentAll app WITH (NOLOCK) 
-		JOIN qf.ProcessAll process WITH (NOLOCK) ON app.ProcessId = process.ProcessId -- AND process.ProcessStatus = 0
+		JOIN qf.ProcessAll process WITH (NOLOCK) ON app.ProcessId = process.ProcessId
 		JOIN qf.CaseAll c WITH (NOLOCK) ON process.CaseId = c.CaseId		
 		JOIN qf.Service s WITH (NOLOCK) ON app.ServiceId = s.ServiceId
         LEFT JOIN qf.AppointmentType appType  WITH (NOLOCK) on appType.AppointmentTypeId = app.AppointmentTypeId
         LEFT JOIN qf.Customer   customer WITH (NOLOCK) on customer.PersonalId = process.EntityId
-WHERE (@fromDate IS NULL OR app.AppointmentDate >= @fromDate) 
-AND (@toDate IS NULL OR app.AppointmentDate<=@toDate)
+WHERE (process.CurrentEntityStatus not in (15,16,17)) AND
+(@fromDate IS NULL OR app.AppointmentDate >= @fromDate) AND (@toDate IS NULL OR app.AppointmentDate<=@toDate)
 ";
             List<AppointmentInfo> serviceList = new List<AppointmentInfo>();
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
@@ -302,7 +303,8 @@ AND (@toDate IS NULL OR app.AppointmentDate<=@toDate)
                                     ServiceName = Converter.ToString(sqlDataReader["ServiceName"]),
                                     AppointmentTypeName = Converter.ToString(sqlDataReader["AppointmentTypeName"]),
                                     CustomerFirstName = Converter.ToString(sqlDataReader["FirstName"]),
-                                    CustomerLastName = Converter.ToString(sqlDataReader["LastName"])
+                                    CustomerLastName = Converter.ToString(sqlDataReader["LastName"]),
+                                    CurrentEntityStatus = (EntityStatus) Converter.ToInt32(sqlDataReader["CurrentEntityStatus"])
                                 });
                         }
                     }

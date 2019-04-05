@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static QFlow.Library.EntityType;
 
 namespace PQ.QnAppCalendar.Dto
 {
@@ -17,5 +18,6 @@ namespace PQ.QnAppCalendar.Dto
         public string AppointmentTypeName { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
+        public EntityStatus CurrentEntityStatus { get; set; }
     }
 }
