@@ -2,13 +2,14 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using PQ.QnAppCalendar.DataService;
-using PQ.QnAppCalendar.ViewModel;
+using PQ.QnAppCalendar.Dto;
 using PQ.QnAppCalendar.ViewService;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,7 +22,17 @@ namespace PQ.QnAppCalendar
 
         public void ProcessRequest(HttpContext context)
         {
+            string userName= HttpContext.Current?.User?.Identity?.Name;
+            int? currentUnitId = null;
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var qnomy = new QNomyDataService();
+                currentUnitId = qnomy.GetUserUnit(userName);
+            }
+            
             var query = new QueryStringParams(context.Request.Params);
+
             var dataService = new SchedulerDataService();
             var response = WrapResponse(() =>
             {
@@ -30,14 +41,18 @@ namespace PQ.QnAppCalendar
                 switch (query.Action)
                 {
                     case QueryStringParams.GET_UNITS:
-                        data = dataService.GetUnits();
+                        data = dataService.GetUnits(currentUnitId);
+                        break;
+                    case QueryStringParams.GET_CUSTOMIZEDATA:
+                        data = dataService.GetCustomizeData(currentUnitId);
                         break;
                     case QueryStringParams.GET_APPOINTMENTS:
-                        data = dataService.GetSchedulerEvents();
+                        string filterData = GetData(context.Request);
+                        DateFromTo filter = JsonConvert.DeserializeObject<DateFromTo>(filterData);
+                        data = dataService.GetSchedulerEvents(filter.From, filter.To);
                         break;
                     case QueryStringParams.SAVE_APPOINTMENT:
                         string objJson = GetData(context.Request);
-                        JsonSerializerSettings jsonSerializerSettings = GetJsonSettings();
                         var dataObj = JsonConvert.DeserializeObject<SchedulerEvent>(objJson);
                         data = dataService.SaveAppointment(dataObj);
                         break;

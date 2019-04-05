@@ -55,10 +55,10 @@
         };
 
         $ctrl.rollbackEvent = function (ev) {
-            let originalEvent = _originalEvent.get(ev.appointmnetId);
+            let originalEvent = _originalEvent.get(ev.appointmentId);
             if (!originalEvent)
                 return;
-            _originalEvent.delete(en.appointmnetId);
+            _originalEvent.delete(en.appointmentId);
 
             ev.start_date = originalEvent.start_date;
             ev.end_date = originalEvent.end_date;
@@ -78,21 +78,37 @@
 
         scheduler.parse([], "json");//without it  appears popup says
 
-        scheduler.init('scheduler_here', new Date(), "week");
+        scheduler.init('scheduler_here', new Date(), "unit");
 
-        schedulerDataService.loadAppointments()
-            .then(function (result) {
-                if (result.error) {
-                    $ctrl.handleWrappedError(result);
+        
+        scheduler.attachEvent("onBeforeViewChange", function (old_mode, old_date, mode, date) {
+            var a_date = schedulerDataService.getDate(date);
+            var a_minDate = schedulerDataService.getDate(scheduler.getState().min_date);
+            var a_maxDate = schedulerDataService.getDate(scheduler.getState().max_date);
+
+            if (a_date < a_minDate)
+                a_minDate = a_date;
+
+            if (a_date > a_maxDate)
+                a_maxDate = a_date;
+
+            schedulerDataService.loadAppointments(a_minDate, a_maxDate)
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        scheduler.parse(result.data, "json");
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
                     return;
-                }
-                if (result.data) {
-                    scheduler.parse(result.data, "json");
-                }
-            }, function (result) {
-                $ctrl.handleError(result);
-                return;
-            });
+                });
+            return true;
+        });
+
+       
 
         schedulerDataService.loadUnits()
             .then(function (result) {
@@ -100,14 +116,16 @@
                     $ctrl.handleWrappedError(result);
                     return;
                 }
-                scheduler.parse(result.data, "json");
+                if (result.data) {
+                    scheduler.updateCollection("units", result.data);
+                }
             }, function (result) {
                 $ctrl.handleError(result);
                 return;
             });
 
         scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
-            _originalEvent.set(ev.appointmnetId, $.extend(true, {}, original));
+            _originalEvent.set(ev.appointmentId, $.extend(true, {}, original));
             return true;
         });
 
@@ -119,7 +137,7 @@
             theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
             theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
 
-            schedulerDataService.saveAppointment()
+            schedulerDataService.saveAppointment(theEventCopy)
                 .then(function (result) {
                     if (result.error) {
                         $ctrl.handleWrappedError(result);
@@ -127,7 +145,7 @@
                         return;
                     }
 
-                    linkToEvent.appointmnetId = result.data.appointmnetId;
+                    linkToEvent.appointmentId = result.data.appointmentId;
                     console.log('saved');
                 }, function (result) {
                     $ctrl.handleError(result);

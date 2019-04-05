@@ -10,10 +10,10 @@
             controller: SchedulerCustomizeController
         });
     
-    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService', 'Stage', 'Status'];
+    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
    
 
-    function SchedulerCustomizeController($scope, $window, $document, $timeout, schedulerDataService, Stage, Status) {
+    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
         let $ctrl = this;
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
@@ -23,61 +23,80 @@
             return array;
         };
 
-        let allStatuses = [];
-        
-        allStatuses.push(new Status(1, 'In Quees', false));
-        allStatuses.push(new Status(2, 'Walk', false))
-        allStatuses.push(new Status(3, 'test3', false))
-        allStatuses.push(new Status(4, 'test4', false))
-        
-        let availablestatuses = allStatuses.filter(function (item) {
-            return item.id < 3;
-        });
-
-        availablestatuses.forEach(function (status) {
-            status.stageId = -1;
-        });
-        
-
+        $ctrl.closeModal = function closeModal(save) {
+            modalService.Close('scheduler-customize-modal');
+        };
         let allStages = [];
-        allStages.push(new Stage(1, "Expected"));
-        allStages.push(new Stage(2, "Waiting"))
-        allStages.push(new Stage(3, "In Service"))
+        let availablestatuses = [];
+        let allstatuses = [];
 
-        let statusesStage1 = allStatuses.filter(function (item) {
-            return item.id > 2;
-        });
+        schedulerDataService.getCustomizeData()
+            .then(function (result) {
+                if (result.error) {
+                    schedulerDataService.handleWrappedError(result);
+                    return;
+                }
+                if (result.data) {
+                    $ctrl.allStages = result.data.stages;
+                    $ctrl.availablestatuses = result.data.available;
 
-        statusesStage1.forEach(function (status) {
-            status.stageId = 1;
-        });
+                    //$ctrl.allStages.forEach(function (stage) {
 
-        Array.prototype.push.apply(allStages[0].statuses, statusesStage1);
+                    //    stage.statuses.forEach(function(status) {
+                    //        status.stageId = stage.id;
+                    //        allstatuses.push(status);
+                    //    });
+                    //});
+
+                    //$ctrl.availablestatuses.forEach(function (status) {
+                    //    status.stageId = -1;
+                    //    allstatuses.push(status);
+                    //});
+
+                    $scope.stages = $ctrl.allStages;
+                    $scope.statuses = $ctrl.availablestatuses;
+
+                    $scope.$apply();
+                }
+            }, function (result) {
+                schedulerDataService.handleError(result);
+                return;
+            });
 
         $scope.stages = allStages;
         $scope.statuses = availablestatuses;
 
         // stateObj - object where drag new status, data - id of status which is drag.
         $scope.handledrop = function (event, stageobj, data) {
+            let statusObj;
             let statusId = data;
-            let statusObjs = allStatuses.filter(function (item) {
-                return item.id == data;
+
+            $ctrl.allStages.forEach(function (stage) {
+                stage.statuses.forEach(function (status) {
+                    if (status.id == statusId) {
+                        statusObj = status;
+                    }
+                });
             });
 
-            let statusObj;
-            if (statusObjs.length > 0) {
-                statusObj = statusObjs[0];
+            if (!statusObj) {
+                $ctrl.availablestatuses.forEach(function (status) {
+                    if (status.id == statusId) {
+                        statusObj = status;
+                    }
+                });
             }
 
+          
             if (!statusObj) {
                 return;
             }
 
             let previousStageId = statusObj.stageId;
             if (previousStageId == -1) {
-                $ctrl.removeFromArray(availablestatuses, statusObj);
+                $ctrl.removeFromArray($ctrl.availablestatuses, statusObj);
             } else {
-                let previousStage = allStages.find(item => item.id == previousStageId);
+                let previousStage = $ctrl.allStages.find(item => item.id == previousStageId);
                 if (previousStage) {
                     $ctrl.removeFromArray(previousStage.statuses, statusObj);
                 }
@@ -88,7 +107,7 @@
                 stageobj.statuses.push(statusObj);
             }else {
                 statusObj.stageId = -1;
-                availablestatuses.push(statusObj);
+                $ctrl.availablestatuses.push(statusObj);
             }
 
             $scope.$apply();

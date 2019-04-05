@@ -192,10 +192,10 @@ __webpack_require__.r(__webpack_exports__);
         };
 
         $ctrl.rollbackEvent = function (ev) {
-            let originalEvent = _originalEvent.get(ev.appointmnetId);
+            let originalEvent = _originalEvent.get(ev.appointmentId);
             if (!originalEvent)
                 return;
-            _originalEvent.delete(en.appointmnetId);
+            _originalEvent.delete(en.appointmentId);
 
             ev.start_date = originalEvent.start_date;
             ev.end_date = originalEvent.end_date;
@@ -215,21 +215,37 @@ __webpack_require__.r(__webpack_exports__);
 
         scheduler.parse([], "json");//without it  appears popup says
 
-        scheduler.init('scheduler_here', new Date(), "week");
+        scheduler.init('scheduler_here', new Date(), "unit");
 
-        schedulerDataService.loadAppointments()
-            .then(function (result) {
-                if (result.error) {
-                    $ctrl.handleWrappedError(result);
+        
+        scheduler.attachEvent("onBeforeViewChange", function (old_mode, old_date, mode, date) {
+            var a_date = schedulerDataService.getDate(date);
+            var a_minDate = schedulerDataService.getDate(scheduler.getState().min_date);
+            var a_maxDate = schedulerDataService.getDate(scheduler.getState().max_date);
+
+            if (a_date < a_minDate)
+                a_minDate = a_date;
+
+            if (a_date > a_maxDate)
+                a_maxDate = a_date;
+
+            schedulerDataService.loadAppointments(a_minDate, a_maxDate)
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        scheduler.parse(result.data, "json");
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
                     return;
-                }
-                if (result.data) {
-                    scheduler.parse(result.data, "json");
-                }
-            }, function (result) {
-                $ctrl.handleError(result);
-                return;
-            });
+                });
+            return true;
+        });
+
+       
 
         schedulerDataService.loadUnits()
             .then(function (result) {
@@ -237,14 +253,16 @@ __webpack_require__.r(__webpack_exports__);
                     $ctrl.handleWrappedError(result);
                     return;
                 }
-                scheduler.parse(result.data, "json");
+                if (result.data) {
+                    scheduler.updateCollection("units", result.data);
+                }
             }, function (result) {
                 $ctrl.handleError(result);
                 return;
             });
 
         scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
-            _originalEvent.set(ev.appointmnetId, $.extend(true, {}, original));
+            _originalEvent.set(ev.appointmentId, $.extend(true, {}, original));
             return true;
         });
 
@@ -256,7 +274,7 @@ __webpack_require__.r(__webpack_exports__);
             theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
             theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
 
-            schedulerDataService.saveAppointment()
+            schedulerDataService.saveAppointment(theEventCopy)
                 .then(function (result) {
                     if (result.error) {
                         $ctrl.handleWrappedError(result);
@@ -264,7 +282,7 @@ __webpack_require__.r(__webpack_exports__);
                         return;
                     }
 
-                    linkToEvent.appointmnetId = result.data.appointmnetId;
+                    linkToEvent.appointmentId = result.data.appointmentId;
                     console.log('saved');
                 }, function (result) {
                     $ctrl.handleError(result);
@@ -311,10 +329,10 @@ __webpack_require__.r(__webpack_exports__);
             controller: SchedulerCustomizeController
         });
     
-    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService', 'Stage', 'Status'];
+    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
    
 
-    function SchedulerCustomizeController($scope, $window, $document, $timeout, schedulerDataService, Stage, Status) {
+    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
         let $ctrl = this;
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
@@ -324,61 +342,80 @@ __webpack_require__.r(__webpack_exports__);
             return array;
         };
 
-        let allStatuses = [];
-        
-        allStatuses.push(new Status(1, 'In Quees', false));
-        allStatuses.push(new Status(2, 'Walk', false))
-        allStatuses.push(new Status(3, 'test3', false))
-        allStatuses.push(new Status(4, 'test4', false))
-        
-        let availablestatuses = allStatuses.filter(function (item) {
-            return item.id < 3;
-        });
-
-        availablestatuses.forEach(function (status) {
-            status.stageId = -1;
-        });
-        
-
+        $ctrl.closeModal = function closeModal(save) {
+            modalService.Close('scheduler-customize-modal');
+        };
         let allStages = [];
-        allStages.push(new Stage(1, "Expected"));
-        allStages.push(new Stage(2, "Waiting"))
-        allStages.push(new Stage(3, "In Service"))
+        let availablestatuses = [];
+        let allstatuses = [];
 
-        let statusesStage1 = allStatuses.filter(function (item) {
-            return item.id > 2;
-        });
+        schedulerDataService.getCustomizeData()
+            .then(function (result) {
+                if (result.error) {
+                    schedulerDataService.handleWrappedError(result);
+                    return;
+                }
+                if (result.data) {
+                    $ctrl.allStages = result.data.stages;
+                    $ctrl.availablestatuses = result.data.available;
 
-        statusesStage1.forEach(function (status) {
-            status.stageId = 1;
-        });
+                    //$ctrl.allStages.forEach(function (stage) {
 
-        Array.prototype.push.apply(allStages[0].statuses, statusesStage1);
+                    //    stage.statuses.forEach(function(status) {
+                    //        status.stageId = stage.id;
+                    //        allstatuses.push(status);
+                    //    });
+                    //});
+
+                    //$ctrl.availablestatuses.forEach(function (status) {
+                    //    status.stageId = -1;
+                    //    allstatuses.push(status);
+                    //});
+
+                    $scope.stages = $ctrl.allStages;
+                    $scope.statuses = $ctrl.availablestatuses;
+
+                    $scope.$apply();
+                }
+            }, function (result) {
+                schedulerDataService.handleError(result);
+                return;
+            });
 
         $scope.stages = allStages;
         $scope.statuses = availablestatuses;
 
         // stateObj - object where drag new status, data - id of status which is drag.
         $scope.handledrop = function (event, stageobj, data) {
+            let statusObj;
             let statusId = data;
-            let statusObjs = allStatuses.filter(function (item) {
-                return item.id == data;
+
+            $ctrl.allStages.forEach(function (stage) {
+                stage.statuses.forEach(function (status) {
+                    if (status.id == statusId) {
+                        statusObj = status;
+                    }
+                });
             });
 
-            let statusObj;
-            if (statusObjs.length > 0) {
-                statusObj = statusObjs[0];
+            if (!statusObj) {
+                $ctrl.availablestatuses.forEach(function (status) {
+                    if (status.id == statusId) {
+                        statusObj = status;
+                    }
+                });
             }
 
+          
             if (!statusObj) {
                 return;
             }
 
             let previousStageId = statusObj.stageId;
             if (previousStageId == -1) {
-                $ctrl.removeFromArray(availablestatuses, statusObj);
+                $ctrl.removeFromArray($ctrl.availablestatuses, statusObj);
             } else {
-                let previousStage = allStages.find(item => item.id == previousStageId);
+                let previousStage = $ctrl.allStages.find(item => item.id == previousStageId);
                 if (previousStage) {
                     $ctrl.removeFromArray(previousStage.statuses, statusObj);
                 }
@@ -389,7 +426,7 @@ __webpack_require__.r(__webpack_exports__);
                 stageobj.statuses.push(statusObj);
             }else {
                 statusObj.stageId = -1;
-                availablestatuses.push(statusObj);
+                $ctrl.availablestatuses.push(statusObj);
             }
 
             $scope.$apply();
@@ -707,18 +744,69 @@ __webpack_require__.r(__webpack_exports__);
         var basePath = '/ajax/PQAppCalendar.ashx?act=';
 
         return {
+            getDate: function (date) {
+                if (!date)
+                    return date;
+
+                let timeZoneOffsetMs = date.getTimezoneOffset() * 60000;
+                let result = new Date(date.getTime() - timeZoneOffsetMs);
+                return result;
+            },
+
+            handleWrappedError : function (result) {
+                if (result.error) {
+                    if (result.error.message) {
+                        alert(result.error.message);
+                    }
+                    else {
+                        console.log('undefined error');
+                    }
+                }
+                else {
+                    console.log('not wrapped error');
+                }
+            },
+           handleError : function (result) {
+                if (result && result.statusText) {
+                    console.log(result.statusText);
+                }
+                else {
+                    if (result)
+                        console.log(result);
+                    else
+                        console.log('error');
+                }
+            },
+            getCustomizeData: function () {
+                return $.ajax({
+                    url: '/ajax/PQAppCalendar.ashx?act=get-customizedata',
+                    type: 'post',
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: [],
+                    dataType: 'json'
+                })
+            },
             saveAppointment: function (params) {
-                return new Promise();
+               return $.ajax({
+                    url: '/ajax/PQAppCalendar.ashx?act=save-appointment',
+                    type: 'post',
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(params),
+                    dataType: 'json'
+                });
                
             },
 
-            loadAppointments: function (params) {
+            loadAppointments: function (from, to) {
+                var params = { from: from, to: to };
                return $.ajax({
                    url: basePath + 'load-appointmens',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
-                    data: [],
+                    data: JSON.stringify(params),
                     dataType: 'json'
                 });
             },

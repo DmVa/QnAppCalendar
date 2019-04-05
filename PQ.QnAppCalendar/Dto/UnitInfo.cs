@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PQ.QnAppCalendar.ViewService.Dto
+namespace PQ.QnAppCalendar.Dto
 {
     public class UnitInfo
     {
-        public string Key;
+        public int Key;
         public string Label;
     }
 }

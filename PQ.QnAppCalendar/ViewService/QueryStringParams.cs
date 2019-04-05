@@ -11,7 +11,7 @@ namespace PQ.QnAppCalendar.ViewService
         public const string GET_UNITS = "load-units";
         public const string GET_APPOINTMENTS = "load-appointmens";
         public const string SAVE_APPOINTMENT = "save-appointment";
-
+        public const string GET_CUSTOMIZEDATA = "get-customizedata";
 
         public QueryStringParams(NameValueCollection query): base(query)
         {
