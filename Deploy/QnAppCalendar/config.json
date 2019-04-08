@@ -1,6 +1,6 @@
 {
-    "id": "9CC2401C-CE84-F641-E1F1-A7627800B7F6",
-    "versionId": "DA77DFAA-C002-27D5-9B51-BDBE75D47A65",
+    "id": "9CC2401C-CE84-F641-E1F1-A7627800B7F8",
+    "versionId": "DA77DFAA-C002-27D5-9B51-BDBE75D47A68",
     "version": "1.0.0",
     "name": "Cork Board",
     "description": "",
@@ -18,6 +18,26 @@
                 "target": "QnAppCalendar",
                 "rollbackAction": "remove",
                 "upgradeAction": "override"
+            }
+        },
+        {
+            "dbScript": {
+                "name": "CreateTables",
+                "type": "script",
+                "path": "Scripts/InitTables.sql",
+                "target": "qflow",
+                "rollbackPath": "Scripts/DropTables.sql",
+                "manualScript": "false"
+            }
+        },
+        {
+            "dbScript": {
+                "name": "FillInitTables",
+                "type": "script",
+                "path": "Scripts/FillCalendarStages.sql",
+                "target": "qflow",
+                "rollbackPath": "Scripts/FillCalendarStages-RB.sql",
+                "manualScript": "false"
             }
         }
     ]

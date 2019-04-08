@@ -6,6 +6,7 @@
     angular
         .module('scheduler.module')
         .component('pqScheduler', {
+            //templateUrl: './scheduler.component.html',
             templateUrl: '/src/scheduler/scheduler.component/scheduler.component.html',
             controller: SchedulerController,
         });
@@ -20,9 +21,16 @@
 
         let _originalEvent = new Map();
 
+        $ctrl.openCustomize = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            modalService.Open('scheduler-customize-modal');
+        };
+
         $ctrl.openModal = function (id) {
             modalService.Open(id);
         };
+
 
         $ctrl.closeModal = function closeModal(id) {
             modalService.Close(id);

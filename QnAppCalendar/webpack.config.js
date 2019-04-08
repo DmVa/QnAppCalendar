@@ -28,6 +28,23 @@ module.exports = {
                     }
                 ],
                 exclude: /node_modules(?!(\/|\\)@pr)/
+            },
+            {
+                test: /\.html$/,
+                use: {
+                    loader: 'html-loader',
+                    options: {
+                        minimize: true,
+                        removeAttributeQuotes: false,
+                        caseSensitive: true,
+                        customAttrSurround: [
+                            [/#/, /(?:)/],
+                            [/\*/, /(?:)/],
+                            [/\[?\(?/, /(?:)/]
+                        ],
+                        customAttrAssign: [/\)?\]?=/]
+                    }
+                }
             }
         ]
     },

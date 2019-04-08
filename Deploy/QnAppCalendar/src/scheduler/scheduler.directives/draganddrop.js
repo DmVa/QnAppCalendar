@@ -1,7 +1,7 @@
 ﻿angular
     .module('scheduler.module')
-    .directive('pqDragMe', dragMe)
-    .directive('pqDropOnMe', dropOnMe);
+    .directive('dragMe', dragMe)
+    .directive('dropOnMe', dropOnMe);
 
 dragMe.$inject = [];
 
@@ -11,8 +11,8 @@ function dragMe() {
         link: function (scope, element, attrs) {
             element.prop('draggable', true);
             element.on('dragstart', function (event) {
-                if (event.target.attributes['pq-drag-me']) {
-                    let dragmeattribute = event.target.attributes['pq-drag-me'].value;
+                if (event.target.attributes['drag-me']) {
+                    let dragmeattribute = event.target.attributes['drag-me'].value;
                     let dataid = event.target.attributes[dragmeattribute].value;
                     event.dataTransfer.setData('data', dataid)
                 }

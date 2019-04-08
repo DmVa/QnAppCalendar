@@ -6,7 +6,6 @@
     angular
         .module('scheduler.module')
         .component('pqSchedulerCustomize', {
-            //templateUrl: './schedulercustomize.component.html',
             templateUrl: '/src/scheduler/scheduler.customize/schedulercustomize.component.html',
             controller: SchedulerCustomizeController
         });

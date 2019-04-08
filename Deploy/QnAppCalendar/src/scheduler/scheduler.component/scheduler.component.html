@@ -1,4 +1,10 @@
-﻿<div class="scheduler-container">
+﻿<div>
+    <button ng-click="$ctrl.openCustomize($event)">Customize</button>
+</div>
+
+
+
+<div class="scheduler-container">
 
     <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100vh;'>
         <div class="dhx_cal_navline">
@@ -16,3 +22,13 @@
         <div class="dhx_cal_data"></div>
     </div>
 </div>
+
+<pq-modal id="scheduler-customize-modal">
+    <div class="pq-modal">
+        <div class="pq-modal-body">
+            <pq-scheduler-customize></pq-scheduler-customize>
+        </div>
+     
+    </div>
+    <div class="pq-modal-background"></div>
+</pq-modal>

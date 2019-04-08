@@ -1,4 +1,6 @@
-﻿.arrow-left, .arrow-right {
+﻿.pq-scheduler {
+
+.arrow-left, .arrow-right {
     position: absolute;
     top: 70px;
     z-index: 1000;
@@ -7,4 +9,6 @@
     &:hover {
         cursor: pointer;
     }
+}
+
 }
