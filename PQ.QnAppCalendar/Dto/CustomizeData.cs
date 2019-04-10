@@ -17,6 +17,7 @@ namespace PQ.QnAppCalendar.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsServiceType { get; set; }
         public List<StageStatus> Statuses { get; set; }
     }
 
@@ -25,5 +26,6 @@ namespace PQ.QnAppCalendar.Dto
         public int Id { get; set; }
         public string Name { get; set; }
         public int StageId { get; set; }
+      
     }
 }

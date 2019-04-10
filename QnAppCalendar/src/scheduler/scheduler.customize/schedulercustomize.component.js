@@ -6,8 +6,7 @@
     angular
         .module('scheduler.module')
         .component('pqSchedulerCustomize', {
-            //templateUrl: './schedulercustomize.component.html',
-            templateUrl: '/src/scheduler/scheduler.customize/schedulercustomize.component.html',
+            template: require('./schedulercustomize.component.html'),
             controller: SchedulerCustomizeController
         });
     
@@ -16,6 +15,21 @@
 
     function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
         let $ctrl = this;
+        let $ctrlAddColumn = $('pq-scheduler-edit-column');
+        $ctrlAddColumn.hide();
+
+        function getLastIndexOfServiceStage() {
+            let index = -1;
+            for (let i = 0; i < $ctrl.allStages.length; i++) {
+                let stage = $ctrl.allStages[i];
+                if (stage.isServiceType) {
+                    index = i;
+                }
+            }
+
+            return index;
+        }
+
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
             if (idx !== -1) {
@@ -24,9 +38,42 @@
             return array;
         };
 
+        $ctrl.onAddStage = function onAddStage(stagename) {
+            let index = getLastIndexOfServiceStage() + 1;
+            let newStage = new Stage(-1, stagename, true, []);
+
+            $ctrl.allStages.splice(index, 0, newStage);
+            
+        };
+
         $ctrl.closeModal = function closeModal(save) {
             modalService.Close('scheduler-customize-modal');
         };
+
+        $ctrl.removeStage = function removeStage($event, stageobj) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            if (!stageobj) {
+                alert('undefined stage');
+                return;
+            }
+
+
+            stageobj.statuses.forEach(function (status) {
+                $ctrl.availablestatuses.push(status);
+            });
+
+            $ctrl.removeFromArray($ctrl.allStages, stageobj);
+        };
+
+        $ctrl.addStage = function addStage($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $ctrlAddColumn.show();
+        };
+
+
         let allStages = [];
         let availablestatuses = [];
         let allstatuses = [];
@@ -40,19 +87,6 @@
                 if (result.data) {
                     $ctrl.allStages = result.data.stages;
                     $ctrl.availablestatuses = result.data.available;
-
-                    //$ctrl.allStages.forEach(function (stage) {
-
-                    //    stage.statuses.forEach(function(status) {
-                    //        status.stageId = stage.id;
-                    //        allstatuses.push(status);
-                    //    });
-                    //});
-
-                    //$ctrl.availablestatuses.forEach(function (status) {
-                    //    status.stageId = -1;
-                    //    allstatuses.push(status);
-                    //});
 
                     $scope.stages = $ctrl.allStages;
                     $scope.statuses = $ctrl.availablestatuses;

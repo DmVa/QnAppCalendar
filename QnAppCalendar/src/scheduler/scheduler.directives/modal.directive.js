@@ -50,6 +50,12 @@
                     $('body').addClass('pq-modal-open');
                 }
 
+                // open modal
+                function Open2() {
+                    element.show();
+                    $('body').addClass('pq-modal-open');
+                }
+
                 // close modal
                 function Close() {
                     element.hide();

@@ -115,7 +115,10 @@
     <Content Include="src\scheduler\scheduler.component\scheduler.component.js" />
     <Content Include="components\pqscheduler\pqscheduler.css.map" />
     <Content Include="components\pqscheduler\pqscheduler.js.map" />
+    <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.scss" />
     <None Include="src\scheduler\scheduler.customize\schedulercustomize.component.scss" />
+    <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.html" />
+    <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.js" />
     <Content Include="src\scheduler\scheduler.customize\schedulercustomize.component.html" />
     <Content Include="src\scheduler\scheduler.customize\schedulercustomize.component.js" />
     <Content Include="src\scheduler\scheduler.customize\stage.js" />

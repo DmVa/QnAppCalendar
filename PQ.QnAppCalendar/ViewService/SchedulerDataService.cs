@@ -108,11 +108,6 @@ namespace PQ.QnAppCalendar.ViewService
             return result;
         }
 
-        internal int? GetUserUnit(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
         internal List<UnitInfo> GetUnits(int? rootUnitId)
         {
             var dataService = new QNomyDataService();
@@ -141,7 +136,7 @@ namespace PQ.QnAppCalendar.ViewService
 
             foreach(var stage in calendarStages)
             {
-                CalendarStageWithStatuses item = new CalendarStageWithStatuses() { Id = stage.Id, Name = stage.Name};
+                CalendarStageWithStatuses item = new CalendarStageWithStatuses() { Id = stage.Id, Name = stage.Name, IsServiceType = stage.StageType == CalendarStageType.InService};
                 item.Statuses = new List<StageStatus>();
                 result.Stages.Add(item);
             }

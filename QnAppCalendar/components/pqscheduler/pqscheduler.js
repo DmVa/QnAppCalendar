@@ -110,6 +110,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scheduler_scheduler_directives_modal_directive_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scheduler/scheduler.directives/modal.directive.js */ "./src/scheduler/scheduler.directives/modal.directive.js");
 /* harmony import */ var _scheduler_scheduler_component_scheduler_component_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./scheduler/scheduler.component/scheduler.component.js */ "./src/scheduler/scheduler.component/scheduler.component.js");
 /* harmony import */ var _scheduler_scheduler_customize_schedulercustomize_component_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scheduler/scheduler.customize/schedulercustomize.component.js */ "./src/scheduler/scheduler.customize/schedulercustomize.component.js");
+/* harmony import */ var _scheduler_scheduler_editcolumn_schedulereditcolumn_component_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scheduler/scheduler.editcolumn/schedulereditcolumn.component.js */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js");
 ﻿
 
 
@@ -121,6 +122,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.component/scheduler.component.html":
+/*!********************************************************************!*\
+  !*** ./src/scheduler/scheduler.component/scheduler.component.html ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"pq-scheduler\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"scheduler-container\"> <div id=\"scheduler_here\" class=\"dhx_cal_container\" style=\"width:100%;height:100vh\"> <div class=\"dhx_cal_navline\"> <div class=\"dhx_cal_prev_button\">&nbsp;</div> <div class=\"dhx_cal_next_button\">&nbsp;</div> <div class=\"dhx_cal_today_button\"></div> <div class=\"dhx_cal_date\"></div> <div class=\"dhx_cal_tab\" name=\"day_tab\"></div> <div class=\"dhx_cal_tab\" name=\"week_tab\"></div> <div class=\"dhx_cal_tab\" name=\"month_tab\"></div> <div class=\"dhx_cal_tab\" name=\"unit_tab\" style=\"right:280px\"></div> </div> <div class=\"dhx_cal_header\"></div> <div class=\"dhx_cal_data\"></div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
 
 /***/ }),
 
@@ -143,8 +156,8 @@ __webpack_require__.r(__webpack_exports__);
     angular
         .module('scheduler.module')
         .component('pqScheduler', {
-            //templateUrl: './scheduler.component.html',
-            templateUrl: '/src/scheduler/scheduler.component/scheduler.component.html',
+            // templateUrl: './scheduler.component.html',
+            template: __webpack_require__(/*! ./scheduler.component.html */ "./src/scheduler/scheduler.component/scheduler.component.html"),
             controller: SchedulerController,
         });
 
@@ -210,9 +223,12 @@ __webpack_require__.r(__webpack_exports__);
             scheduler.updateView();
 
         };
-
+        // config
         scheduler.config.xml_date = "%Y-%m-%d %H:%i";
         scheduler.locale.labels.unit_tab = "Stage";
+        scheduler.config.dblclick_create = false;
+        scheduler.config.drag_create = false;
+        scheduler.config.readonly_form = true;
 
         var sections = scheduler.serverList("units");
         scheduler.createUnitsView({
@@ -314,6 +330,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/scheduler/scheduler.customize/schedulercustomize.component.html":
+/*!*****************************************************************************!*\
+  !*** ./src/scheduler/scheduler.customize/schedulercustomize.component.html ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> Available services <div ng-repeat=\"status in statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{status.id}}\"> {{status.name}} </div> </div> <div> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.isServiceType}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-value=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.isServiceType\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stagestatus in stageobj.statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{stagestatus.id}}\"> {{stagestatus.name}} </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
+
+/***/ }),
+
 /***/ "./src/scheduler/scheduler.customize/schedulercustomize.component.js":
 /*!***************************************************************************!*\
   !*** ./src/scheduler/scheduler.customize/schedulercustomize.component.js ***!
@@ -333,8 +360,7 @@ __webpack_require__.r(__webpack_exports__);
     angular
         .module('scheduler.module')
         .component('pqSchedulerCustomize', {
-            //templateUrl: './schedulercustomize.component.html',
-            templateUrl: '/src/scheduler/scheduler.customize/schedulercustomize.component.html',
+            template: __webpack_require__(/*! ./schedulercustomize.component.html */ "./src/scheduler/scheduler.customize/schedulercustomize.component.html"),
             controller: SchedulerCustomizeController
         });
     
@@ -343,6 +369,21 @@ __webpack_require__.r(__webpack_exports__);
 
     function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
         let $ctrl = this;
+        let $ctrlAddColumn = $('pq-scheduler-edit-column');
+        $ctrlAddColumn.hide();
+
+        function getLastIndexOfServiceStage() {
+            let index = -1;
+            for (let i = 0; i < $ctrl.allStages.length; i++) {
+                let stage = $ctrl.allStages[i];
+                if (stage.isServiceType) {
+                    index = i;
+                }
+            }
+
+            return index;
+        }
+
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
             if (idx !== -1) {
@@ -351,9 +392,42 @@ __webpack_require__.r(__webpack_exports__);
             return array;
         };
 
+        $ctrl.onAddStage = function onAddStage(stagename) {
+            let index = getLastIndexOfServiceStage() + 1;
+            let newStage = new Stage(-1, stagename, true, []);
+
+            $ctrl.allStages.splice(index, 0, newStage);
+            
+        };
+
         $ctrl.closeModal = function closeModal(save) {
             modalService.Close('scheduler-customize-modal');
         };
+
+        $ctrl.removeStage = function removeStage($event, stageobj) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            if (!stageobj) {
+                alert('undefined stage');
+                return;
+            }
+
+
+            stageobj.statuses.forEach(function (status) {
+                $ctrl.availablestatuses.push(status);
+            });
+
+            $ctrl.removeFromArray($ctrl.allStages, stageobj);
+        };
+
+        $ctrl.addStage = function addStage($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $ctrlAddColumn.show();
+        };
+
+
         let allStages = [];
         let availablestatuses = [];
         let allstatuses = [];
@@ -367,19 +441,6 @@ __webpack_require__.r(__webpack_exports__);
                 if (result.data) {
                     $ctrl.allStages = result.data.stages;
                     $ctrl.availablestatuses = result.data.available;
-
-                    //$ctrl.allStages.forEach(function (stage) {
-
-                    //    stage.statuses.forEach(function(status) {
-                    //        status.stageId = stage.id;
-                    //        allstatuses.push(status);
-                    //    });
-                    //});
-
-                    //$ctrl.availablestatuses.forEach(function (status) {
-                    //    status.stageId = -1;
-                    //    allstatuses.push(status);
-                    //});
 
                     $scope.stages = $ctrl.allStages;
                     $scope.statuses = $ctrl.availablestatuses;
@@ -469,9 +530,10 @@ __webpack_require__.r(__webpack_exports__);
 
     var app = angular.module('scheduler.module');
     app.factory('Stage', function () {
-        function Stage(id, name, statuses) {
+        function Stage(id, name, isServiceType, statuses) {
             this.id = id;
             this.name = name;
+            this.isServiceType = isServiceType;
             this.statuses = [];
             if (statuses) {
                 this.statuses = statuses;
@@ -554,8 +616,10 @@ function dropOnMe() {
             onDrop: '&'
         },
         link: function (scope, element, attrs) {
+            let preventDrop = attrs["pqDropOnMe"] === "false";
             element.on('dragover', function (event) {
-                event.preventDefault();
+                if (!preventDrop)
+                    event.preventDefault();
             });
             element.on('drop', function (event) {
                 event.preventDefault();
@@ -632,6 +696,12 @@ __webpack_require__.r(__webpack_exports__);
                     $('body').addClass('pq-modal-open');
                 }
 
+                // open modal
+                function Open2() {
+                    element.show();
+                    $('body').addClass('pq-modal-open');
+                }
+
                 // close modal
                 function Close() {
                     element.hide();
@@ -648,6 +718,75 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************************!*\
   !*** ./src/scheduler/scheduler.directives/modal.directive.scss ***!
   \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.html":
+/*!*******************************************************************************!*\
+  !*** ./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.html ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"scheduler-edit-column\"> <div class=\"top-content\"> <label for=\"pqstageName\">Name</label> <input type=\"text\" id=\"pqstageName\" ng-model=\"name\"> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, true)\" class=\"btn btn-primary\">Add</button> </div> </div> ";
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js":
+/*!*****************************************************************************!*\
+  !*** ./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js ***!
+  \*****************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _schedulereditcolumn_component_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./schedulereditcolumn.component.scss */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.scss");
+/* harmony import */ var _schedulereditcolumn_component_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_schedulereditcolumn_component_scss__WEBPACK_IMPORTED_MODULE_0__);
+﻿
+
+(function () {
+    'use strict';
+
+    angular
+        .module('scheduler.module')
+        .component('pqSchedulerEditColumn', {
+            template: __webpack_require__(/*! ./schedulereditcolumn.component.html */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.html"),
+            controller: SchedulerEditColumnController,
+            bindings: {
+                onAddStage: '&'
+            }
+        });
+    
+    SchedulerEditColumnController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
+   
+
+    function SchedulerEditColumnController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
+        let $ctrl = this;
+        $scope.name = '';
+        let $ctrlAddColumn = $('pq-scheduler-edit-column');
+     
+        $ctrl.closeModal = function closeModal($event, save) {
+            $event.preventDefault();
+            if (save) {
+                $ctrl.onAddStage({ stagename: $scope.name });
+            }
+            $ctrlAddColumn.hide();
+        };
+    }
+}
+)();
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.scss":
+/*!*******************************************************************************!*\
+  !*** ./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.scss ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

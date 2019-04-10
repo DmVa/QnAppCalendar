@@ -6,8 +6,8 @@
     angular
         .module('scheduler.module')
         .component('pqScheduler', {
-            //templateUrl: './scheduler.component.html',
-            templateUrl: '/src/scheduler/scheduler.component/scheduler.component.html',
+            // templateUrl: './scheduler.component.html',
+            template: require('./scheduler.component.html'),
             controller: SchedulerController,
         });
 
@@ -73,9 +73,12 @@
             scheduler.updateView();
 
         };
-
+        // config
         scheduler.config.xml_date = "%Y-%m-%d %H:%i";
         scheduler.locale.labels.unit_tab = "Stage";
+        scheduler.config.dblclick_create = false;
+        scheduler.config.drag_create = false;
+        scheduler.config.readonly_form = true;
 
         var sections = scheduler.serverList("units");
         scheduler.createUnitsView({

@@ -1,0 +1,26 @@
+﻿pq-scheduler-edit-column {
+    /* modals are hidden by default */
+    /*display: none;*/
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 100px;
+    left: 0;
+    z-index: 1010;
+
+    .scheduler-edit-column {
+        height: 120px;
+        width: 400px;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        background-color: white;
+        border: 1px solid;
+        border-color: cadetblue;
+        border-radius: 5px;
+    }
+
+    .top-content {
+        margin: 10px;
+    }
+}

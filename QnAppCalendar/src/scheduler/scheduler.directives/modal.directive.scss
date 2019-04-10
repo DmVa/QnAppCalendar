@@ -3,7 +3,7 @@
 pq-modal {
     /* modals are hidden by default */
     display: none;
-}
+
 
 .pq-modal {
     /* modal container fixed across whole screen */
@@ -38,14 +38,13 @@ pq-modal {
     left: 0;
     /* semi-transparent black  */
     background-color: #000;
-    opacity: 0.75;
+    opacity: 0.5;
     /* z-index must be below .modal and above everything else  */
     z-index: 900;
 }
 
-
-
 body.pq-modal-open {
     /* body overflow is hidden to hide main scrollbar when modal window is open */
     overflow: hidden;
+}
 }

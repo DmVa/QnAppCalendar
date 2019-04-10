@@ -30,8 +30,10 @@ function dropOnMe() {
             onDrop: '&'
         },
         link: function (scope, element, attrs) {
+            let preventDrop = attrs["pqDropOnMe"] === "false";
             element.on('dragover', function (event) {
-                event.preventDefault();
+                if (!preventDrop)
+                    event.preventDefault();
             });
             element.on('drop', function (event) {
                 event.preventDefault();

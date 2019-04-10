@@ -1,7 +1,6 @@
 ﻿const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-
 module.exports = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     entry: './src/pqscheduler.app.js',
@@ -12,7 +11,7 @@ module.exports = {
     },
     module: {
         rules: [
-            {
+            { 
                 test: /\.scss$/,
                 use: [
                     MiniCssExtractPlugin.loader, {

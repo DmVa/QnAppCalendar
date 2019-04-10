@@ -3,41 +3,37 @@
 pq-modal {
   /* modals are hidden by default */
   display: none; }
-
-.pq-modal {
-  /* modal container fixed across whole screen */
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  /* z-index must be higher than .modal-background */
-  z-index: 1000;
-  /* enables scrolling for tall modals */
-  overflow: auto; }
-
-.pq-modal-body {
-  padding: 20px;
-  background: #fff;
-  /* margin exposes part of the modal background */
-  margin: 40px; }
-
-.pq-modal-background {
-  /* modal background fixed across whole screen */
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  /* semi-transparent black  */
-  background-color: #000;
-  opacity: 0.75;
-  /* z-index must be below .modal and above everything else  */
-  z-index: 900; }
-
-body.pq-modal-open {
-  /* body overflow is hidden to hide main scrollbar when modal window is open */
-  overflow: hidden; }
+  pq-modal .pq-modal {
+    /* modal container fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* z-index must be higher than .modal-background */
+    z-index: 1000;
+    /* enables scrolling for tall modals */
+    overflow: auto; }
+  pq-modal .pq-modal-body {
+    padding: 20px;
+    background: #fff;
+    /* margin exposes part of the modal background */
+    margin: 40px; }
+  pq-modal .pq-modal-background {
+    /* modal background fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* semi-transparent black  */
+    background-color: #000;
+    opacity: 0.5;
+    /* z-index must be below .modal and above everything else  */
+    z-index: 900; }
+  pq-modal body.pq-modal-open {
+    /* body overflow is hidden to hide main scrollbar when modal window is open */
+    overflow: hidden; }
 
 .pq-scheduler .arrow-left, .pq-scheduler .arrow-right {
   position: absolute;
@@ -47,59 +43,123 @@ body.pq-modal-open {
   .pq-scheduler .arrow-left:hover, .pq-scheduler .arrow-right:hover {
     cursor: pointer; }
 
-.scheduler-customize-container {
+pq-scheduler-customize .scheduler-customize-container {
   height: 50%;
   display: flex;
   align-items: center;
   justify-content: center; }
-  .scheduler-customize-container .scheduler-centered-content {
-    width: 70%;
-    height: 80%; }
-  .scheduler-customize-container .avaiable-container {
-    float: left;
-    width: 150px;
-    height: 100%; }
-  .scheduler-customize-container .stages-container {
-    border: 1px;
-    height: 95%;
-    overflow: hidden;
-    display: flex;
-    overflow-x: auto;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: stretch; }
-  .scheduler-customize-container .stage {
-    width: 180px;
-    margin: 5px; }
-  .scheduler-customize-container .status {
-    background: LightGray;
-    margin: 2px 5px 2px 5px; }
-  .scheduler-customize-container .pq-modal-footer {
-    margin-top: 15px;
-    text-align: right;
-    border-top: 1px solid #e5e5e5; }
-  .scheduler-customize-container .btn {
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-  .scheduler-customize-container .btn-primary {
-    color: #fff;
-    background-color: #428bca;
-    border-color: #357ebd; }
+
+pq-scheduler-customize .scheduler-centered-content {
+  width: 95%;
+  height: 80%; }
+
+pq-scheduler-customize .avaiable-container {
+  float: left;
+  width: 150px;
+  height: 100%; }
+
+pq-scheduler-customize .stages-container {
+  border: 1px;
+  height: 95%;
+  overflow: hidden;
+  display: flex;
+  overflow-x: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+pq-scheduler-customize .stage {
+  width: 180px;
+  padding: 5px 5px 5px 5px;
+  border-left: 1px solid LightGray;
+  color: #767676; }
+
+pq-scheduler-customize .stageheader {
+  display: block;
+  padding: 5px;
+  margin: 0 auto; }
+
+pq-scheduler-customize .stageheadername {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(#eee, #fff);
+  transition: all 0.3s ease-out;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: gray;
+  text-align: center;
+  font-family: customfont;
+  margin: 0 auto; }
+
+pq-scheduler-customize .status {
+  background: LightGray;
+  margin: 2px 5px 2px 5px; }
+
+pq-scheduler-customize .pq-modal-footer {
+  margin-top: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5; }
+
+pq-scheduler-customize .centered {
+  text-align: center; }
+
+pq-scheduler-customize .flatbutton {
+  display: inline;
+  background: darkgray;
+  border-radius: 2px;
+  font-family: "Arial";
+  border: 0;
+  font-size: 15px;
+  line-height: 15px;
+  color: white;
+  width: auto;
+  height: auto;
+  box-sizing: content-box; }
+
+pq-scheduler-customize .btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 5px; }
+
+pq-scheduler-customize .btn-primary {
+  color: #fff;
+  background-color: #428bca;
+  border-color: #357ebd; }
+
+pq-scheduler-edit-column {
+  /* modals are hidden by default */
+  /*display: none;*/
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 100px;
+  left: 0;
+  z-index: 1010; }
+  pq-scheduler-edit-column .scheduler-edit-column {
+    height: 120px;
+    width: 400px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    background-color: white;
+    border: 1px solid;
+    border-color: cadetblue;
+    border-radius: 5px; }
+  pq-scheduler-edit-column .top-content {
+    margin: 10px; }
 
 
 /*# sourceMappingURL=pqscheduler.css.map*/
