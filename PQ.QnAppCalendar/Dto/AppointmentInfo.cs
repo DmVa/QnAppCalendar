@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PQ.QnAppCalendar.DataService;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,6 @@ namespace PQ.QnAppCalendar.Dto
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
         public EntityStatus CurrentEntityStatus { get; set; }
+        public CalendarStageType CalendarStageType { get; set; }
     }
 }

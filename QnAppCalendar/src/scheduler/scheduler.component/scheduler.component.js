@@ -20,6 +20,8 @@
         let scheduler = $window.scheduler;
 
         let _originalEvent = new Map();
+        let customizeData = null;
+        let units = null;
 
         $ctrl.openCustomize = function ($event) {
             $event.preventDefault();
@@ -31,6 +33,7 @@
             modalService.Open(id);
         };
 
+       
 
         $ctrl.closeModal = function closeModal(id) {
             modalService.Close(id);
@@ -62,6 +65,10 @@
             }
         };
 
+        $ctrl.onSaveCustomize = function onSaveCustomize() {
+            $ctrl.LoadUnits(true);
+        };
+
         $ctrl.rollbackEvent = function (ev) {
             let originalEvent = _originalEvent.get(ev.appointmentId);
             if (!originalEvent)
@@ -84,6 +91,7 @@
         scheduler.createUnitsView({
             name: "unit",
             property: "unitid",
+            skip_incorrect: true,
             list: sections
         });
 
@@ -110,6 +118,7 @@
                         return;
                     }
                     if (result.data) {
+                        scheduler.clearAll();
                         scheduler.parse(result.data, "json");
                     }
                 }, function (result) {
@@ -119,21 +128,77 @@
             return true;
         });
 
-       
-
-        schedulerDataService.loadUnits()
-            .then(function (result) {
-                if (result.error) {
-                    $ctrl.handleWrappedError(result);
+        $ctrl.LoadUnits =  function(reloadCustomize) {
+            schedulerDataService.loadUnits()
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $ctrl.units = result.data;
+                        scheduler.updateCollection("units", $ctrl.units);
+                        if (reloadCustomize) {
+                            $ctrl.LoadCustomizeData();
+                            return;
+                        }
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
                     return;
-                }
-                if (result.data) {
-                    scheduler.updateCollection("units", result.data);
-                }
-            }, function (result) {
-                $ctrl.handleError(result);
+                });
+        };
+
+        $ctrl.LoadUnits(false);
+
+        $ctrl.LoadCustomizeData = function() {
+            schedulerDataService.getCustomizeData()
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $ctrl.customizeData = result.data;
+                        $ctrl.RemapEventToUnits();
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
+                    return;
+                });
+        };
+
+        $ctrl.RemapEventToUnits = function () {
+            var evs = scheduler.getEvents();
+            if (!evs || evs.length == 0)
                 return;
-            });
+
+            for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
+                var ev = evs[eventIdx];
+                ev.unitid = $ctrl.getUnitIdForServiceid(ev.serviceId, ev.calendarStageType)
+            }
+        }
+
+        $ctrl.getUnitIdForServiceid = function (serviceId, stageTypeId) {
+            if (!$ctrl.customizeData)
+                return - 1;
+            let result = -1;
+
+            for (var stageIdx = 0; stageIdx < $ctrl.customizeData.length; stageIdx++) {
+                var stage = $ctrl.customizeData[stageIdx];
+                for (var statusIdx = 0; statusIdx < stage.statuses.length; statusIdx++) {
+                    if (status.Id == serviceId) {
+                        result = stage.Id;
+                        break;
+                    }
+                };
+
+                if (result >= 0) {
+                    break;
+                }
+            }
+            return result;
+        }
 
         scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
             _originalEvent.set(ev.appointmentId, $.extend(true, {}, original));

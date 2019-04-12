@@ -17,8 +17,13 @@ namespace PQ.QnAppCalendar.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool IsServiceType { get; set; }
+        public bool IsServiceType
+        {
+            get { return StageType == CalendarStageType.InService; }
+        }
+        public int SortOrder { get; set; }
         public List<StageStatus> Statuses { get; set; }
+        public CalendarStageType StageType { get;  set; }
     }
 
     public class StageStatus
@@ -26,6 +31,5 @@ namespace PQ.QnAppCalendar.Dto
         public int Id { get; set; }
         public string Name { get; set; }
         public int StageId { get; set; }
-      
     }
 }

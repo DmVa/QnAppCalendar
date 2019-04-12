@@ -66,16 +66,151 @@ namespace PQ.QnAppCalendar.DataService
 
         }
 
-        public List<CalendarStage> GetClendarStages()
+        public int InserCalendarStageService(CalendarStageService calendarStage)
         {
-            var sql = @"select Id, Name, SortOrder, StageType from pq.CalendarStage order by SortOrder";
+
+            var sql = $@"INSERT INTO [pq].[CalendarStageService] ([CalendarStageId] ,[ServiceId]) OUTPUT INSERTED.ID    
+                    VALUES   (@CalendarStageId, @ServiceId)  ";
+
+            int result = 0;
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@CalendarStageId", calendarStage.CalendarStageId);
+                    sqlCommand.Parameters.AddWithValue("@ServiceId", calendarStage.ServiceId);
+
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    connection.Open();
+                    result = (int) sqlCommand.ExecuteScalar();
+                }
+            }
+
+            return result;
+        }
+
+        public int InserCalendarStage(CalendarStage calendarStage)
+        {
+            var sql = $@"INSERT INTO [pq].[CalendarStage]      ([SortOrder],[Name],[StageType]) output INSERTED.ID  
+            VALUES (@SortOrder,@Name, @StageType)";
+           
+            int result = 0;
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.Parameters.Add("@SortOrder", SqlDbType.Int);
+                    sqlCommand.Parameters["@SortOrder"].Value = calendarStage.SortOrder;
+
+                    sqlCommand.Parameters.Add("@Name", SqlDbType.VarChar);
+                    sqlCommand.Parameters["@Name"].Value = calendarStage.Name;
+
+                    sqlCommand.Parameters.Add("@StageType", SqlDbType.Int);
+                    sqlCommand.Parameters["@StageType"].Value = (int)calendarStage.StageType;
+
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    connection.Open();
+                    result = (int)sqlCommand.ExecuteScalar();
+                }
+            }
+
+            return result;
+        }
+
+        public void UpdateCalendarStage(CalendarStage calendarStage)
+        {
+            var sql = $@"UPDATE [pq].[CalendarStage] SET [SortOrder] = @SortOrder, [Name] = @Name WHERE ID = @Id";
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.Parameters.Add("@SortOrder", SqlDbType.Int);
+                    sqlCommand.Parameters["@SortOrder"].Value = calendarStage.SortOrder;
+
+                    sqlCommand.Parameters.Add("@Name", SqlDbType.VarChar);
+                    sqlCommand.Parameters["@Name"].Value = calendarStage.Name;
+
+                    sqlCommand.Parameters.Add("@Id", SqlDbType.Int);
+                    sqlCommand.Parameters["@Id"].Value = calendarStage.Id;
+
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    connection.Open();
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteCalendarStageServices()
+        {
+            var sql = $"delete from  pq.CalendarStageService";
             var result = new List<CalendarStage>();
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
             {
                 using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
                 {
                     sqlCommand.CommandType = CommandType.Text;
-                    
+
+                    connection.Open();
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public CalendarStage GetClendarStage(int id)
+        {
+            var stages = GetClendarStages(id);
+            if (stages.Count == 0)
+                return null;
+            else
+                return stages[0];
+        }
+
+        internal void DeleteCalendarStagesExcept(List<int> stageIds)
+        {
+            string deleteClause = "";
+            if (stageIds.Count > 0)
+            {
+                string ids = Converter.ToCommaSeparated(stageIds);
+                deleteClause = $"WHERE ID NOT IN ({ids})";
+            }
+
+            var sql = $"delete from  pq.CalendarStage {deleteClause}";
+
+            var result = new List<CalendarStage>();
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    connection.Open();
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<CalendarStage> GetClendarStages()
+        {
+            return GetClendarStages(null);
+        }
+        
+        private List<CalendarStage> GetClendarStages(int? id)
+        {
+            string whereCalusesql = "";
+            if (id.HasValue)
+                whereCalusesql = $"WHERE ID = {id.Value}";
+
+            var sql = $"select Id, Name, SortOrder, StageType from pq.CalendarStage {whereCalusesql} order by SortOrder";
+            var result = new List<CalendarStage>();
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.CommandType = CommandType.Text;
+
                     connection.Open();
                     using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
                     {
@@ -85,7 +220,7 @@ namespace PQ.QnAppCalendar.DataService
                             item.Id = Converter.ToInt32(sqlDataReader["Id"]);
                             item.Name = Converter.ToString(sqlDataReader["Name"]);
                             item.SortOrder = Converter.ToInt32(sqlDataReader["SortOrder"]);
-                            item.StageType = (CalendarStageType) Converter.ToInt32(sqlDataReader["SortOrder"]);
+                            item.StageType = (CalendarStageType)Converter.ToInt32(sqlDataReader["StageType"]);
                             result.Add(item);
                         }
                     }
@@ -93,6 +228,7 @@ namespace PQ.QnAppCalendar.DataService
             }
             return result;
         }
+
 
         public List<CalendarStageService> GetClendarStageServices()
         {
@@ -188,6 +324,43 @@ namespace PQ.QnAppCalendar.DataService
             }
             return result;
 
+        }
+
+        internal void UpdateOrInsertStage(CalendarStageWithStatuses stagedata)
+        {
+            CalendarStage stage = null;
+            if (stagedata.Id > 0)
+            {
+                stage = GetClendarStage(stagedata.Id);
+            }
+            
+            if (stage == null)
+            {
+                stage = new CalendarStage()
+                {
+                    Name = stagedata.Name,
+                    SortOrder = stagedata.SortOrder,
+                    StageType = CalendarStageType.InService
+                };
+                stage.Id = InserCalendarStage(stage);
+            }
+            else
+            {
+                stage.Name = stagedata.Name;
+                stage.SortOrder = stagedata.SortOrder;
+                UpdateCalendarStage(stage);
+            }
+
+            stagedata.Id = stage.Id;
+
+            if (stagedata.Statuses?.Count > 0)
+            {
+                foreach(var stageStatus in stagedata.Statuses)
+                {
+                    var stageService = new CalendarStageService() { CalendarStageId = stage.Id, ServiceId = stageStatus.Id };
+                    InserCalendarStageService(stageService);
+                }
+            }
         }
 
         public List<ServiceInfo> GetAllServices()

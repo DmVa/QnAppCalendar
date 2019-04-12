@@ -23,6 +23,9 @@ namespace PQ.QnAppCalendar
         public void ProcessRequest(HttpContext context)
         {
             string userName= HttpContext.Current?.User?.Identity?.Name;
+            if (string.IsNullOrEmpty(userName))
+                userName = "admin";
+
             int? currentUnitId = null;
 
             if (!string.IsNullOrEmpty(userName))
@@ -46,10 +49,15 @@ namespace PQ.QnAppCalendar
                     case QueryStringParams.GET_CUSTOMIZEDATA:
                         data = dataService.GetCustomizeData(currentUnitId);
                         break;
+                    case QueryStringParams.SAVE_CUSTOMIZEDATA:
+                        string objJsonCustomize = GetData(context.Request);
+                        var dataObjCustomize = JsonConvert.DeserializeObject<CustomizeData>(objJsonCustomize);
+                        data = dataService.SaveCustomizeData(dataObjCustomize);
+                        break;
                     case QueryStringParams.GET_APPOINTMENTS:
                         string filterData = GetData(context.Request);
                         DateFromTo filter = JsonConvert.DeserializeObject<DateFromTo>(filterData);
-                        data = dataService.GetSchedulerEvents(filter.From, filter.To);
+                        data = dataService.GetSchedulerEvents(filter.From, filter.To, currentUnitId);
                         break;
                     case QueryStringParams.SAVE_APPOINTMENT:
                         string objJson = GetData(context.Request);

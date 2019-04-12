@@ -12,51 +12,46 @@ namespace PQ.QnAppCalendar.ViewService
 {
     public class SchedulerDataService
     {
-        public List<SchedulerEvent> GetSchedulerEvents(DateTime? from, DateTime? to)
+        public List<SchedulerEvent> GetSchedulerEvents(DateTime? from, DateTime? to, int? unitId)
         {
             var result = new List<SchedulerEvent>();
             var now = DateTime.Now;
             var dataService = new QNomyDataService();
             var appointments = dataService.GetAppointments(from, to);
-            var statusMapping = GetMappingEntityStatusToCalendarStatus();
-
+            var customizeData = GetCustomizeData(unitId);
+            var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
+            
             foreach (var app in appointments)
             {
-                SchedulerEvent se = ToScheduleEvent(app, statusMapping);
+                app.CalendarStageType = statusMapping[app.CurrentEntityStatus];
+                app.UnitId = GetStageByServiceId(app.ServiceId, app.CalendarStageType, customizeData);
+                SchedulerEvent se = ToScheduleEvent(app);
                 result.Add(se);
             }
             return result;
         }
 
-        private Dictionary<EntityStatus, int> GetMappingEntityStatusToCalendarStatus()
+        public int GetStageByServiceId(int serviceId, CalendarStageType stageType, CustomizeData customizeData)
         {
-            var dataService = new QNomyDataService();
-
-            var calendarStages = dataService.GetClendarStages();
-            var mapping = GetMappingCalendarStageTypeToEntityStatus();
-            var statusMapping = GetMappingEntityStatusToCalendarStatus(mapping, calendarStages);
-            return statusMapping;
-        }
-
-            private Dictionary<EntityStatus, int> GetMappingEntityStatusToCalendarStatus(Dictionary<EntityStatus, CalendarStageType> mapping, List<CalendarStage> stages)
-        {
-            
-            var result = new Dictionary<EntityStatus, int>();
-            if (stages.Count == 0)
-                return result;
-            var defaultStage = stages[0];
-            foreach(var map in mapping)
+            int result = -1;
+            foreach (var stage in customizeData.Stages)
             {
-                var stage = stages.Find(x => x.StageType == map.Value);
-                if (stage != null)
-                    result.Add(map.Key, stage.Id);
-                else
-                    result.Add(map.Key, defaultStage.Id);
+                foreach (var status in stage.Statuses)
+                {
+                    if (status.Id == serviceId)
+                    {
+                        result = stage.Id;
+                        break;
+                    }
+                }
+                if (result >= 0)
+                {
+                    break;
+                }
             }
-
             return result;
         }
-
+       
         private Dictionary<EntityStatus, CalendarStageType> GetMappingCalendarStageTypeToEntityStatus()
         {
             var result = new Dictionary<EntityStatus, CalendarStageType>();
@@ -97,14 +92,16 @@ namespace PQ.QnAppCalendar.ViewService
             return result;
         }
 
-        private SchedulerEvent ToScheduleEvent(AppointmentInfo app, Dictionary<EntityStatus, int> mapping)
+        private SchedulerEvent ToScheduleEvent(AppointmentInfo app)
         {
             var result = new SchedulerEvent();
             result.Text = $"{app.CustomerFirstName} {app.CustomerLastName} - {app.ServiceName}"; 
             result.Start_date = app.AppointmentDate;
             result.End_date = app.AppointmentDate.AddMinutes(app.AppointmentDuration);
-            result.Unitid = mapping[app.CurrentEntityStatus];
             result.AppointmentId = app.AppointmentId;
+            result.ServiceId = app.ServiceId;
+            result.CalendarStageType = app.CalendarStageType;
+            result.Unitid = app.UnitId;
             return result;
         }
 
@@ -122,6 +119,24 @@ namespace PQ.QnAppCalendar.ViewService
 
             return result;
         }
+        internal bool SaveCustomizeData(CustomizeData data)
+        {
+            int sortOrder = 0;
+            var stageIds = new List<int>();
+            var dataService = new QNomyDataService();
+            dataService.DeleteCalendarStageServices();
+            foreach (var stage in data.Stages)
+            {
+                sortOrder++;
+                stage.SortOrder = sortOrder;
+                dataService.UpdateOrInsertStage(stage);
+                stageIds.Add(stage.Id);
+            }
+
+            dataService.DeleteCalendarStagesExcept(stageIds);
+
+            return true;
+        }
 
         internal CustomizeData GetCustomizeData(int? currentUnitId)
         {
@@ -136,29 +151,27 @@ namespace PQ.QnAppCalendar.ViewService
 
             foreach(var stage in calendarStages)
             {
-                CalendarStageWithStatuses item = new CalendarStageWithStatuses() { Id = stage.Id, Name = stage.Name, IsServiceType = stage.StageType == CalendarStageType.InService};
+                CalendarStageWithStatuses item = new CalendarStageWithStatuses() { Id = stage.Id, Name = stage.Name, StageType = stage.StageType, SortOrder = stage.SortOrder};
                 item.Statuses = new List<StageStatus>();
                 result.Stages.Add(item);
             }
 
             foreach(var service in services)
             {
-                var stageForService = stageServices.Find(x => x.ServiceId == service.Id);
-                if (stageServices == null)
+                CalendarStageService stageForService = stageServices.Find(x => x.ServiceId == service.Id);
+                CalendarStageWithStatuses stage = null;
+                if (stageForService != null)
+                {
+                    stage = result.Stages.Find(x => x.Id == stageForService.CalendarStageId);
+                    
+                }
+                if (stageForService == null || stage == null)
                 {
                     result.Available.Add(new StageStatus() { Id = service.Id, Name = service.Name, StageId = -1 });
                 }
                 else
                 {
-                    var stage = result.Stages.Find(x => x.Id == stageForService.CalendarStageId);
-                    if (stage == null)
-                    {
-                        result.Available.Add(new StageStatus() { Id = service.Id, Name = service.Name, StageId = -1 }); // should not happen
-                    }
-                    else
-                    {
-                        stage.Statuses.Add(new StageStatus() { Id = service.Id, Name = service.Name, StageId = stage.Id });
-                    }
+                    stage.Statuses.Add(new StageStatus() { Id = service.Id, Name = service.Name, StageId = stage.Id });
                 }
             }
 
@@ -177,9 +190,10 @@ namespace PQ.QnAppCalendar.ViewService
             app.AppointmentTypeName = qnomyApp.AppointmentTypeName;
             app.CurrentEntityStatus = qnomyApp.CurrentEntityStatus;
 
-            var statusMapping = GetMappingEntityStatusToCalendarStatus();
+            app.UnitId = appointment.Unitid;
+            app.CalendarStageType = appointment.CalendarStageType;
 
-            SchedulerEvent se = ToScheduleEvent(app, statusMapping);
+            SchedulerEvent se = ToScheduleEvent(app);
             return se;
         }
 

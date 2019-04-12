@@ -22,7 +22,7 @@
                      id="stage_{{stageobj.id}}">
                     <div class="stageheader">
                         <span>
-                            <input ng-value="stageobj.name" class="stageheadername" />
+                            <input ng-model="stageobj.name" class="stageheadername" />
                         </span>
                         <span ng-if="stageobj.isServiceType">
                             <input type="submit" class="flatbutton" value="-" title="Remove Column" ng-click="$ctrl.removeStage($event, stageobj)" />

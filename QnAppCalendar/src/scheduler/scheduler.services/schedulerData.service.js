@@ -43,9 +43,19 @@
                         console.log('error');
                 }
             },
+           saveCustomizeData: function (params) {
+               return $.ajax({
+                   url: basePath + 'save-customizedata',
+                   type: 'post',
+                   async: true,
+                   contentType: 'application/json; charset=utf-8',
+                   data: JSON.stringify(params),
+                   dataType: 'json'
+               })
+           },
             getCustomizeData: function () {
                 return $.ajax({
-                    url: '/ajax/PQAppCalendar.ashx?act=get-customizedata',
+                    url: basePath + 'get-customizedata',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -55,7 +65,7 @@
             },
             saveAppointment: function (params) {
                return $.ajax({
-                    url: '/ajax/PQAppCalendar.ashx?act=save-appointment',
+                   url: basePath + 'save-appointment',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -79,7 +89,7 @@
 
             loadUnits: function (params) {
               return  $.ajax({
-                    url: '/ajax/PQAppCalendar.ashx?act=load-units',
+                    url: basePath + 'load-units',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',

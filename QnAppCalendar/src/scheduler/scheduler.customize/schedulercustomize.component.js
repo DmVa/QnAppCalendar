@@ -7,7 +7,10 @@
         .module('scheduler.module')
         .component('pqSchedulerCustomize', {
             template: require('./schedulercustomize.component.html'),
-            controller: SchedulerCustomizeController
+            controller: SchedulerCustomizeController,
+            bindings: {
+                onSaveCustomize: '&'
+            }
         });
     
     SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
@@ -47,6 +50,24 @@
         };
 
         $ctrl.closeModal = function closeModal(save) {
+            if (save) {
+                let data = { stages: $ctrl.allStages, available: $ctrl.availablestatuses};
+                schedulerDataService.saveCustomizeData(data)
+                .then(function (result) {
+                    if (result.error) {
+                        schedulerDataService.handleWrappedError(result);
+                        return;
+                    }
+
+                    $ctrl.onSaveCustomize();
+                    
+                }, function (result) {
+                    schedulerDataService.handleError(result);
+                    return;
+                    });
+
+            };
+            
             modalService.Close('scheduler-customize-modal');
         };
 

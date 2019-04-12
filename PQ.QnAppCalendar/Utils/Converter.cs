@@ -764,11 +764,7 @@ namespace PQ.QnAppCalendar.Utils
             return ToCommaSeparated(stringValues);
         }
 
-        public static string ToWafValue(this bool val)
-        {
-            return val ? "1" : "0";
-        }
-
+       
         public static decimal Normalize(this decimal value)
         {
             return value / 1.000000000000000000000000000000000m;

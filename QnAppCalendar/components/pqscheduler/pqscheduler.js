@@ -133,7 +133,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"pq-scheduler\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"scheduler-container\"> <div id=\"scheduler_here\" class=\"dhx_cal_container\" style=\"width:100%;height:100vh\"> <div class=\"dhx_cal_navline\"> <div class=\"dhx_cal_prev_button\">&nbsp;</div> <div class=\"dhx_cal_next_button\">&nbsp;</div> <div class=\"dhx_cal_today_button\"></div> <div class=\"dhx_cal_date\"></div> <div class=\"dhx_cal_tab\" name=\"day_tab\"></div> <div class=\"dhx_cal_tab\" name=\"week_tab\"></div> <div class=\"dhx_cal_tab\" name=\"month_tab\"></div> <div class=\"dhx_cal_tab\" name=\"unit_tab\" style=\"right:280px\"></div> </div> <div class=\"dhx_cal_header\"></div> <div class=\"dhx_cal_data\"></div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
+module.exports = "<div class=\"pq-scheduler\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"scheduler-container\"> <div id=\"scheduler_here\" class=\"dhx_cal_container\" style=\"width:100%;height:100vh\"> <div class=\"dhx_cal_navline\"> <div class=\"dhx_cal_prev_button\">&nbsp;</div> <div class=\"dhx_cal_next_button\">&nbsp;</div> <div class=\"dhx_cal_today_button\"></div> <div class=\"dhx_cal_date\"></div> <div class=\"dhx_cal_tab\" name=\"day_tab\"></div> <div class=\"dhx_cal_tab\" name=\"week_tab\"></div> <div class=\"dhx_cal_tab\" name=\"month_tab\"></div> <div class=\"dhx_cal_tab\" name=\"unit_tab\" style=\"right:280px\"></div> </div> <div class=\"dhx_cal_header\"></div> <div class=\"dhx_cal_data\"></div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize on-save-customize=\"$ctrl.onSaveCustomize()\"></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
 
 /***/ }),
 
@@ -170,6 +170,8 @@ __webpack_require__.r(__webpack_exports__);
         let scheduler = $window.scheduler;
 
         let _originalEvent = new Map();
+        let customizeData = null;
+        let units = null;
 
         $ctrl.openCustomize = function ($event) {
             $event.preventDefault();
@@ -181,6 +183,7 @@ __webpack_require__.r(__webpack_exports__);
             modalService.Open(id);
         };
 
+       
 
         $ctrl.closeModal = function closeModal(id) {
             modalService.Close(id);
@@ -212,6 +215,10 @@ __webpack_require__.r(__webpack_exports__);
             }
         };
 
+        $ctrl.onSaveCustomize = function onSaveCustomize() {
+            $ctrl.LoadUnits(true);
+        };
+
         $ctrl.rollbackEvent = function (ev) {
             let originalEvent = _originalEvent.get(ev.appointmentId);
             if (!originalEvent)
@@ -234,6 +241,7 @@ __webpack_require__.r(__webpack_exports__);
         scheduler.createUnitsView({
             name: "unit",
             property: "unitid",
+            skip_incorrect: true,
             list: sections
         });
 
@@ -260,6 +268,7 @@ __webpack_require__.r(__webpack_exports__);
                         return;
                     }
                     if (result.data) {
+                        scheduler.clearAll();
                         scheduler.parse(result.data, "json");
                     }
                 }, function (result) {
@@ -269,21 +278,77 @@ __webpack_require__.r(__webpack_exports__);
             return true;
         });
 
-       
-
-        schedulerDataService.loadUnits()
-            .then(function (result) {
-                if (result.error) {
-                    $ctrl.handleWrappedError(result);
+        $ctrl.LoadUnits =  function(reloadCustomize) {
+            schedulerDataService.loadUnits()
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $ctrl.units = result.data;
+                        scheduler.updateCollection("units", $ctrl.units);
+                        if (reloadCustomize) {
+                            $ctrl.LoadCustomizeData();
+                            return;
+                        }
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
                     return;
-                }
-                if (result.data) {
-                    scheduler.updateCollection("units", result.data);
-                }
-            }, function (result) {
-                $ctrl.handleError(result);
+                });
+        };
+
+        $ctrl.LoadUnits(false);
+
+        $ctrl.LoadCustomizeData = function() {
+            schedulerDataService.getCustomizeData()
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $ctrl.customizeData = result.data;
+                        $ctrl.RemapEventToUnits();
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
+                    return;
+                });
+        };
+
+        $ctrl.RemapEventToUnits = function () {
+            var evs = scheduler.getEvents();
+            if (!evs || evs.length == 0)
                 return;
-            });
+
+            for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
+                var ev = evs[eventIdx];
+                ev.unitid = $ctrl.getUnitIdForServiceid(ev.serviceId, ev.calendarStageType)
+            }
+        }
+
+        $ctrl.getUnitIdForServiceid = function (serviceId, stageTypeId) {
+            if (!$ctrl.customizeData)
+                return - 1;
+            let result = -1;
+
+            for (var stageIdx = 0; stageIdx < $ctrl.customizeData.length; stageIdx++) {
+                var stage = $ctrl.customizeData[stageIdx];
+                for (var statusIdx = 0; statusIdx < stage.statuses.length; statusIdx++) {
+                    if (status.Id == serviceId) {
+                        result = stage.Id;
+                        break;
+                    }
+                };
+
+                if (result >= 0) {
+                    break;
+                }
+            }
+            return result;
+        }
 
         scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
             _originalEvent.set(ev.appointmentId, $.extend(true, {}, original));
@@ -337,7 +402,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> Available services <div ng-repeat=\"status in statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{status.id}}\"> {{status.name}} </div> </div> <div> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.isServiceType}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-value=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.isServiceType\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stagestatus in stageobj.statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{stagestatus.id}}\"> {{stagestatus.name}} </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
+module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> Available services <div ng-repeat=\"status in statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{status.id}}\"> {{status.name}} </div> </div> <div> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.isServiceType}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.isServiceType\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stagestatus in stageobj.statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{stagestatus.id}}\"> {{stagestatus.name}} </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
 
 /***/ }),
 
@@ -361,7 +426,10 @@ __webpack_require__.r(__webpack_exports__);
         .module('scheduler.module')
         .component('pqSchedulerCustomize', {
             template: __webpack_require__(/*! ./schedulercustomize.component.html */ "./src/scheduler/scheduler.customize/schedulercustomize.component.html"),
-            controller: SchedulerCustomizeController
+            controller: SchedulerCustomizeController,
+            bindings: {
+                onSaveCustomize: '&'
+            }
         });
     
     SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
@@ -401,6 +469,24 @@ __webpack_require__.r(__webpack_exports__);
         };
 
         $ctrl.closeModal = function closeModal(save) {
+            if (save) {
+                let data = { stages: $ctrl.allStages, available: $ctrl.availablestatuses};
+                schedulerDataService.saveCustomizeData(data)
+                .then(function (result) {
+                    if (result.error) {
+                        schedulerDataService.handleWrappedError(result);
+                        return;
+                    }
+
+                    $ctrl.onSaveCustomize();
+                    
+                }, function (result) {
+                    schedulerDataService.handleError(result);
+                    return;
+                    });
+
+            };
+            
             modalService.Close('scheduler-customize-modal');
         };
 
@@ -925,9 +1011,19 @@ __webpack_require__.r(__webpack_exports__);
                         console.log('error');
                 }
             },
+           saveCustomizeData: function (params) {
+               return $.ajax({
+                   url: basePath + 'save-customizedata',
+                   type: 'post',
+                   async: true,
+                   contentType: 'application/json; charset=utf-8',
+                   data: JSON.stringify(params),
+                   dataType: 'json'
+               })
+           },
             getCustomizeData: function () {
                 return $.ajax({
-                    url: '/ajax/PQAppCalendar.ashx?act=get-customizedata',
+                    url: basePath + 'get-customizedata',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -937,7 +1033,7 @@ __webpack_require__.r(__webpack_exports__);
             },
             saveAppointment: function (params) {
                return $.ajax({
-                    url: '/ajax/PQAppCalendar.ashx?act=save-appointment',
+                   url: basePath + 'save-appointment',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -961,7 +1057,7 @@ __webpack_require__.r(__webpack_exports__);
 
             loadUnits: function (params) {
               return  $.ajax({
-                    url: '/ajax/PQAppCalendar.ashx?act=load-units',
+                    url: basePath + 'load-units',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
