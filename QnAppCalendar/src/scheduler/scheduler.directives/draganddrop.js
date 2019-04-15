@@ -1,11 +1,11 @@
 ﻿angular
     .module('scheduler.module')
-    .directive('pqDragMe', dragMe)
-    .directive('pqDropOnMe', dropOnMe);
+    .directive('pqDragMe', pqDragMe)
+    .directive('pqDropOnMe', pqDropOnMe);
 
-dragMe.$inject = [];
+pqDragMe.$inject = [];
 
-function dragMe() {
+function pqDragMe() {
     var DDO = {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -14,7 +14,12 @@ function dragMe() {
                 if (event.target.attributes['pq-drag-me']) {
                     let dragmeattribute = event.target.attributes['pq-drag-me'].value;
                     let dataid = event.target.attributes[dragmeattribute].value;
-                    event.dataTransfer.setData('data', dataid)
+                    if (event.dataTransfer === undefined) {
+                        event.originalEvent.dataTransfer.setData('data', dataid);
+                    }
+                    else {
+                        event.dataTransfer.setData('data', dataid)
+                    }
                 }
             });
         }
@@ -22,8 +27,8 @@ function dragMe() {
     return DDO;
 }
 
-dropOnMe.$inject = [];
-function dropOnMe() {
+pqDropOnMe.$inject = [];
+function pqDropOnMe() {
     var DDO = {
         restrict: 'A',
         scope: {
@@ -37,7 +42,13 @@ function dropOnMe() {
             });
             element.on('drop', function (event) {
                 event.preventDefault();
-                let dataid = event.dataTransfer.getData('data');
+                let dataid;
+                if (event.dataTransfer === undefined) {
+                    dataid = event.originalEvent.dataTransfer.getData('data');
+                }
+                else {
+                    dataid = event.dataTransfer.getData('data');
+                }
                 scope.onDrop({ event: event, data: dataid });
             });
         }

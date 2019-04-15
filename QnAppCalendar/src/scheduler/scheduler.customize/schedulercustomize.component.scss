@@ -1,27 +1,29 @@
-﻿pq-scheduler-customize 
-{
+﻿pq-scheduler-customize {
 
     .scheduler-customize-container {
-        height: 50%;
-        display: flex;
+        height: 60%;
         align-items: center;
         justify-content: center;
     }
 
     .scheduler-centered-content {
-        width: 95%;
         height: 80%;
+        display: flex;
     }
 
     .avaiable-container {
         float: left;
         width: 150px;
-        height: 100%;
+        height: 320px;
+    }
+
+    .stages-block {
+        flex-grow: 1;
     }
 
     .stages-container {
         border: 1px;
-        height: 95%;
+        height: 300px;
         overflow: hidden;
         display: flex;
         overflow-x: auto;
@@ -36,22 +38,24 @@
         border-left: 1px solid LightGray;
         color: #767676;
     }
+
     .stageheader {
         display: block;
         padding: 5px;
         margin: 0 auto;
     }
 
-.stageheadername {
-    border: 1px solid rgba(255,255,255,0.6);
-    background: linear-gradient(#eee, #fff);
-    transition: all 0.3s ease-out;
-    box-shadow: inset 0 1px 4px rgba(0,0,0,0.4);
-    color: gray;
-    text-align: center;
-    font-family: customfont;
-    margin: 0 auto;
-}
+    .stageheadername {
+        border: 1px solid rgba(255,255,255,0.6);
+        background: linear-gradient(#eee, #fff);
+        transition: all 0.3s ease-out;
+        box-shadow: inset 0 1px 4px rgba(0,0,0,0.4);
+        color: gray;
+        text-align: center;
+        font-family: customfont;
+        margin: 0 auto;
+        width: 110px;
+    }
 
     .status {
         background: LightGray;
@@ -65,42 +69,42 @@
     }
 
     .centered {
-        text-align:center;
+        text-align: center;
     }
 
     .flatbutton {
-    display: inline;
-    background: darkgray;
-    border-radius: 2px;
-    font-family: "Arial";
-    border: 0;
-    font-size: 15px;
-    line-height: 15px;
-    color: white;
-    width: auto;
-    height: auto;
-    box-sizing: content-box;
-}
+        display: inline;
+        background: darkgray;
+        border-radius: 2px;
+        font-family: "Arial";
+        border: 0;
+        font-size: 15px;
+        line-height: 15px;
+        color: white;
+        width: auto;
+        height: auto;
+        box-sizing: content-box;
+    }
 
     .btn {
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin: 5px;
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        margin: 5px;
     }
 
     .btn-primary {

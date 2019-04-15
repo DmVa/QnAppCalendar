@@ -13,7 +13,8 @@ pq-modal {
     /* z-index must be higher than .modal-background */
     z-index: 1000;
     /* enables scrolling for tall modals */
-    overflow: auto; }
+    overflow: auto;
+    margin-left: 100px; }
   pq-modal .pq-modal-body {
     padding: 20px;
     background: #fff;
@@ -44,23 +45,25 @@ pq-modal {
     cursor: pointer; }
 
 pq-scheduler-customize .scheduler-customize-container {
-  height: 50%;
-  display: flex;
+  height: 60%;
   align-items: center;
   justify-content: center; }
 
 pq-scheduler-customize .scheduler-centered-content {
-  width: 95%;
-  height: 80%; }
+  height: 80%;
+  display: flex; }
 
 pq-scheduler-customize .avaiable-container {
   float: left;
   width: 150px;
-  height: 100%; }
+  height: 320px; }
+
+pq-scheduler-customize .stages-block {
+  flex-grow: 1; }
 
 pq-scheduler-customize .stages-container {
   border: 1px;
-  height: 95%;
+  height: 300px;
   overflow: hidden;
   display: flex;
   overflow-x: auto;
@@ -87,7 +90,8 @@ pq-scheduler-customize .stageheadername {
   color: gray;
   text-align: center;
   font-family: customfont;
-  margin: 0 auto; }
+  margin: 0 auto;
+  width: 110px; }
 
 pq-scheduler-customize .status {
   background: LightGray;
@@ -149,7 +153,7 @@ pq-scheduler-edit-column {
   left: 0;
   z-index: 1010; }
   pq-scheduler-edit-column .scheduler-edit-column {
-    height: 120px;
+    height: 150px;
     width: 400px;
     align-items: center;
     justify-content: center;
@@ -159,7 +163,7 @@ pq-scheduler-edit-column {
     border-color: cadetblue;
     border-radius: 5px; }
   pq-scheduler-edit-column .top-content {
-    margin: 10px; }
+    margin: 20px; }
 
 
 /*# sourceMappingURL=pqscheduler.css.map*/

@@ -18,22 +18,51 @@ namespace PQ.QnAppCalendar.ViewService
             var now = DateTime.Now;
             var dataService = new QNomyDataService();
             var appointments = dataService.GetAppointments(from, to);
+            var calendarStages = dataService.GetClendarStages();
             var customizeData = GetCustomizeData(unitId);
             var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
             
             foreach (var app in appointments)
             {
                 app.CalendarStageType = statusMapping[app.CurrentEntityStatus];
-                app.UnitId = GetStageByServiceId(app.ServiceId, app.CalendarStageType, customizeData);
+                app.UnitId = GetStageByServiceId(app.ServiceId, app.CalendarStageType, calendarStages, customizeData);
                 SchedulerEvent se = ToScheduleEvent(app);
                 result.Add(se);
             }
             return result;
         }
 
-        public int GetStageByServiceId(int serviceId, CalendarStageType stageType, CustomizeData customizeData)
+        public int GetStageByServiceId(int serviceId, CalendarStageType stageType, List<CalendarStage> calendarStages, CustomizeData customizeData)
+        {
+            int inServiceStageId = GetInServiceStageByServiceId(serviceId, customizeData);
+            if (inServiceStageId == -1)
+                return -1;
+            if (stageType == CalendarStageType.InService)
+                return inServiceStageId;
+
+            int result = -1;
+
+            foreach (var stage in calendarStages)
+            {
+                if (stage.StageType == stageType)
+                {
+                    result = stage.Id;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns id of stage for "InService" calendar stage type,  returns -1 if not one valid type is found.
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <param name="customizeData"></param>
+        /// <returns></returns>
+        public int GetInServiceStageByServiceId(int serviceId, CustomizeData customizeData)
         {
             int result = -1;
+
             foreach (var stage in customizeData.Stages)
             {
                 foreach (var status in stage.Statuses)
@@ -49,9 +78,11 @@ namespace PQ.QnAppCalendar.ViewService
                     break;
                 }
             }
+
             return result;
         }
-       
+
+
         private Dictionary<EntityStatus, CalendarStageType> GetMappingCalendarStageTypeToEntityStatus()
         {
             var result = new Dictionary<EntityStatus, CalendarStageType>();

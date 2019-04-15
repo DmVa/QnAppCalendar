@@ -25,7 +25,7 @@
             let index = -1;
             for (let i = 0; i < $ctrl.allStages.length; i++) {
                 let stage = $ctrl.allStages[i];
-                if (stage.isServiceType) {
+                if (stage.stageType == 3) {
                     index = i;
                 }
             }

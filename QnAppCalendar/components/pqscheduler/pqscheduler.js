@@ -402,7 +402,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> Available services <div ng-repeat=\"status in statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{status.id}}\"> {{status.name}} </div> </div> <div> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.isServiceType}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.isServiceType\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stagestatus in stageobj.statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{stagestatus.id}}\"> {{stagestatus.name}} </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
+module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> Available services <div ng-repeat=\"status in statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{status.id}}\"> {{status.name}} </div> </div> <div class=\"stages-block\"> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.stageType == 3}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stagestatus in stageobj.statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{stagestatus.id}}\"> {{stagestatus.name}} </div> </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
 
 /***/ }),
 
@@ -444,7 +444,7 @@ __webpack_require__.r(__webpack_exports__);
             let index = -1;
             for (let i = 0; i < $ctrl.allStages.length; i++) {
                 let stage = $ctrl.allStages[i];
-                if (stage.isServiceType) {
+                if (stage.stageType == 3) {
                     index = i;
                 }
             }
@@ -616,10 +616,10 @@ __webpack_require__.r(__webpack_exports__);
 
     var app = angular.module('scheduler.module');
     app.factory('Stage', function () {
-        function Stage(id, name, isServiceType, statuses) {
+        function Stage(id, name, stageType, statuses) {
             this.id = id;
             this.name = name;
-            this.isServiceType = isServiceType;
+            this.stageType = stageType;
             this.statuses = [];
             if (statuses) {
                 this.statuses = statuses;
@@ -672,12 +672,12 @@ __webpack_require__.r(__webpack_exports__);
 
 ﻿angular
     .module('scheduler.module')
-    .directive('pqDragMe', dragMe)
-    .directive('pqDropOnMe', dropOnMe);
+    .directive('pqDragMe', pqDragMe)
+    .directive('pqDropOnMe', pqDropOnMe);
 
-dragMe.$inject = [];
+pqDragMe.$inject = [];
 
-function dragMe() {
+function pqDragMe() {
     var DDO = {
         restrict: 'A',
         link: function (scope, element, attrs) {
@@ -686,7 +686,12 @@ function dragMe() {
                 if (event.target.attributes['pq-drag-me']) {
                     let dragmeattribute = event.target.attributes['pq-drag-me'].value;
                     let dataid = event.target.attributes[dragmeattribute].value;
-                    event.dataTransfer.setData('data', dataid)
+                    if (event.dataTransfer === undefined) {
+                        event.originalEvent.dataTransfer.setData('data', dataid);
+                    }
+                    else {
+                        event.dataTransfer.setData('data', dataid)
+                    }
                 }
             });
         }
@@ -694,8 +699,8 @@ function dragMe() {
     return DDO;
 }
 
-dropOnMe.$inject = [];
-function dropOnMe() {
+pqDropOnMe.$inject = [];
+function pqDropOnMe() {
     var DDO = {
         restrict: 'A',
         scope: {
@@ -709,7 +714,13 @@ function dropOnMe() {
             });
             element.on('drop', function (event) {
                 event.preventDefault();
-                let dataid = event.dataTransfer.getData('data');
+                let dataid;
+                if (event.dataTransfer === undefined) {
+                    dataid = event.originalEvent.dataTransfer.getData('data');
+                }
+                else {
+                    dataid = event.dataTransfer.getData('data');
+                }
                 scope.onDrop({ event: event, data: dataid });
             });
         }

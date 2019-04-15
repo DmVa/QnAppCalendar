@@ -7,7 +7,7 @@
             </div>
         </div>
 
-        <div>
+        <div class="stages-block">
             <div class="centered">
                 <span>
                     Stages
@@ -18,13 +18,13 @@
             </div>
             <div class="stages-container">
 
-                <div ng-repeat="stageobj in stages" class="stage"  pq-drop-on-me ="{{stageobj.isServiceType}}" on-drop="handledrop(event, stageobj, data)"
+                <div ng-repeat="stageobj in stages" class="stage" pq-drop-on-me="{{stageobj.stageType == 3}}" on-drop="handledrop(event, stageobj, data)"
                      id="stage_{{stageobj.id}}">
                     <div class="stageheader">
                         <span>
                             <input ng-model="stageobj.name" class="stageheadername" />
                         </span>
-                        <span ng-if="stageobj.isServiceType">
+                        <span ng-if="stageobj.stageType == 3">
                             <input type="submit" class="flatbutton" value="-" title="Remove Column" ng-click="$ctrl.removeStage($event, stageobj)" />
                         </span>
                     </div>
@@ -35,11 +35,11 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="pq-modal-footer">
-            <button type="button" ng-click="$ctrl.closeModal(false)" class="btn btn-default" focus-element="autofocus" data-dismiss="pq-modal">Close</button>
-            <button type="button" ng-click="$ctrl.closeModal(true)" class="btn btn-primary">Save changes</button>
-        </div>
+    <div class="pq-modal-footer">
+        <button type="button" ng-click="$ctrl.closeModal(false)" class="btn btn-default" focus-element="autofocus" data-dismiss="pq-modal">Close</button>
+        <button type="button" ng-click="$ctrl.closeModal(true)" class="btn btn-primary">Save changes</button>
     </div>
 
 </div>

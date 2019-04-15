@@ -3,10 +3,10 @@
 
     var app = angular.module('scheduler.module');
     app.factory('Stage', function () {
-        function Stage(id, name, isServiceType, statuses) {
+        function Stage(id, name, stageType, statuses) {
             this.id = id;
             this.name = name;
-            this.isServiceType = isServiceType;
+            this.stageType = stageType;
             this.statuses = [];
             if (statuses) {
                 this.statuses = statuses;
