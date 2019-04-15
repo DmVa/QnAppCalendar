@@ -73,13 +73,27 @@
             let originalEvent = _originalEvent.get(ev.appointmentId);
             if (!originalEvent)
                 return;
-            _originalEvent.delete(en.appointmentId);
+            _originalEvent.delete(ev.appointmentId);
+
+            ev.start_date = originalEvent.start_date;
+            ev.end_date = originalEvent.end_date;
+            ev.unitid = originalEvent.unitid;
+            scheduler.updateView();
+
+        };
+
+        $ctrl.rollbackEventTime = function (ev) {
+            let originalEvent = _originalEvent.get(ev.appointmentId);
+            if (!originalEvent)
+                return;
+            _originalEvent.delete(ev.appointmentId);
 
             ev.start_date = originalEvent.start_date;
             ev.end_date = originalEvent.end_date;
             scheduler.updateView();
 
         };
+
         // config
         scheduler.config.xml_date = "%Y-%m-%d %H:%i";
         scheduler.locale.labels.unit_tab = "Stage";
@@ -215,13 +229,17 @@
 
             schedulerDataService.saveAppointment(theEventCopy)
                 .then(function (result) {
+                    
                     if (result.error) {
                         $ctrl.handleWrappedError(result);
                         $ctrl.rollbackEvent(ev);
                         return;
                     }
+                    if (result.data.appointmentId) {
+                        linkToEvent.appointmentId = result.data.appointmentId;
+                    }
 
-                    linkToEvent.appointmentId = result.data.appointmentId;
+                    $ctrl.rollbackEventTime(ev);
                     console.log('saved');
                 }, function (result) {
                     $ctrl.handleError(result);

@@ -561,5 +561,34 @@ END
             }
             return result;
         }
+        #region "services flow"
+        public ProcessEnqueueAppointmentResults EnqueueAppointment(
+      string apiSessionId,
+      int processId,
+      int receptionPointId,
+      string languageCode,
+      string subject,
+      string notes,
+      string extRef,
+      List<int> classificationIds,
+      bool forcePAQ,
+      bool forceEarly,
+      bool forceLate,
+      bool autoPrintTicket)
+        {
+            return null;
+            //UserState userState = Authorization.IsAuthorized(apiSessionId, "", nameof(EnqueueAppointment));
+            //try
+            //{
+            //    return Process.EnqueueAppointment(processId, userState.UserId, receptionPointId, languageCode, subject, notes, extRef, classificationIds, forcePAQ, forceEarly, forceLate, autoPrintTicket, Process.ProcessAgentAssignmentType.Default, 0, false, (ProcessNeeds)null, 0, 0, 0, 0, 0, (Dictionary<int, int>)null, (Dictionary<int, string>)null);
+            //}
+            //catch (QFlowException ex)
+            //{
+            //    ProjectData.SetProjectError((Exception)ex);
+            //    QFlowException qflowException = ex;
+            //    throw new FaultException<QFlowAPIApplicationException>(new QFlowAPIApplicationException(qflowException.ErrorNumber), qflowException.Message);
+            //}
+        }
+        #endregion
     }
 }
