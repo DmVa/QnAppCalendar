@@ -40,10 +40,11 @@ namespace PQ.QnAppCalendar.DataService
             return newAppointmentId;
         }
 
-        internal int? GetUserUnit(string userName)
+        internal UserInfo GetUserInfo(string userName)
         {
-            var sql = @"select TOP 1 CurrentUnitId from qf.Users where UserName= @UserName";
-            int? result = null;
+
+            var sql = @"select TOP 1 UserId, CurrentUnitId from qf.Users where UserName= @UserName";
+            UserInfo result = null;
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
             {
                 using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
@@ -56,7 +57,10 @@ namespace PQ.QnAppCalendar.DataService
                     {
                         if (sqlDataReader.Read())
                         {
-                            result = Converter.ToInt32(sqlDataReader["CurrentUnitId"]);
+                            result = new UserInfo();
+                            result.UserName = userName;
+                            result.UserId = Converter.ToInt32(sqlDataReader["UserId"]);
+                            result.UnitId = Converter.ToInt32(sqlDataReader["CurrentUnitId"]);
                         }
                     }
                 }
@@ -430,7 +434,9 @@ namespace PQ.QnAppCalendar.DataService
 
         public List<AppointmentInfo> GetAppointments(DateTime? from, DateTime? to)
         {
-            var sql = @"select app.AppointmentId, app.AppointmentDate, app.AppointmentDuration,s.ServiceId, s.ServiceName, appType.AppointmentTypeName, customer.FirstName, customer.LastName, process.CurrentEntityStatus
+            var sql = @"select app.AppointmentId, app.AppointmentDate, app.AppointmentDuration,
+    s.ServiceId, s.ServiceName, appType.AppointmentTypeName, customer.FirstName, customer.LastName, 
+process.ProcessId, process.CurrentEntityStatus
 FROM qf.AppointmentAll app WITH (NOLOCK) 
 		JOIN qf.ProcessAll process WITH (NOLOCK) ON app.ProcessId = process.ProcessId
 		JOIN qf.CaseAll c WITH (NOLOCK) ON process.CaseId = c.CaseId		
@@ -477,7 +483,8 @@ WHERE (process.CurrentEntityStatus not in (15,16,17)) AND
                                     AppointmentTypeName = Converter.ToString(sqlDataReader["AppointmentTypeName"]),
                                     CustomerFirstName = Converter.ToString(sqlDataReader["FirstName"]),
                                     CustomerLastName = Converter.ToString(sqlDataReader["LastName"]),
-                                    CurrentEntityStatus = (EntityStatus) Converter.ToInt32(sqlDataReader["CurrentEntityStatus"])
+                                    CurrentEntityStatus = (EntityStatus) Converter.ToInt32(sqlDataReader["CurrentEntityStatus"]),
+                                    ProcessId = Converter.ToInt32(sqlDataReader["ProcessId"]),
                                 });
                         }
                     }

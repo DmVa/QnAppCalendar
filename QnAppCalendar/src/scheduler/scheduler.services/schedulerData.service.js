@@ -72,7 +72,16 @@
                     data: JSON.stringify(params),
                     dataType: 'json'
                 });
-               
+            },
+            eventChanged: function (params) {
+                return $.ajax({
+                    url: basePath + 'appointment-changed',
+                    type: 'post',
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(params),
+                    dataType: 'json'
+                });
             },
 
             loadAppointments: function (from, to) {

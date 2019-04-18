@@ -17,5 +17,6 @@ namespace PQ.QnAppCalendar.Dto
         public int AppointmentId;
         public int ServiceId;
         public CalendarStageType CalendarStageType;
+        public int ProcessId;
     }
 }

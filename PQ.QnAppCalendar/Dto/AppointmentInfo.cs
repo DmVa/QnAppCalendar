@@ -11,6 +11,7 @@ namespace PQ.QnAppCalendar.Dto
     public class AppointmentInfo
     {
         public int AppointmentId { get; set; }
+        public int ProcessId { get; set; }
         public int UnitId { get; set; }
         public DateTime AppointmentDate { get; set; }
         public int AppointmentDuration { get; set; }

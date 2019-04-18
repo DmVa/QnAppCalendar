@@ -26,12 +26,12 @@ namespace PQ.QnAppCalendar
             if (string.IsNullOrEmpty(userName))
                 userName = "admin";
 
-            int? currentUnitId = null;
+            UserInfo userInfo = new UserInfo() { UserName = "not authorized" };
 
             if (!string.IsNullOrEmpty(userName))
             {
                 var qnomy = new QNomyDataService();
-                currentUnitId = qnomy.GetUserUnit(userName);
+                userInfo = qnomy.GetUserInfo(userName);
             }
             
             var query = new QueryStringParams(context.Request.Params);
@@ -44,10 +44,10 @@ namespace PQ.QnAppCalendar
                 switch (query.Action)
                 {
                     case QueryStringParams.GET_UNITS:
-                        data = dataService.GetUnits(currentUnitId);
+                        data = dataService.GetUnits(userInfo.UnitId);
                         break;
                     case QueryStringParams.GET_CUSTOMIZEDATA:
-                        data = dataService.GetCustomizeData(currentUnitId);
+                        data = dataService.GetCustomizeData(userInfo.UnitId);
                         break;
                     case QueryStringParams.SAVE_CUSTOMIZEDATA:
                         string objJsonCustomize = GetData(context.Request);
@@ -57,13 +57,19 @@ namespace PQ.QnAppCalendar
                     case QueryStringParams.GET_APPOINTMENTS:
                         string filterData = GetData(context.Request);
                         DateFromTo filter = JsonConvert.DeserializeObject<DateFromTo>(filterData);
-                        data = dataService.GetSchedulerEvents(filter.From, filter.To, currentUnitId);
+                        data = dataService.GetSchedulerEvents(filter.From, filter.To, userInfo.UnitId);
                         break;
                     case QueryStringParams.SAVE_APPOINTMENT:
                         string objJson = GetData(context.Request);
                         var dataObj = JsonConvert.DeserializeObject<SchedulerEvent>(objJson);
                         data = dataService.SaveAppointment(dataObj);
                         break;
+                    case QueryStringParams.APPOINTMENT_CHANGED:
+                        string objJsonApp = GetData(context.Request);
+                        var appData = JsonConvert.DeserializeObject<AppointmentChangedData>(objJsonApp);
+                        data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousUnitId, appData.SchedulerEvent);
+                        break;
+                        
                     default:
                         throw new InvalidOperationException($"Action {query.Action} not supported");
                 }

@@ -376,8 +376,14 @@ __webpack_require__.r(__webpack_exports__);
             let timeZoneOffsetMs = ev.start_date.getTimezoneOffset() * 60000;
             theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
             theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
+            let originalEvent = _originalEvent.get(ev.appointmentId);
+            let previousUnitId = 0;
+            if (originalEvent) {
+                previousUnitId = originalEvent.unitid;
+            }
+            
 
-            schedulerDataService.saveAppointment(theEventCopy)
+            schedulerDataService.eventChanged({ previousUnitId: previousUnitId, schedulerEvent: theEventCopy})
                 .then(function (result) {
                     
                     if (result.error) {
@@ -1069,7 +1075,16 @@ __webpack_require__.r(__webpack_exports__);
                     data: JSON.stringify(params),
                     dataType: 'json'
                 });
-               
+            },
+            eventChanged: function (params) {
+                return $.ajax({
+                    url: basePath + 'appointment-changed',
+                    type: 'post',
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(params),
+                    dataType: 'json'
+                });
             },
 
             loadAppointments: function (from, to) {
