@@ -68,9 +68,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Scripts\FillCalendarStages.sql" />
-    <Content Include="Scripts\DropTables.sql" />
-    <Content Include="Scripts\InitTables2.sql" />
+    <Content Include="DeployScripts\FillCalendarStages.sql" />
+    <Content Include="DeployScripts\DropTables.sql" />
+    <Content Include="DeployScripts\InitTables2.sql" />
+    <Content Include="ToolScripts\ChangePassword.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -393,6 +393,7 @@ __webpack_require__.r(__webpack_exports__);
                     }
                     if (result.data.appointmentId) {
                         linkToEvent.appointmentId = result.data.appointmentId;
+                        linkToEvent.serviceId = result.data.serviceId;
                     }
 
                     $ctrl.rollbackEventTime(ev);
@@ -486,7 +487,7 @@ __webpack_require__.r(__webpack_exports__);
 
         $ctrl.onAddStage = function onAddStage(stagename) {
             let index = getLastIndexOfServiceStage() + 1;
-            let newStage = new Stage(-1, stagename, true, []);
+            let newStage = new Stage(-1, stagename, 3, []); //3- service.
 
             $ctrl.allStages.splice(index, 0, newStage);
             

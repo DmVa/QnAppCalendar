@@ -243,6 +243,7 @@
                     }
                     if (result.data.appointmentId) {
                         linkToEvent.appointmentId = result.data.appointmentId;
+                        linkToEvent.serviceId = result.data.serviceId;
                     }
 
                     $ctrl.rollbackEventTime(ev);

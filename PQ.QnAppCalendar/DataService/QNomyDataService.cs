@@ -330,6 +330,39 @@ namespace PQ.QnAppCalendar.DataService
 
         }
 
+        internal List<RouteInfo> GetRouts(int? serviceId)
+        {
+            var result = new List<RouteInfo>();
+            string whereClause = "";
+            if (serviceId.HasValue)
+                whereClause = $" AND ServiceId = {serviceId}";
+
+            var sql = @"select RouteId, ServiceId, TargetServiceId from qf.Route where IsActive = 1" + whereClause;
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    connection.Open();
+                    using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (sqlDataReader.HasRows)
+                        {
+                            while (sqlDataReader.Read())
+                                result.Add(new RouteInfo()
+                                {
+                                    RouteId = Converter.ToInt32(sqlDataReader["RouteId"]),
+                                    ServiceId = Converter.ToInt32(sqlDataReader["ServiceId"]),
+                                    TargetServiceId = Converter.ToInt32(sqlDataReader["TargetServiceId"])
+                                });
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
         internal void UpdateOrInsertStage(CalendarStageWithStatuses stagedata)
         {
             CalendarStage stage = null;

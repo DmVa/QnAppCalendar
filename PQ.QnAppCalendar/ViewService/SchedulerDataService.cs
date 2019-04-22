@@ -219,41 +219,93 @@ namespace PQ.QnAppCalendar.ViewService
             CustomizeData customizeData = GetCustomizeData(currentUnitId);
             // qnomy
             var calendarStages = dataService.GetClendarStages();
-            var calendarStageServices = dataService.GetClendarStageServices();
-            var prevCalendarStage = GetStageTypeById(previousStageId, calendarStages);
-            var nextCalendarStage = GetStageTypeById(theEvent.Unitid, calendarStages);
-            int prevService = theEvent.ServiceId;
-            int nextService = theEvent.ServiceId;
-            if (nextCalendarStage == CalendarStageType.InService)
-            {
-                nextService = GetServiceInStage(theEvent.Unitid, calendarStageServices);
-            }
+            var allCalendarStageServices = dataService.GetClendarStageServices();
+            var prevCalendarStageType = GetStageTypeById(previousStageId, calendarStages);
+            var nextCalendarStageType = GetStageTypeById(theEvent.Unitid, calendarStages);
+            int previousServiceId = theEvent.ServiceId;
+           
 
+            int delegateId = 0;
             // calendar stage type - is old stageType.
-            switch (nextCalendarStage)
+            switch (nextCalendarStageType)
             {
                 case CalendarStageType.Completed:
-                    throw new NotImplementedException();
+                    ProcessPromoteResults processPromoteResults = Process.Promote(theEvent.ProcessId, currentUserId, delegateId, Process.ProcessPromoteAction.Complete, false);
+                    break;
                 case CalendarStageType.Expected:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException("Cannot back to expected status");
                 case CalendarStageType.InService:
-                    int userId = currentUserId;
-                    int delegateId = 0;
-                    UserCallResults callResult = AppUser.Call(userId, delegateId, theEvent.ProcessId, theEvent.ServiceId, false, Process.ProcessPromoteAction.Auto, false);
+                    
+                    var servicesInStage = GetServiceInStage(theEvent.Unitid, allCalendarStageServices);
+
+                    if (servicesInStage.Count == 0)
+                        throw new DataException("Cannot find service for this stage");
+
+
+                    if (prevCalendarStageType != CalendarStageType.InService)
+                    {
+                        if (!servicesInStage.Contains(theEvent.ServiceId))
+                        {
+                            throw new DataException("This stage does not valid for appointment");
+                        }
+
+                        UserCallResults callResult = AppUser.Call(currentUserId, delegateId, theEvent.ProcessId, theEvent.ServiceId, false, Process.ProcessPromoteAction.Auto, false);
+                        if (callResult.Status != UserCallResults.CallStatus.Success)
+                        {
+                            throw new DataException(callResult.Status.ToString());
+                        }
+                        theEvent.ServiceId = callResult.ServiceId;
+                    }
+                    else
+                    {
+                        List<RouteInfo> routes = dataService.GetRouts(theEvent.ServiceId);
+
+                        List<RouteInfo> routesToStage = new List<RouteInfo>();
+                        foreach (var rout in routes)
+                        {
+                            if (servicesInStage.Contains(rout.TargetServiceId))
+                            {
+                                routesToStage.Add(rout);
+                            }
+                        }
+
+
+                        if (routesToStage.Count == 0)
+                            throw new DataException("Route to this stage does not exists.");
+
+                        if (routesToStage.Count > 0)
+                            throw new DataException("It's multiple routes to stage.");
+                        RouteInfo route = routesToStage[0];
+
+                        // Route operation.
+                        ProcessRouteResults routeResult = Process.Route(theEvent.ProcessId, currentUserId, delegateId, route.RouteId, route.TargetServiceId, 0, 0, "", false, 0);
+                        if (routeResult.Status != ProcessRouteResults.ProcessRouteResultsStatus.Success)
+                        {
+                            throw new DataException(routeResult.Status.ToString());
+                        }
+                        theEvent.ServiceId = routeResult.NewServiceId;
+                    }
                     break;
                 case CalendarStageType.None:
                     throw new InvalidOperationException("Invalid stage is not defined");
                 case CalendarStageType.Waiting:
-                    ProcessEnqueueAppointmentResults enqueResult = Process.EnqueueAppointment(theEvent.ProcessId);
+                    ProcessEnqueueAppointmentResults enqueResult = Process.EnqueueAppointment(theEvent.ProcessId, forceEarly: true, forceLate: true);
+                    var enqueValidStatuses = new List<ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus>();
+                    enqueValidStatuses.Add(ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus.Success);
+                    enqueValidStatuses.Add(ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus.Late);
+                    if (!enqueValidStatuses.Contains(enqueResult.Status))
+                    {
+                        throw DataException.GetDataException(enqueResult.Status);
+                    }
                     break;
                 case CalendarStageType.WaitingCustomerAction:
-                    throw new NotImplementedException();
+                    ProcessWaitForCustomerActionResults waitResult = Process.WaitForCustomerAction(theEvent.ProcessId, currentUserId, 0);
+                    break;
                 default:
                     throw new InvalidOperationException("Stage is not supported");
             }
 
-            
-
+            theEvent.CalendarStageType = nextCalendarStageType;
             return theEvent;
         }
         // do not use it, this method reschedules time
@@ -278,14 +330,14 @@ namespace PQ.QnAppCalendar.ViewService
 
 
 
-        private int GetServiceInStage(int unitid, List<CalendarStageService> calendarStageServices)
+        private List<int> GetServiceInStage(int unitid, List<CalendarStageService> calendarStageServices)
         {
-            int result = -1;
+            List<int> result = new List<int>();
             foreach (var stageService in calendarStageServices)
             {
                 if (stageService.CalendarStageId == unitid)
                 {
-                    result = stageService.ServiceId;
+                    result.Add(stageService.ServiceId);
                     break;
                 }
             }
