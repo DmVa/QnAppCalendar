@@ -247,6 +247,7 @@ __webpack_require__.r(__webpack_exports__);
         // config
         scheduler.config.xml_date = "%Y-%m-%d %H:%i";
         scheduler.locale.labels.unit_tab = "Stage";
+        scheduler.xy.scale_width = 0;//sets the height of the X-Axis
         scheduler.config.dblclick_create = false;
         scheduler.config.drag_create = false;
         scheduler.config.readonly_form = true;

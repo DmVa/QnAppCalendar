@@ -250,7 +250,11 @@ namespace PQ.QnAppCalendar.ViewService
                         }
 
                         UserCallResults callResult = AppUser.Call(currentUserId, delegateId, theEvent.ProcessId, theEvent.ServiceId, false, Process.ProcessPromoteAction.Auto, false);
-                        if (callResult.Status != UserCallResults.CallStatus.Success)
+                        var callValidStatuses = new List<UserCallResults.CallStatus>();
+                        callValidStatuses.Add(UserCallResults.CallStatus.Success);
+                        //callValidStatuses.Add(UserCallResults.CallStatus.LimitReached);
+
+                        if (!callValidStatuses.Contains(callResult.Status))
                         {
                             throw new DataException(callResult.Status.ToString());
                         }
@@ -273,7 +277,7 @@ namespace PQ.QnAppCalendar.ViewService
                         if (routesToStage.Count == 0)
                             throw new DataException("Route to this stage does not exists.");
 
-                        if (routesToStage.Count > 0)
+                        if (routesToStage.Count > 1)
                             throw new DataException("It's multiple routes to stage.");
                         RouteInfo route = routesToStage[0];
 
