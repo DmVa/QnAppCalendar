@@ -11,6 +11,7 @@ namespace PQ.QnAppCalendar.Dto
         public SchedulerEvent() { }
         public string Id;
         public string Text;
+        public string CustomerName;
         public DateTime Start_date;
         public DateTime End_date;
         public int Unitid;
@@ -18,5 +19,7 @@ namespace PQ.QnAppCalendar.Dto
         public int ServiceId;
         public CalendarStageType CalendarStageType;
         public int ProcessId;
+
+      
     }
 }

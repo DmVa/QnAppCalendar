@@ -126,6 +126,7 @@ namespace PQ.QnAppCalendar.ViewService
         private SchedulerEvent ToScheduleEvent(AppointmentInfo app)
         {
             var result = new SchedulerEvent();
+            result.CustomerName = $"{app.CustomerFirstName} {app.CustomerLastName}";
             result.Text = $"{app.CustomerFirstName} {app.CustomerLastName} - {app.ServiceName}";
             result.Start_date = app.AppointmentDate;
             result.End_date = app.AppointmentDate.AddMinutes(app.AppointmentDuration);
@@ -135,6 +136,11 @@ namespace PQ.QnAppCalendar.ViewService
             result.Unitid = app.UnitId;
             result.ProcessId = app.ProcessId;
             return result;
+        }
+
+        internal  string UpdateEventServiceName(string text, string serviceName)
+        {
+            return $"{ text ?? ""}  - {serviceName ?? ""}";
         }
 
         internal List<UnitInfo> GetUnits(int? rootUnitId)
@@ -214,7 +220,7 @@ namespace PQ.QnAppCalendar.ViewService
         internal SchedulerEvent AppointmentChanged(int currentUserId,int? currentUnitId, int previousStageId,  SchedulerEvent theEvent)
         {
             var dataService = new QNomyDataService();
-            var qnomyApp = Appointment.Get(theEvent.AppointmentId);
+            
             int newUnitId = theEvent.Unitid;// unit id is a stageType.
             CustomizeData customizeData = GetCustomizeData(currentUnitId);
             // qnomy
@@ -252,10 +258,15 @@ namespace PQ.QnAppCalendar.ViewService
                         UserCallResults callResult = AppUser.Call(currentUserId, delegateId, theEvent.ProcessId, theEvent.ServiceId, false, Process.ProcessPromoteAction.Auto, false);
                         var callValidStatuses = new List<UserCallResults.CallStatus>();
                         callValidStatuses.Add(UserCallResults.CallStatus.Success);
+
                         //callValidStatuses.Add(UserCallResults.CallStatus.LimitReached);
 
                         if (!callValidStatuses.Contains(callResult.Status))
                         {
+                            if (callResult.Status == UserCallResults.CallStatus.LimitReached)
+                            {
+                                throw new DataException("You are serving the maximum number of cases allowed by the system.");
+                            }
                             throw new DataException(callResult.Status.ToString());
                         }
                         theEvent.ServiceId = callResult.ServiceId;
@@ -289,19 +300,35 @@ namespace PQ.QnAppCalendar.ViewService
                         }
                         theEvent.ServiceId = routeResult.NewServiceId;
                     }
+                  
                     break;
                 case CalendarStageType.None:
                     throw new InvalidOperationException("Invalid stage is not defined");
                 case CalendarStageType.Waiting:
-                    ProcessEnqueueAppointmentResults enqueResult = Process.EnqueueAppointment(theEvent.ProcessId, forceEarly: true, forceLate: true);
-                    var enqueValidStatuses = new List<ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus>();
-                    enqueValidStatuses.Add(ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus.Success);
-                    enqueValidStatuses.Add(ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus.Late);
-                    if (!enqueValidStatuses.Contains(enqueResult.Status))
+                    if (prevCalendarStageType == CalendarStageType.Expected)
                     {
-                        throw DataException.GetDataException(enqueResult.Status);
+                        ProcessEnqueueAppointmentResults enqueResult = Process.EnqueueAppointment(theEvent.ProcessId, forceEarly: true, forceLate: true);
+                        var enqueValidStatuses = new List<ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus>();
+                        enqueValidStatuses.Add(ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus.Success);
+                        enqueValidStatuses.Add(ProcessEnqueueAppointmentResults.ProcessEnqueueAppointmentResultsStatus.Late);
+                        if (!enqueValidStatuses.Contains(enqueResult.Status))
+                        {
+                            throw DataException.GetDataException(enqueResult.Status);
+                        }
+                        break;
                     }
-                    break;
+
+                    if (prevCalendarStageType == CalendarStageType.WaitingCustomerAction)
+                    {
+                        ProcessStopWaitingForCustomerActionResults stopWaitResult= Process.StopWaitingForCustomerAction(theEvent.ProcessId, currentUserId, delegateId);
+                      
+                        break;
+                    }
+                    if (prevCalendarStageType == CalendarStageType.Waiting)
+                    {
+                        break;
+                    }
+                    throw new DataException("This stage accesible only from Expected or Waiting stage");
                 case CalendarStageType.WaitingCustomerAction:
                     ProcessWaitForCustomerActionResults waitResult = Process.WaitForCustomerAction(theEvent.ProcessId, currentUserId, 0);
                     break;
@@ -309,7 +336,12 @@ namespace PQ.QnAppCalendar.ViewService
                     throw new InvalidOperationException("Stage is not supported");
             }
 
-            theEvent.CalendarStageType = nextCalendarStageType;
+            var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
+            var qnomyApp = Appointment.Get(theEvent.AppointmentId);
+            theEvent.CalendarStageType = statusMapping[qnomyApp.CurrentEntityStatus];
+            theEvent.Unitid = GetStageByServiceId(theEvent.ServiceId, theEvent.CalendarStageType, calendarStages, customizeData);
+            theEvent.Text = UpdateEventServiceName(theEvent.CustomerName, qnomyApp.ServiceName);
+            
             return theEvent;
         }
         // do not use it, this method reschedules time
@@ -342,7 +374,6 @@ namespace PQ.QnAppCalendar.ViewService
                 if (stageService.CalendarStageId == unitid)
                 {
                     result.Add(stageService.ServiceId);
-                    break;
                 }
             }
 

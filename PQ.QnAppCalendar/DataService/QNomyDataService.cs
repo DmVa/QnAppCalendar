@@ -473,7 +473,7 @@ process.ProcessId, process.CurrentEntityStatus
 FROM qf.AppointmentAll app WITH (NOLOCK) 
 		JOIN qf.ProcessAll process WITH (NOLOCK) ON app.ProcessId = process.ProcessId
 		JOIN qf.CaseAll c WITH (NOLOCK) ON process.CaseId = c.CaseId		
-		JOIN qf.Service s WITH (NOLOCK) ON app.ServiceId = s.ServiceId
+		JOIN qf.Service s WITH (NOLOCK) ON process.CurrentServiceId = s.ServiceId
         LEFT JOIN qf.AppointmentType appType  WITH (NOLOCK) on appType.AppointmentTypeId = app.AppointmentTypeId
         LEFT JOIN qf.Customer   customer WITH (NOLOCK) on customer.PersonalId = process.EntityId
 WHERE (process.CurrentEntityStatus not in (15,16,17)) AND
