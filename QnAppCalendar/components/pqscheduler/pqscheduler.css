@@ -44,6 +44,14 @@ pq-modal {
   .pq-scheduler .arrow-left:hover, .pq-scheduler .arrow-right:hover {
     cursor: pointer; }
 
+.pq-scheduler-board .arrow-left, .pq-scheduler-board .arrow-right {
+  position: absolute;
+  top: 70px;
+  z-index: 1000;
+  background-color: white; }
+  .pq-scheduler-board .arrow-left:hover, .pq-scheduler-board .arrow-right:hover {
+    cursor: pointer; }
+
 pq-scheduler-customize .scheduler-customize-container {
   height: 60%;
   align-items: center;

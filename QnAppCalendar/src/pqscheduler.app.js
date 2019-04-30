@@ -8,6 +8,7 @@ import './scheduler/scheduler.services/alert.service.js';
 import './scheduler/scheduler.directives/draganddrop.js';
 import './scheduler/scheduler.directives/modal.directive.js';
 import './scheduler/scheduler.component/scheduler.component.js';
+import './scheduler/scheduler.board/scheduler.board.js';
 import './scheduler/scheduler.customize/schedulercustomize.component.js';
 import './scheduler/scheduler.editcolumn/schedulereditcolumn.component.js';
 

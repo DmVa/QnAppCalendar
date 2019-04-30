@@ -111,11 +111,14 @@
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_year_view.js.map" />
     <Content Include="Ajax\PQAppCalendar.ashx" />
     <Content Include="src\pqscheduler.app.js" />
+    <Content Include="src\scheduler\scheduler.board\scheduler.board.html" />
+    <Content Include="src\scheduler\scheduler.board\scheduler.board.js" />
     <Content Include="src\scheduler\scheduler.component\scheduler.component.html" />
     <Content Include="src\scheduler\scheduler.component\scheduler.component.js" />
     <Content Include="components\pqscheduler\pqscheduler.css.map" />
     <Content Include="components\pqscheduler\pqscheduler.js.map" />
     <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.scss" />
+    <Content Include="src\scheduler\scheduler.board\scheduler.board.scss" />
     <None Include="src\scheduler\scheduler.customize\schedulercustomize.component.scss" />
     <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.html" />
     <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.js" />
