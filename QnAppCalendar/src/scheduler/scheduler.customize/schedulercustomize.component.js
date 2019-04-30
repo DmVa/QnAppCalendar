@@ -13,10 +13,10 @@
             }
         });
     
-    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
+    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService', 'schedulerDataService', 'Stage', 'Status','alertService'];
    
 
-    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
+    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status, alertService) {
         let $ctrl = this;
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
         $ctrlAddColumn.hide();
@@ -33,6 +33,18 @@
             return index;
         }
 
+        function getMinStageIdForNewStage() {
+            let result = -1000;
+            for (let i = 0; i < $ctrl.allStages.length; i++) {
+                let stage = $ctrl.allStages[i];
+                if (stage.id < result) {
+                    result = stage.id;
+                }
+            }
+
+            return result;
+        }
+
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
             if (idx !== -1) {
@@ -43,7 +55,8 @@
 
         $ctrl.onAddStage = function onAddStage(stagename) {
             let index = getLastIndexOfServiceStage() + 1;
-            let newStage = new Stage(-1, stagename, 3, []); //3- service.
+            let newStageId = getMinStageIdForNewStage() - 1;
+            let newStage = new Stage(newStageId, stagename, 3, []); //3- service.
 
             $ctrl.allStages.splice(index, 0, newStage);
             
@@ -76,7 +89,7 @@
             $event.stopPropagation();
 
             if (!stageobj) {
-                alert('undefined stage');
+                alertService.Error('undefined stage');
                 return;
             }
 

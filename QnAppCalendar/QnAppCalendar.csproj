@@ -127,8 +127,10 @@
     <None Include="src\scheduler\scheduler.directives\modal.directive.scss" />
     <Content Include="src\scheduler\scheduler.directives\modal.directive.js" />
     <Content Include="src\scheduler\scheduler.module.js" />
+    <Content Include="src\scheduler\scheduler.services\alert.service.js" />
     <Content Include="src\scheduler\scheduler.services\modal.service.js" />
     <Content Include="src\scheduler\scheduler.services\schedulerData.service.js" />
+    <Content Include="src\scheduler\sweetalert.min.js" />
     <Content Include="webpack.config.js" />
     <Content Include="package.json" />
     <None Include="packages.config" />

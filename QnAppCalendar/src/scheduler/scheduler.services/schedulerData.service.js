@@ -5,8 +5,8 @@
         .module('scheduler.module')
         .factory('schedulerDataService', schedulerDataService);
 
-    schedulerDataService.$inject = ['$http'];
-    function schedulerDataService($http) {
+    schedulerDataService.$inject = ['$http','alertService'];
+    function schedulerDataService($http, alertService) {
         var basePath = '/ajax/PQAppCalendar.ashx?act=';
 
         return {
@@ -22,7 +22,7 @@
             handleWrappedError : function (result) {
                 if (result.error) {
                     if (result.error.message) {
-                        alert(result.error.message);
+                        alertService.Error(result.error.message);
                     }
                     else {
                         console.log('undefined error');

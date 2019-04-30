@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "glob": "^7.1.3",
-    "merge-jsons-webpack-plugin": "^1.0.18"
+    "merge-jsons-webpack-plugin": "^1.0.18",
+    "sweetalert": "^2.1.2"
   }
 }

@@ -11,9 +11,9 @@
             controller: SchedulerController,
         });
 
-    SchedulerController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService', 'modalService'];
+    SchedulerController.inject = ['$scope', '$window', '$document', '$timeout', 'schedulerDataService', 'modalService', 'alertService'];
 
-    function SchedulerController($scope, $window, $document, $timeout, schedulerDataService, modalService) {
+    function SchedulerController($scope, $window, $document, $timeout, schedulerDataService, modalService, alertService) {
         let $ctrl = this;
         $scope.scheduler = $ctrl.scheduler; //fix old logic (?)
         $scope.viewModel = $ctrl.viewModel; //fix old logic (?)
@@ -42,7 +42,7 @@
         $ctrl.handleWrappedError = function(result) {
             if (result.error) {
                 if (result.error.message) {
-                    alert(result.error.message);
+                    alertService.Error(result.error.message);
                 }
                 else {
                     console.log('undefined error');
