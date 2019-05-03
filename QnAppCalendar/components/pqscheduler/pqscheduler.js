@@ -893,35 +893,21 @@ __webpack_require__.r(__webpack_exports__);
 
         $ctrl.LoadCustomizeData();
         $ctrl.LoadTodayAppointments();
-        //$ctrl.RemapEventToUnits = function () {
-        //    var evs = scheduler.getEvents();
-        //    if (!evs || evs.length == 0)
-        //        return;
+        
 
-        //    for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
-        //        var ev = evs[eventIdx];
-        //        ev.unitid = $ctrl.getUnitIdForServiceid(ev.serviceId, ev.calendarStageType)
-        //    }
-        //}
-
-        $ctrl.getUnitIdForServiceid = function (serviceId, stageTypeId) {
+        $ctrl.getStageObjectById = function (stageId) {
+            let result = null;
             if (!$ctrl.customizeData)
-                return - 1;
-            let result = -1;
+                return null;
 
-            for (var stageIdx = 0; stageIdx < $ctrl.customizeData.length; stageIdx++) {
-                var stage = $ctrl.customizeData[stageIdx];
-                for (var statusIdx = 0; statusIdx < stage.statuses.length; statusIdx++) {
-                    if (status.Id == serviceId) {
-                        result = stage.Id;
-                        break;
-                    }
-                };
-
-                if (result >= 0) {
+            for (var stageIdx = 0; stageIdx < $ctrl.customizeData.stages.length; stageIdx++) {
+                var stage = $ctrl.customizeData.stages[stageIdx];
+                if (stage.id == stageId) {
+                    result = stage;
                     break;
                 }
             }
+
             return result;
         }
 
@@ -957,6 +943,9 @@ __webpack_require__.r(__webpack_exports__);
 
             let previousUnitId = scheduledEvent.unitid;
             let nextUnitId = stageobj.id;
+            if (previousUnitId == nextUnitId) {
+                return;
+            }
 
             schedulerDataService.eventChanged({ previousUnitId: previousUnitId, nextUnitId: nextUnitId, schedulerEvent: scheduledEvent })
                 .then(function (result) {
@@ -971,8 +960,10 @@ __webpack_require__.r(__webpack_exports__);
                         scheduledEvent.unitid = result.data.unitid;
                         scheduledEvent.serviceName = result.data.serviceName;
                         $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
-                        scheduledEvent.unitid = stageobj.id;
-                        stageobj.schedulerEvents.push(scheduledEvent);
+                        let newStageObj = $ctrl.getStageObjectById(scheduledEvent.unitid);
+                        if (newStageObj) {
+                            newStageObj.schedulerEvents.push(scheduledEvent);
+                        }
                         $scope.$apply();
                     }
 

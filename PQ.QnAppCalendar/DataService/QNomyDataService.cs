@@ -330,34 +330,22 @@ namespace PQ.QnAppCalendar.DataService
 
         }
 
-        internal List<RouteInfo> GetRouts(int? serviceId)
+        internal int? GetTranseredFromServiceId(int processId)
         {
-            var result = new List<RouteInfo>();
-            string whereClause = "";
-            if (serviceId.HasValue)
-                whereClause = $" AND ServiceId = {serviceId}";
+            int? result = null;
 
-            var sql = @"select RouteId, ServiceId, TargetServiceId from qf.Route where IsActive = 1" + whereClause;
+            var sql = @"select top 1 TransferredFromServiceId from qf.ProcessAll where processId = @processId";
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
             {
                 using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
                 {
                     sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.Parameters.Add("@processId", SqlDbType.Int);
+                    sqlCommand.Parameters["@processId"].Value = processId;
 
                     connection.Open();
-                    using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                    {
-                        if (sqlDataReader.HasRows)
-                        {
-                            while (sqlDataReader.Read())
-                                result.Add(new RouteInfo()
-                                {
-                                    RouteId = Converter.ToInt32(sqlDataReader["RouteId"]),
-                                    ServiceId = Converter.ToInt32(sqlDataReader["ServiceId"]),
-                                    TargetServiceId = Converter.ToInt32(sqlDataReader["TargetServiceId"])
-                                });
-                        }
-                    }
+                    object resObj = sqlCommand.ExecuteScalar();
+                    result = Converter.ToInt32Nullable(resObj);
                 }
             }
             return result;
@@ -399,6 +387,7 @@ namespace PQ.QnAppCalendar.DataService
                 }
             }
         }
+
 
         public List<ServiceInfo> GetAllServices()
         {
