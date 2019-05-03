@@ -58,6 +58,7 @@
     <Compile Include="Dto\AppointmentTypeInfo.cs" />
     <Compile Include="Dto\CustomizeData.cs" />
     <Compile Include="Dto\DateFromTo.cs" />
+    <Compile Include="Dto\GetAppointmentsData.cs" />
     <Compile Include="Dto\RouteInfo.cs" />
     <Compile Include="Dto\ServiceInfo.cs" />
     <Compile Include="Dto\UserInfo.cs" />

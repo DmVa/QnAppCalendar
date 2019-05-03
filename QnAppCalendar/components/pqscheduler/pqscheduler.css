@@ -44,13 +44,56 @@ pq-modal {
   .pq-scheduler .arrow-left:hover, .pq-scheduler .arrow-right:hover {
     cursor: pointer; }
 
-.pq-scheduler-board .arrow-left, .pq-scheduler-board .arrow-right {
-  position: absolute;
-  top: 70px;
-  z-index: 1000;
-  background-color: white; }
-  .pq-scheduler-board .arrow-left:hover, .pq-scheduler-board .arrow-right:hover {
-    cursor: pointer; }
+.pq-scheduler-board .pq-board-container {
+  width: 100%;
+  height: 95vh;
+  display: flex;
+  flex-direction: column; }
+
+.pq-scheduler-board .pq-board-header {
+  height: 60px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: arial; }
+
+.pq-scheduler-board .pq-board-body {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #CECECE;
+  flex-grow: 1;
+  display: flex; }
+
+.pq-scheduler-board .pq-stage {
+  flex-grow: 1;
+  flex-basis: 0;
+  display: flex;
+  flex-direction: column; }
+
+.pq-scheduler-board .pq-stageheader {
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #CECECE; }
+
+.pq-scheduler-board .pq-stagebody {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #CECECE;
+  flex: 1;
+  background-color: rgba(251, 249, 131, 0.6); }
+
+.pq-scheduler-board .pq-stageevent {
+  height: 40px;
+  background-color: rgba(63, 70, 191, 0.4);
+  border-style: solid;
+  border-width: 1px;
+  border-color: #CECECE;
+  margin: 4px;
+  padding: 0px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
 
 pq-scheduler-customize .scheduler-customize-container {
   height: 60%;

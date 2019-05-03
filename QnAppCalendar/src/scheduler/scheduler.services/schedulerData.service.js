@@ -96,6 +96,17 @@
                 });
             },
 
+            loadTodayAppointments: function () {
+                return $.ajax({
+                    url: basePath + 'load-appointmens',
+                    type: 'post',
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: [],
+                    dataType: 'json'
+                });
+            },
+
             loadUnits: function (params) {
               return  $.ajax({
                     url: basePath + 'load-units',

@@ -9,17 +9,15 @@ namespace PQ.QnAppCalendar.Dto
     public class SchedulerEvent
     {
         public SchedulerEvent() { }
-        public string Id;
-        public string Text;
-        public string CustomerName;
-        public DateTime Start_date;
-        public DateTime End_date;
-        public int Unitid;
-        public int AppointmentId;
-        public int ServiceId;
-        public CalendarStageType CalendarStageType;
-        public int ProcessId;
-
-      
+        public string Id { get; set; }
+        public string ServiceName { get; set; }
+        public string CustomerName { get; set; }
+        public DateTime Start_date { get; set; }
+        public DateTime End_date { get; set; }
+        public int Unitid { get; set; }
+        public int AppointmentId { get; set; }
+        public int ServiceId { get; set; }
+        public CalendarStageType CalendarStageType { get; set; }
+        public int ProcessId { get; set; }
     }
 }

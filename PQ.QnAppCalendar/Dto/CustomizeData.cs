@@ -24,7 +24,7 @@ namespace PQ.QnAppCalendar.Dto
 
     public class StageStatus
     {
-        public int Id { get; set; }
+        public int Id { get; set; } // id equals to service.id;
         public string Name { get; set; }
         public int StageId { get; set; }
     }

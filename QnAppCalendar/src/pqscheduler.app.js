@@ -1,7 +1,8 @@
 ﻿import './scheduler/sweetalert.min.js';
 import './scheduler/scheduler.module.js';
-import './scheduler/scheduler.customize/stage.js';
-import './scheduler/scheduler.customize/status.js';
+import './scheduler/scheduler.model/stage.js';
+import './scheduler/scheduler.model/status.js';
+import './scheduler/scheduler.model/schedulerEvent.js';
 import './scheduler/scheduler.services/modal.service';
 import './scheduler/scheduler.services/schedulerData.service.js';
 import './scheduler/scheduler.services/alert.service.js';

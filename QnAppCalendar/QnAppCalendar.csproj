@@ -124,8 +124,9 @@
     <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.js" />
     <Content Include="src\scheduler\scheduler.customize\schedulercustomize.component.html" />
     <Content Include="src\scheduler\scheduler.customize\schedulercustomize.component.js" />
-    <Content Include="src\scheduler\scheduler.customize\stage.js" />
-    <Content Include="src\scheduler\scheduler.customize\status.js" />
+    <Content Include="src\scheduler\scheduler.model\schedulerEvent.js" />
+    <Content Include="src\scheduler\scheduler.model\stage.js" />
+    <Content Include="src\scheduler\scheduler.model\status.js" />
     <Content Include="src\scheduler\scheduler.directives\draganddrop.js" />
     <None Include="src\scheduler\scheduler.directives\modal.directive.scss" />
     <Content Include="src\scheduler\scheduler.directives\modal.directive.js" />

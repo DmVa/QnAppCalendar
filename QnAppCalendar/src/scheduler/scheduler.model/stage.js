@@ -11,6 +11,7 @@
             if (statuses) {
                 this.statuses = statuses;
             }
+            this.schedulerEvents = [];
         }
         return Stage;
     });

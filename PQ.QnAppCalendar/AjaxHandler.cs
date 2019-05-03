@@ -55,9 +55,10 @@ namespace PQ.QnAppCalendar
                         data = dataService.SaveCustomizeData(dataObjCustomize);
                         break;
                     case QueryStringParams.GET_APPOINTMENTS:
-                        string filterData = GetData(context.Request);
-                        DateFromTo filter = JsonConvert.DeserializeObject<DateFromTo>(filterData);
-                        data = dataService.GetSchedulerEvents(filter.From, filter.To, userInfo.UnitId);
+                        //string filterData = GetData(context.Request);
+                        //DateFromTo filter = JsonConvert.DeserializeObject<DateFromTo>(filterData);
+                        //data = dataService.GetSchedulerEvents(filter.From, filter.To, userInfo.UnitId);
+                        data = dataService.GetAppointmentsData(userInfo.UnitId);
                         break;
                     case QueryStringParams.SAVE_APPOINTMENT:
                         string objJson = GetData(context.Request);
@@ -67,7 +68,7 @@ namespace PQ.QnAppCalendar
                     case QueryStringParams.APPOINTMENT_CHANGED:
                         string objJsonApp = GetData(context.Request);
                         var appData = JsonConvert.DeserializeObject<AppointmentChangedData>(objJsonApp);
-                        data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousUnitId, appData.SchedulerEvent);
+                        data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousUnitId, appData.NextUnitId, appData.SchedulerEvent);
                         break;
                         
                     default:

@@ -598,24 +598,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scheduler_sweetalert_min_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_scheduler_sweetalert_min_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _scheduler_scheduler_module_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scheduler/scheduler.module.js */ "./src/scheduler/scheduler.module.js");
 /* harmony import */ var _scheduler_scheduler_module_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_module_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _scheduler_scheduler_customize_stage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scheduler/scheduler.customize/stage.js */ "./src/scheduler/scheduler.customize/stage.js");
-/* harmony import */ var _scheduler_scheduler_customize_stage_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_customize_stage_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _scheduler_scheduler_customize_status_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scheduler/scheduler.customize/status.js */ "./src/scheduler/scheduler.customize/status.js");
-/* harmony import */ var _scheduler_scheduler_customize_status_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_customize_status_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scheduler/scheduler.services/modal.service */ "./src/scheduler/scheduler.services/modal.service.js");
-/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scheduler/scheduler.services/schedulerData.service.js */ "./src/scheduler/scheduler.services/schedulerData.service.js");
-/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scheduler/scheduler.services/alert.service.js */ "./src/scheduler/scheduler.services/alert.service.js");
-/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./scheduler/scheduler.directives/draganddrop.js */ "./src/scheduler/scheduler.directives/draganddrop.js");
-/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _scheduler_scheduler_directives_modal_directive_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scheduler/scheduler.directives/modal.directive.js */ "./src/scheduler/scheduler.directives/modal.directive.js");
-/* harmony import */ var _scheduler_scheduler_component_scheduler_component_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scheduler/scheduler.component/scheduler.component.js */ "./src/scheduler/scheduler.component/scheduler.component.js");
-/* harmony import */ var _scheduler_scheduler_board_scheduler_board_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scheduler/scheduler.board/scheduler.board.js */ "./src/scheduler/scheduler.board/scheduler.board.js");
-/* harmony import */ var _scheduler_scheduler_customize_schedulercustomize_component_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./scheduler/scheduler.customize/schedulercustomize.component.js */ "./src/scheduler/scheduler.customize/schedulercustomize.component.js");
-/* harmony import */ var _scheduler_scheduler_editcolumn_schedulereditcolumn_component_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./scheduler/scheduler.editcolumn/schedulereditcolumn.component.js */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js");
+/* harmony import */ var _scheduler_scheduler_model_stage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scheduler/scheduler.model/stage.js */ "./src/scheduler/scheduler.model/stage.js");
+/* harmony import */ var _scheduler_scheduler_model_stage_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_model_stage_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _scheduler_scheduler_model_status_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scheduler/scheduler.model/status.js */ "./src/scheduler/scheduler.model/status.js");
+/* harmony import */ var _scheduler_scheduler_model_status_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_model_status_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scheduler/scheduler.model/schedulerEvent.js */ "./src/scheduler/scheduler.model/schedulerEvent.js");
+/* harmony import */ var _scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scheduler/scheduler.services/modal.service */ "./src/scheduler/scheduler.services/modal.service.js");
+/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scheduler/scheduler.services/schedulerData.service.js */ "./src/scheduler/scheduler.services/schedulerData.service.js");
+/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./scheduler/scheduler.services/alert.service.js */ "./src/scheduler/scheduler.services/alert.service.js");
+/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scheduler/scheduler.directives/draganddrop.js */ "./src/scheduler/scheduler.directives/draganddrop.js");
+/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _scheduler_scheduler_directives_modal_directive_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scheduler/scheduler.directives/modal.directive.js */ "./src/scheduler/scheduler.directives/modal.directive.js");
+/* harmony import */ var _scheduler_scheduler_component_scheduler_component_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scheduler/scheduler.component/scheduler.component.js */ "./src/scheduler/scheduler.component/scheduler.component.js");
+/* harmony import */ var _scheduler_scheduler_board_scheduler_board_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./scheduler/scheduler.board/scheduler.board.js */ "./src/scheduler/scheduler.board/scheduler.board.js");
+/* harmony import */ var _scheduler_scheduler_customize_schedulercustomize_component_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./scheduler/scheduler.customize/schedulercustomize.component.js */ "./src/scheduler/scheduler.customize/schedulercustomize.component.js");
+/* harmony import */ var _scheduler_scheduler_editcolumn_schedulereditcolumn_component_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./scheduler/scheduler.editcolumn/schedulereditcolumn.component.js */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js");
 ﻿
+
 
 
 
@@ -640,7 +643,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"pq-scheduler-board\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"scheduler-container\"> <div id=\"scheduler_here\" class=\"dhx_cal_container\" style=\"width:100%;height:100vh\"> <div class=\"dhx_cal_navline\"> <div class=\"dhx_cal_prev_button\">&nbsp;</div> <div class=\"dhx_cal_next_button\">&nbsp;</div> <div class=\"dhx_cal_today_button\"></div> <div class=\"dhx_cal_date\"></div> <div class=\"dhx_cal_tab\" name=\"day_tab\"></div> <div class=\"dhx_cal_tab\" name=\"week_tab\"></div> <div class=\"dhx_cal_tab\" name=\"month_tab\"></div> <div class=\"dhx_cal_tab\" name=\"unit_tab\" style=\"right:280px\"></div> </div> <div class=\"dhx_cal_header\"></div> <div class=\"dhx_cal_data\"></div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize on-save-customize=\"$ctrl.onSaveCustomize()\"></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
+module.exports = "<div class=\"pq-scheduler-board\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"pq-board-container\"> <div class=\"pq-board-header\"> {{currentDateStr}} </div> <div class=\"pq-board-body\"> <div ng-repeat=\"stageobj in stages\" class=\"pq-stage\" id=\"stage_{{stageobj.id}}\" pq-drop-on-me=\"true\" on-drop=\"handledrop(event, stageobj, data)\"> <div class=\"pq-stageheader\"> <div> {{stageobj.name}}</div> </div> <div class=\"pq-stagebody\"> <div ng-repeat=\"schedulerEvent in stageobj.schedulerEvents\" class=\"pq-stageevent\" id=\"schedulerEvent_{{schedulerEvent.id}}\" pq-drag-me=\"appoitnmnetId\" appoitnmnetId=\"{{schedulerEvent.appointmentId}}\"> <div class=\"pq-appointment\"> <div> {{schedulerEvent.customerName}}</div> <div> {{schedulerEvent.serviceName}}</div> </div> </div> </div> </div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize on-save-customize=\"$ctrl.onSaveCustomize()\"></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
 
 /***/ }),
 
@@ -672,9 +675,12 @@ __webpack_require__.r(__webpack_exports__);
 
     function SchedulerController($scope, $window, $document, $timeout, schedulerDataService, modalService, alertService) {
         let $ctrl = this;
-        $scope.scheduler = $ctrl.scheduler; //fix old logic (?)
-        $scope.viewModel = $ctrl.viewModel; //fix old logic (?)
-        let scheduler = $window.scheduler;
+        $scope.currentDateStr = '';
+        $scope.stages = [];
+        let schedulerEvents = [];
+        //$scope.scheduler = $ctrl.scheduler; //fix old logic (?)
+        //$scope.viewModel = $ctrl.viewModel; //fix old logic (?)
+      //  let scheduler = $window.scheduler;
 
         let _originalEvent = new Map();
         let customizeData = null;
@@ -709,6 +715,13 @@ __webpack_require__.r(__webpack_exports__);
                 console.log('not wrapped error');
             }
         };
+        $ctrl.removeFromArray = function (array, value) {
+            var idx = array.indexOf(value);
+            if (idx !== -1) {
+                array.splice(idx, 1);
+            }
+            return array;
+        };
 
         $ctrl.handleError = function(result) {
             if (result && result.statusText) {
@@ -735,7 +748,7 @@ __webpack_require__.r(__webpack_exports__);
             ev.start_date = originalEvent.start_date;
             ev.end_date = originalEvent.end_date;
             ev.unitid = originalEvent.unitid;
-            scheduler.updateView();
+          //  scheduler.updateView();
 
         };
 
@@ -747,58 +760,58 @@ __webpack_require__.r(__webpack_exports__);
 
             ev.start_date = originalEvent.start_date;
             ev.end_date = originalEvent.end_date;
-            scheduler.updateView();
+          //  scheduler.updateView();
 
         };
 
         // config
-        scheduler.config.xml_date = "%Y-%m-%d %H:%i";
-        scheduler.locale.labels.unit_tab = "Stage";
-        scheduler.xy.scale_width = 0;//sets the height of the X-Axis
-        scheduler.config.dblclick_create = false;
-        scheduler.config.drag_create = false;
-        scheduler.config.readonly_form = true;
+        //scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+        //scheduler.locale.labels.unit_tab = "Stage";
+        //scheduler.xy.scale_width = 0;//sets the height of the X-Axis
+        //scheduler.config.dblclick_create = false;
+        //scheduler.config.drag_create = false;
+        //scheduler.config.readonly_form = true;
 
-        var sections = scheduler.serverList("units");
-        scheduler.createUnitsView({
-            name: "unit",
-            property: "unitid",
-            skip_incorrect: true,
-            list: sections
-        });
+        //var sections = scheduler.serverList("units");
+        //scheduler.createUnitsView({
+        //    name: "unit",
+        //    property: "unitid",
+        //    skip_incorrect: true,
+        //    list: sections
+        //});
 
-        scheduler.parse([], "json");//without it  appears popup says
+        //scheduler.parse([], "json");//without it  appears popup says
 
-        scheduler.init('scheduler_here', new Date(), "unit");
+        //scheduler.init('scheduler_here', new Date(), "unit");
 
         
-        scheduler.attachEvent("onBeforeViewChange", function (old_mode, old_date, mode, date) {
-            var a_date = schedulerDataService.getDate(date);
-            var a_minDate = schedulerDataService.getDate(scheduler.getState().min_date);
-            var a_maxDate = schedulerDataService.getDate(scheduler.getState().max_date);
+        //scheduler.attachEvent("onBeforeViewChange", function (old_mode, old_date, mode, date) {
+        //    var a_date = schedulerDataService.getDate(date);
+        //    var a_minDate = schedulerDataService.getDate(scheduler.getState().min_date);
+        //    var a_maxDate = schedulerDataService.getDate(scheduler.getState().max_date);
 
-            if (a_date < a_minDate)
-                a_minDate = a_date;
+        //    if (a_date < a_minDate)
+        //        a_minDate = a_date;
 
-            if (a_date > a_maxDate)
-                a_maxDate = a_date;
+        //    if (a_date > a_maxDate)
+        //        a_maxDate = a_date;
 
-            schedulerDataService.loadAppointments(a_minDate, a_maxDate)
-                .then(function (result) {
-                    if (result.error) {
-                        $ctrl.handleWrappedError(result);
-                        return;
-                    }
-                    if (result.data) {
-                        scheduler.clearAll();
-                        scheduler.parse(result.data, "json");
-                    }
-                }, function (result) {
-                    $ctrl.handleError(result);
-                    return;
-                });
-            return true;
-        });
+        //    schedulerDataService.loadAppointments(a_minDate, a_maxDate)
+        //        .then(function (result) {
+        //            if (result.error) {
+        //                $ctrl.handleWrappedError(result);
+        //                return;
+        //            }
+        //            if (result.data) {
+        //                scheduler.clearAll();
+        //                scheduler.parse(result.data, "json");
+        //            }
+        //        }, function (result) {
+        //            $ctrl.handleError(result);
+        //            return;
+        //        });
+        //    return true;
+        //});
 
         $ctrl.LoadUnits =  function(reloadCustomize) {
             schedulerDataService.loadUnits()
@@ -809,7 +822,7 @@ __webpack_require__.r(__webpack_exports__);
                     }
                     if (result.data) {
                         $ctrl.units = result.data;
-                        scheduler.updateCollection("units", $ctrl.units);
+                      //  scheduler.updateCollection("units", $ctrl.units);
                         if (reloadCustomize) {
                             $ctrl.LoadCustomizeData();
                             return;
@@ -821,7 +834,24 @@ __webpack_require__.r(__webpack_exports__);
                 });
         };
 
-        $ctrl.LoadUnits(false);
+       // $ctrl.LoadUnits(false);
+       
+        $ctrl.UpdateStages = function () {
+            if (!$ctrl.customizeData) {
+                $scope.stages = [];
+                $scope.$apply();
+                return;
+            }
+
+
+            for (var stIdx = 0; stIdx < $ctrl.customizeData.stages.length; stIdx++) {
+                var stage = $ctrl.customizeData.stages[stIdx];
+                stage.schedulerEvents = $ctrl.schedulerEvents.filter(ev => ev.unitid == stage.id);
+            }
+
+            $scope.stages = $ctrl.customizeData.stages;
+            $scope.$apply();
+        };
 
         $ctrl.LoadCustomizeData = function() {
             schedulerDataService.getCustomizeData()
@@ -832,7 +862,8 @@ __webpack_require__.r(__webpack_exports__);
                     }
                     if (result.data) {
                         $ctrl.customizeData = result.data;
-                        $ctrl.RemapEventToUnits();
+                        $ctrl.UpdateStages();
+                       // $ctrl.RemapEventToUnits();
                     }
                 }, function (result) {
                     $ctrl.handleError(result);
@@ -840,16 +871,38 @@ __webpack_require__.r(__webpack_exports__);
                 });
         };
 
-        $ctrl.RemapEventToUnits = function () {
-            var evs = scheduler.getEvents();
-            if (!evs || evs.length == 0)
-                return;
+        $ctrl.LoadTodayAppointments = function () {
+            schedulerDataService.loadTodayAppointments()
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $scope.currentDateStr = result.data.currentDateStr;
+                        $ctrl.schedulerEvents = result.data.schedulerEvents;
+                        $ctrl.UpdateStages();
+                        $scope.$apply();
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
+                    return;
+                });
+            return true;
+        };
 
-            for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
-                var ev = evs[eventIdx];
-                ev.unitid = $ctrl.getUnitIdForServiceid(ev.serviceId, ev.calendarStageType)
-            }
-        }
+        $ctrl.LoadCustomizeData();
+        $ctrl.LoadTodayAppointments();
+        //$ctrl.RemapEventToUnits = function () {
+        //    var evs = scheduler.getEvents();
+        //    if (!evs || evs.length == 0)
+        //        return;
+
+        //    for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
+        //        var ev = evs[eventIdx];
+        //        ev.unitid = $ctrl.getUnitIdForServiceid(ev.serviceId, ev.calendarStageType)
+        //    }
+        //}
 
         $ctrl.getUnitIdForServiceid = function (serviceId, stageTypeId) {
             if (!$ctrl.customizeData)
@@ -872,47 +925,106 @@ __webpack_require__.r(__webpack_exports__);
             return result;
         }
 
-        scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
-            _originalEvent.set(ev.appointmentId, $.extend(true, {}, original));
-            return true;
-        });
+        $scope.handledrop = function (event, stageobj, data) {
 
-        scheduler.attachEvent("onEventChanged", function (id, ev) {
-            let linkToEvent = ev;
+            let scheduledEvent;
+            let previousStage;
+            let appointmentId = data;
 
-            let theEventCopy = $.extend(true, {}, ev); // make a copy.
-            let timeZoneOffsetMs = ev.start_date.getTimezoneOffset() * 60000;
-            theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
-            theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
-            let originalEvent = _originalEvent.get(ev.appointmentId);
-            let previousUnitId = 0;
-            if (originalEvent) {
-                previousUnitId = originalEvent.unitid;
+            $ctrl.schedulerEvents.some(function (sev) {
+                if (sev.appointmentId == appointmentId) {
+                    scheduledEvent = sev;
+                    return true;
+                }
+                return false;
+            });
+
+            if (!scheduledEvent) {
+                return;
+            };
+
+            for (var stIdx = 0; stIdx < $ctrl.customizeData.stages.length; stIdx++) {
+                var stage = $ctrl.customizeData.stages[stIdx];
+                if (stage.id == scheduledEvent.unitid) {
+                    previousStage = stage;
+                    break;
+                }
             }
-            
 
-            schedulerDataService.eventChanged({ previousUnitId: previousUnitId, schedulerEvent: theEventCopy})
+            if (!previousStage) {
+                return;
+            };
+
+            let previousUnitId = scheduledEvent.unitid;
+            let nextUnitId = stageobj.id;
+
+            schedulerDataService.eventChanged({ previousUnitId: previousUnitId, nextUnitId: nextUnitId, schedulerEvent: scheduledEvent })
                 .then(function (result) {
-                    
+
                     if (result.error) {
                         $ctrl.handleWrappedError(result);
-                        $ctrl.rollbackEvent(ev);
                         return;
                     }
                     if (result.data.appointmentId) {
-                        linkToEvent.appointmentId = result.data.appointmentId;
-                        linkToEvent.serviceId = result.data.serviceId;
-                        linkToEvent.unitid = result.data.unitid;
-                        linkToEvent.text = result.data.text;
+                        scheduledEvent.appointmentId = result.data.appointmentId;
+                        scheduledEvent.serviceId = result.data.serviceId;
+                        scheduledEvent.unitid = result.data.unitid;
+                        scheduledEvent.serviceName = result.data.serviceName;
+                        $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
+                        scheduledEvent.unitid = stageobj.id;
+                        stageobj.schedulerEvents.push(scheduledEvent);
+                        $scope.$apply();
                     }
 
-                    $ctrl.rollbackEventTime(ev);
                     console.log('saved');
                 }, function (result) {
                     $ctrl.handleError(result);
-                    $ctrl.rollbackEvent(ev);
+                    return;
                 });
-        });
+
+        }
+
+        //scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
+        //    _originalEvent.set(ev.appointmentId, $.extend(true, {}, original));
+        //    return true;
+        //});
+
+        //scheduler.attachEvent("onEventChanged", function (id, ev) {
+        //    let linkToEvent = ev;
+
+        //    let theEventCopy = $.extend(true, {}, ev); // make a copy.
+        //    let timeZoneOffsetMs = ev.start_date.getTimezoneOffset() * 60000;
+        //    theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
+        //    theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
+        //    let originalEvent = _originalEvent.get(ev.appointmentId);
+        //    let previousUnitId = 0;
+        //    if (originalEvent) {
+        //        previousUnitId = originalEvent.unitid;
+        //    }
+            
+
+        //    schedulerDataService.eventChanged({ previousUnitId: previousUnitId, schedulerEvent: theEventCopy})
+        //        .then(function (result) {
+                    
+        //            if (result.error) {
+        //                $ctrl.handleWrappedError(result);
+        //                $ctrl.rollbackEvent(ev);
+        //                return;
+        //            }
+        //            if (result.data.appointmentId) {
+        //                linkToEvent.appointmentId = result.data.appointmentId;
+        //                linkToEvent.serviceId = result.data.serviceId;
+        //                linkToEvent.unitid = result.data.unitid;
+        //                linkToEvent.text = result.data.text;
+        //            }
+
+        //            $ctrl.rollbackEventTime(ev);
+        //            console.log('saved');
+        //        }, function (result) {
+        //            $ctrl.handleError(result);
+        //            $ctrl.rollbackEvent(ev);
+        //        });
+        //});
     }
 }
 )();
@@ -1449,65 +1561,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/scheduler/scheduler.customize/stage.js":
-/*!****************************************************!*\
-  !*** ./src/scheduler/scheduler.customize/stage.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-﻿(function () {
-    'use strict';
-
-    var app = angular.module('scheduler.module');
-    app.factory('Stage', function () {
-        function Stage(id, name, stageType, statuses) {
-            this.id = id;
-            this.name = name;
-            this.stageType = stageType;
-            this.statuses = [];
-            if (statuses) {
-                this.statuses = statuses;
-            }
-        }
-        return Stage;
-    });
-})();
-
-
-
-/***/ }),
-
-/***/ "./src/scheduler/scheduler.customize/status.js":
-/*!*****************************************************!*\
-  !*** ./src/scheduler/scheduler.customize/status.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-﻿(function () {
-    'use strict';
-    angular
-        .module('scheduler.module')
-        .factory('Status', function () {
-            function Status(id, name, isQflow) {
-                this.id = id;
-                this.name = name;
-                this.isQflow = isQflow;
-                this.stageId = -1;
-            };
-
-            return Status
-        }
-        );
-}     
-)();
-
-
-
-
-/***/ }),
-
 /***/ "./src/scheduler/scheduler.directives/draganddrop.js":
 /*!***********************************************************!*\
   !*** ./src/scheduler/scheduler.directives/draganddrop.js ***!
@@ -1736,6 +1789,97 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/scheduler/scheduler.model/schedulerEvent.js":
+/*!*********************************************************!*\
+  !*** ./src/scheduler/scheduler.model/schedulerEvent.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+﻿(function () {
+    'use strict';
+
+    var app = angular.module('scheduler.module');
+    app.factory('SchedulerEvent', function () {
+        function SchedulerEvent() {
+            this.id = 0;
+            this.serviceName = '';
+            this.customerName = '';
+            this.unitid = 0;
+            this.serviceId = 0;
+            this.appointmentId = 0;
+            this.calendarStageType = -1;
+            this.processId = 0;
+        }
+        return SchedulerEvent;
+    });
+})();
+
+
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.model/stage.js":
+/*!************************************************!*\
+  !*** ./src/scheduler/scheduler.model/stage.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+﻿(function () {
+    'use strict';
+
+    var app = angular.module('scheduler.module');
+    app.factory('Stage', function () {
+        function Stage(id, name, stageType, statuses) {
+            this.id = id;
+            this.name = name;
+            this.stageType = stageType;
+            this.statuses = [];
+            if (statuses) {
+                this.statuses = statuses;
+            }
+            this.schedulerEvents = [];
+        }
+        return Stage;
+    });
+})();
+
+
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.model/status.js":
+/*!*************************************************!*\
+  !*** ./src/scheduler/scheduler.model/status.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+﻿//to-do rename to service.
+(function () {
+    'use strict';
+    angular
+        .module('scheduler.module')
+        .factory('Status', function () {
+            function Status(id, name, isQflow) {
+                this.id = id;
+                this.name = name;
+                this.isQflow = isQflow;
+                this.stageId = -1;
+            };
+
+            return Status
+        }
+        );
+}     
+)();
+
+
+
+
+/***/ }),
+
 /***/ "./src/scheduler/scheduler.module.js":
 /*!*******************************************!*\
   !*** ./src/scheduler/scheduler.module.js ***!
@@ -1947,6 +2091,17 @@ __webpack_require__.r(__webpack_exports__);
                     async: true,
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(params),
+                    dataType: 'json'
+                });
+            },
+
+            loadTodayAppointments: function () {
+                return $.ajax({
+                    url: basePath + 'load-appointmens',
+                    type: 'post',
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: [],
                     dataType: 'json'
                 });
             },

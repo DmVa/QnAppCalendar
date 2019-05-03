@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace PQ.QnAppCalendar.Dto
 {
-    public class AppointmentChangedData
+    public class GetAppointmentsData
     {
-        public int PreviousUnitId;
-        public int NextUnitId;
-        public SchedulerEvent SchedulerEvent;
+        public string CurrentDateStr { get; set; }
+        public List<SchedulerEvent> SchedulerEvents { get; set; }
     }
 }

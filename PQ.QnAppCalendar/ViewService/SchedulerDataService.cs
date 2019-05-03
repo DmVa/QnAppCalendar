@@ -4,6 +4,7 @@ using PQ.QnAppCalendar.Dto;
 using QFlow.Library;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using static QFlow.Library.EntityType;
@@ -12,6 +13,15 @@ namespace PQ.QnAppCalendar.ViewService
 {
     public class SchedulerDataService
     {
+        public GetAppointmentsData GetAppointmentsData(int? unitId)
+        {
+            var result = new GetAppointmentsData();
+            var dt = DateTime.Now.Date;
+            result.CurrentDateStr = dt.ToString("MMMM dd, yyyy", new CultureInfo("en-US"));
+            result.SchedulerEvents = GetSchedulerEvents(dt, dt, unitId);
+            return result;
+        }
+
         public List<SchedulerEvent> GetSchedulerEvents(DateTime? from, DateTime? to, int? unitId)
         {
             var result = new List<SchedulerEvent>();
@@ -127,7 +137,7 @@ namespace PQ.QnAppCalendar.ViewService
         {
             var result = new SchedulerEvent();
             result.CustomerName = $"{app.CustomerFirstName} {app.CustomerLastName}";
-            result.Text = $"{app.CustomerFirstName} {app.CustomerLastName} - {app.ServiceName}";
+            result.ServiceName = $"{app.ServiceName}";
             result.Start_date = app.AppointmentDate;
             result.End_date = app.AppointmentDate.AddMinutes(app.AppointmentDuration);
             result.AppointmentId = app.AppointmentId;
@@ -136,11 +146,6 @@ namespace PQ.QnAppCalendar.ViewService
             result.Unitid = app.UnitId;
             result.ProcessId = app.ProcessId;
             return result;
-        }
-
-        internal  string UpdateEventServiceName(string text, string serviceName)
-        {
-            return $"{ text ?? ""}  - {serviceName ?? ""}";
         }
 
         internal List<UnitInfo> GetUnits(int? rootUnitId)
@@ -217,17 +222,17 @@ namespace PQ.QnAppCalendar.ViewService
         }
 
 
-        internal SchedulerEvent AppointmentChanged(int currentUserId,int? currentUnitId, int previousStageId,  SchedulerEvent theEvent)
+        internal SchedulerEvent AppointmentChanged(int currentUserId,int? currentUnitId, int previousStageId, int nextStageId,  SchedulerEvent theEvent)
         {
             var dataService = new QNomyDataService();
             
-            int newUnitId = theEvent.Unitid;// unit id is a stageType.
+          
             CustomizeData customizeData = GetCustomizeData(currentUnitId);
             // qnomy
             var calendarStages = dataService.GetClendarStages();
             var allCalendarStageServices = dataService.GetClendarStageServices();
             var prevCalendarStageType = GetStageTypeById(previousStageId, calendarStages);
-            var nextCalendarStageType = GetStageTypeById(theEvent.Unitid, calendarStages);
+            var nextCalendarStageType = GetStageTypeById(nextStageId, calendarStages);
             int previousServiceId = theEvent.ServiceId;
            
 
@@ -250,7 +255,7 @@ namespace PQ.QnAppCalendar.ViewService
                         throw new NotSupportedException("Cannot back to expected status");
                     case CalendarStageType.InService:
 
-                        var servicesInStage = GetServiceInStage(theEvent.Unitid, allCalendarStageServices);
+                        var servicesInStage = GetServiceInStage(nextStageId, allCalendarStageServices);
 
                         if (servicesInStage.Count == 0)
                             throw new DataException("Cannot find any service for this stage");
@@ -356,7 +361,7 @@ namespace PQ.QnAppCalendar.ViewService
             theEvent.CalendarStageType = statusMapping[qnomyApp.CurrentEntityStatus];
             theEvent.Unitid = GetStageByServiceId(theEvent.ServiceId, theEvent.CalendarStageType, calendarStages, customizeData);
             var currentService = Service.Get(theEvent.ServiceId);
-            theEvent.Text = UpdateEventServiceName(theEvent.CustomerName, currentService.Name);
+            theEvent.ServiceName = currentService.Name;
             
             return theEvent;
         }
