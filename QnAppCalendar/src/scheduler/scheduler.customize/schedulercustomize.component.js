@@ -13,13 +13,26 @@
             }
         });
     
-    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService', 'schedulerDataService', 'Stage', 'Status','alertService'];
+    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService', 'schedulerDataService', 'Stage', 'alertService'];
    
 
-    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status, alertService) {
+    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, alertService) {
         let $ctrl = this;
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
+        let allStages = [];
+        let availableservices = [];
+        $scope.stages = allStages;
+        $scope.availableservices = availableservices;
+
         $ctrlAddColumn.hide();
+
+        let onInitCustomizeListener = $scope.$on('pq-board-init-customize', function (e) {
+            $ctrl.getCustomizeData();
+        });
+           
+       $scope.$on('$destroy', function () {
+           onInitCustomizeListener();
+       });
 
         function getLastIndexOfServiceStage() {
             let index = -1;
@@ -64,7 +77,7 @@
 
         $ctrl.closeModal = function closeModal(save) {
             if (save) {
-                let data = { stages: $ctrl.allStages, available: $ctrl.availablestatuses};
+                let data = { stages: $ctrl.allStages, available: $ctrl.availableservices};
                 schedulerDataService.saveCustomizeData(data)
                 .then(function (result) {
                     if (result.error) {
@@ -94,8 +107,8 @@
             }
 
 
-            stageobj.statuses.forEach(function (status) {
-                $ctrl.availablestatuses.push(status);
+            stageobj.services.forEach(function (service) {
+                $ctrl.availableservices.push(service);
             });
 
             $ctrl.removeFromArray($ctrl.allStages, stageobj);
@@ -107,76 +120,70 @@
             $ctrlAddColumn.show();
         };
 
+        $ctrl.getCustomizeData = function getCustomizeData() {
+            schedulerDataService.getCustomizeData()
+                .then(function (result) {
+                    if (result.error) {
+                        schedulerDataService.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $ctrl.allStages = result.data.stages;
+                        $ctrl.availableservices = result.data.available;
 
-        let allStages = [];
-        let availablestatuses = [];
-        let allstatuses = [];
+                        $scope.stages = $ctrl.allStages;
+                        $scope.availableservices = $ctrl.availableservices;
 
-        schedulerDataService.getCustomizeData()
-            .then(function (result) {
-                if (result.error) {
-                    schedulerDataService.handleWrappedError(result);
+                        $scope.$apply();
+                    }
+                }, function (result) {
+                    schedulerDataService.handleError(result);
                     return;
-                }
-                if (result.data) {
-                    $ctrl.allStages = result.data.stages;
-                    $ctrl.availablestatuses = result.data.available;
+                });
 
-                    $scope.stages = $ctrl.allStages;
-                    $scope.statuses = $ctrl.availablestatuses;
-
-                    $scope.$apply();
-                }
-            }, function (result) {
-                schedulerDataService.handleError(result);
-                return;
-            });
-
-        $scope.stages = allStages;
-        $scope.statuses = availablestatuses;
-
-        // stateObj - object where drag new status, data - id of status which is drag.
+        };
+        // stateObj - object where drag new service, data - id of service which is drag.
         $scope.handledrop = function (event, stageobj, data) {
-            let statusObj;
-            let statusId = data;
+            let serviceObj;
+            let serviceId = data;
 
             $ctrl.allStages.forEach(function (stage) {
-                stage.statuses.forEach(function (status) {
-                    if (status.id == statusId) {
-                        statusObj = status;
+                stage.services.forEach(function (service) {
+                    if (service.id == serviceId) {
+                        serviceObj = service;
                     }
                 });
             });
 
-            if (!statusObj) {
-                $ctrl.availablestatuses.forEach(function (status) {
-                    if (status.id == statusId) {
-                        statusObj = status;
+            if (!serviceObj) {
+                $ctrl.availableservices.forEach(function (service) {
+                    if (service.id == serviceId) {
+                        serviceObj = service;
                     }
                 });
             }
 
           
-            if (!statusObj) {
+            if (!serviceObj) {
                 return;
             }
 
-            let previousStageId = statusObj.stageId;
+            let previousStageId = serviceObj.stageId;
             if (previousStageId == -1) {
-                $ctrl.removeFromArray($ctrl.availablestatuses, statusObj);
+                $ctrl.removeFromArray($ctrl.availableservices, serviceObj);
             } else {
                 let previousStage = $ctrl.allStages.find(item => item.id == previousStageId);
                 if (previousStage) {
-                    $ctrl.removeFromArray(previousStage.statuses, statusObj);
+                    $ctrl.removeFromArray(previousStage.services, serviceObj);
                 }
             }
 
             if (stageobj) {
-                statusObj.stageId = stageobj.id;
-                stageobj.statuses.push(statusObj);
+                serviceObj.stageId = stageobj.id;
+                stageobj.services.push(serviceObj);
             }else {
-                statusObj.stageId = -1;
-                $ctrl.availablestatuses.push(statusObj);
+                serviceObj.stageId = -1;
+                $ctrl.availableservices.push(serviceObj);
             }
 
             $scope.$apply();

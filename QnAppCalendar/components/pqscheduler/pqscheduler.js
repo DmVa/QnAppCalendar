@@ -600,25 +600,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scheduler_scheduler_module_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_module_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _scheduler_scheduler_model_stage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scheduler/scheduler.model/stage.js */ "./src/scheduler/scheduler.model/stage.js");
 /* harmony import */ var _scheduler_scheduler_model_stage_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_model_stage_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _scheduler_scheduler_model_status_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scheduler/scheduler.model/status.js */ "./src/scheduler/scheduler.model/status.js");
-/* harmony import */ var _scheduler_scheduler_model_status_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_model_status_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scheduler/scheduler.model/schedulerEvent.js */ "./src/scheduler/scheduler.model/schedulerEvent.js");
-/* harmony import */ var _scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scheduler/scheduler.services/modal.service */ "./src/scheduler/scheduler.services/modal.service.js");
-/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scheduler/scheduler.services/schedulerData.service.js */ "./src/scheduler/scheduler.services/schedulerData.service.js");
-/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./scheduler/scheduler.services/alert.service.js */ "./src/scheduler/scheduler.services/alert.service.js");
-/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scheduler/scheduler.directives/draganddrop.js */ "./src/scheduler/scheduler.directives/draganddrop.js");
-/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _scheduler_scheduler_directives_modal_directive_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scheduler/scheduler.directives/modal.directive.js */ "./src/scheduler/scheduler.directives/modal.directive.js");
-/* harmony import */ var _scheduler_scheduler_component_scheduler_component_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scheduler/scheduler.component/scheduler.component.js */ "./src/scheduler/scheduler.component/scheduler.component.js");
-/* harmony import */ var _scheduler_scheduler_board_scheduler_board_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./scheduler/scheduler.board/scheduler.board.js */ "./src/scheduler/scheduler.board/scheduler.board.js");
-/* harmony import */ var _scheduler_scheduler_customize_schedulercustomize_component_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./scheduler/scheduler.customize/schedulercustomize.component.js */ "./src/scheduler/scheduler.customize/schedulercustomize.component.js");
-/* harmony import */ var _scheduler_scheduler_editcolumn_schedulereditcolumn_component_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./scheduler/scheduler.editcolumn/schedulereditcolumn.component.js */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js");
+/* harmony import */ var _scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scheduler/scheduler.model/schedulerEvent.js */ "./src/scheduler/scheduler.model/schedulerEvent.js");
+/* harmony import */ var _scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_model_schedulerEvent_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scheduler/scheduler.services/modal.service */ "./src/scheduler/scheduler.services/modal.service.js");
+/* harmony import */ var _scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_modal_service__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scheduler/scheduler.services/schedulerData.service.js */ "./src/scheduler/scheduler.services/schedulerData.service.js");
+/* harmony import */ var _scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_schedulerData_service_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scheduler/scheduler.services/alert.service.js */ "./src/scheduler/scheduler.services/alert.service.js");
+/* harmony import */ var _scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_services_alert_service_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./scheduler/scheduler.directives/draganddrop.js */ "./src/scheduler/scheduler.directives/draganddrop.js");
+/* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _scheduler_scheduler_directives_modal_directive_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scheduler/scheduler.directives/modal.directive.js */ "./src/scheduler/scheduler.directives/modal.directive.js");
+/* harmony import */ var _scheduler_scheduler_component_scheduler_component_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scheduler/scheduler.component/scheduler.component.js */ "./src/scheduler/scheduler.component/scheduler.component.js");
+/* harmony import */ var _scheduler_scheduler_board_scheduler_board_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scheduler/scheduler.board/scheduler.board.js */ "./src/scheduler/scheduler.board/scheduler.board.js");
+/* harmony import */ var _scheduler_scheduler_customize_schedulercustomize_component_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./scheduler/scheduler.customize/schedulercustomize.component.js */ "./src/scheduler/scheduler.customize/schedulercustomize.component.js");
+/* harmony import */ var _scheduler_scheduler_editcolumn_schedulereditcolumn_component_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./scheduler/scheduler.editcolumn/schedulereditcolumn.component.js */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js");
 ﻿
-
 
 
 
@@ -643,7 +640,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"pq-scheduler-board\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"pq-board-container\"> <div class=\"pq-board-header\"> {{currentDateStr}} </div> <div class=\"pq-board-body\"> <div ng-repeat=\"stageobj in stages\" class=\"pq-stage\" id=\"stage_{{stageobj.id}}\" pq-drop-on-me=\"true\" on-drop=\"handledrop(event, stageobj, data)\"> <div class=\"pq-stageheader\"> <div> {{stageobj.name}}</div> </div> <div class=\"pq-stagebody\"> <div ng-repeat=\"schedulerEvent in stageobj.schedulerEvents\" class=\"pq-stageevent\" id=\"schedulerEvent_{{schedulerEvent.id}}\" pq-drag-me=\"appoitnmnetId\" appoitnmnetId=\"{{schedulerEvent.appointmentId}}\"> <div class=\"pq-appointment\"> <div> {{schedulerEvent.customerName}}</div> <div> {{schedulerEvent.serviceName}}</div> </div> </div> </div> </div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize on-save-customize=\"$ctrl.onSaveCustomize()\"></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
+module.exports = "<div class=\"pq-scheduler-board\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"pq-board-container\"> <div class=\"pq-board-header\"> {{currentDateStr}} </div> <div class=\"pq-board-body\"> <div ng-repeat=\"stageobj in stages\" class=\"pq-stage\" id=\"stage_{{stageobj.id}}\" pq-drop-on-me=\"true\" on-drop=\"handledrop(event, stageobj, data)\"> <div class=\"pq-stageheader\"> <div> {{stageobj.name}}</div> </div> <div class=\"pq-stagebody\"> <div ng-repeat=\"schedulerEvent in stageobj.schedulerEvents\" class=\"pq-stageevent\" id=\"schedulerEvent_{{schedulerEvent.id}}\" pq-drag-me=\"appoitnmnetId\" appoitnmnetId=\"{{schedulerEvent.appointmentId}}\"> <div class=\"pq-appointment\"> <div> {{schedulerEvent.customerName}}</div> <div> {{schedulerEvent.serviceName}}</div> </div> </div> </div> </div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize on-save-customize=\"$ctrl.onSaveCustomize()\" ng-init=\"\"></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
 
 /***/ }),
 
@@ -675,20 +672,19 @@ __webpack_require__.r(__webpack_exports__);
 
     function SchedulerController($scope, $window, $document, $timeout, schedulerDataService, modalService, alertService) {
         let $ctrl = this;
+        $scope.obj = {};
+
         $scope.currentDateStr = '';
         $scope.stages = [];
         let schedulerEvents = [];
-        //$scope.scheduler = $ctrl.scheduler; //fix old logic (?)
-        //$scope.viewModel = $ctrl.viewModel; //fix old logic (?)
-      //  let scheduler = $window.scheduler;
 
-        let _originalEvent = new Map();
         let customizeData = null;
         let units = null;
 
         $ctrl.openCustomize = function ($event) {
             $event.preventDefault();
             $event.stopPropagation();
+            $scope.$broadcast('pq-board-init-customize');
             modalService.Open('scheduler-customize-modal');
         };
 
@@ -736,164 +732,68 @@ __webpack_require__.r(__webpack_exports__);
         };
 
         $ctrl.onSaveCustomize = function onSaveCustomize() {
-            $ctrl.LoadUnits(true);
+            $ctrl.loadCustomizeData(false);
         };
+      
 
-        $ctrl.rollbackEvent = function (ev) {
-            let originalEvent = _originalEvent.get(ev.appointmentId);
-            if (!originalEvent)
+        $ctrl.remapEventsToStages = function () {
+            var evs = $ctrl.schedulerEvents;
+            if (!evs || evs.length == 0)
                 return;
-            _originalEvent.delete(ev.appointmentId);
 
-            ev.start_date = originalEvent.start_date;
-            ev.end_date = originalEvent.end_date;
-            ev.unitid = originalEvent.unitid;
-          //  scheduler.updateView();
-
-        };
-
-        $ctrl.rollbackEventTime = function (ev) {
-            let originalEvent = _originalEvent.get(ev.appointmentId);
-            if (!originalEvent)
-                return;
-            _originalEvent.delete(ev.appointmentId);
-
-            ev.start_date = originalEvent.start_date;
-            ev.end_date = originalEvent.end_date;
-          //  scheduler.updateView();
-
-        };
-
-        // config
-        //scheduler.config.xml_date = "%Y-%m-%d %H:%i";
-        //scheduler.locale.labels.unit_tab = "Stage";
-        //scheduler.xy.scale_width = 0;//sets the height of the X-Axis
-        //scheduler.config.dblclick_create = false;
-        //scheduler.config.drag_create = false;
-        //scheduler.config.readonly_form = true;
-
-        //var sections = scheduler.serverList("units");
-        //scheduler.createUnitsView({
-        //    name: "unit",
-        //    property: "unitid",
-        //    skip_incorrect: true,
-        //    list: sections
-        //});
-
-        //scheduler.parse([], "json");//without it  appears popup says
-
-        //scheduler.init('scheduler_here', new Date(), "unit");
-
-        
-        //scheduler.attachEvent("onBeforeViewChange", function (old_mode, old_date, mode, date) {
-        //    var a_date = schedulerDataService.getDate(date);
-        //    var a_minDate = schedulerDataService.getDate(scheduler.getState().min_date);
-        //    var a_maxDate = schedulerDataService.getDate(scheduler.getState().max_date);
-
-        //    if (a_date < a_minDate)
-        //        a_minDate = a_date;
-
-        //    if (a_date > a_maxDate)
-        //        a_maxDate = a_date;
-
-        //    schedulerDataService.loadAppointments(a_minDate, a_maxDate)
-        //        .then(function (result) {
-        //            if (result.error) {
-        //                $ctrl.handleWrappedError(result);
-        //                return;
-        //            }
-        //            if (result.data) {
-        //                scheduler.clearAll();
-        //                scheduler.parse(result.data, "json");
-        //            }
-        //        }, function (result) {
-        //            $ctrl.handleError(result);
-        //            return;
-        //        });
-        //    return true;
-        //});
-
-        $ctrl.LoadUnits =  function(reloadCustomize) {
-            schedulerDataService.loadUnits()
-                .then(function (result) {
-                    if (result.error) {
-                        $ctrl.handleWrappedError(result);
-                        return;
+            for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
+                var ev = evs[eventIdx];
+                let stageId = $ctrl.getStageIdForServiceid(ev.serviceId);
+                if (stageId == -1)
+                    ev.stageId = -1;
+                else {
+                    if (ev.stageType == 3) { //inservice
+                        ev.stageId == stageId;
                     }
-                    if (result.data) {
-                        $ctrl.units = result.data;
-                      //  scheduler.updateCollection("units", $ctrl.units);
-                        if (reloadCustomize) {
-                            $ctrl.LoadCustomizeData();
-                            return;
-                        }
+                    else {
+                        ev.stageId = $ctrl.getStageIdByStageType(ev.stageType);
                     }
-                }, function (result) {
-                    $ctrl.handleError(result);
-                    return;
-                });
-        };
+                }
+            }
+        }
 
-       // $ctrl.LoadUnits(false);
-       
-        $ctrl.UpdateStages = function () {
-            if (!$ctrl.customizeData) {
-                $scope.stages = [];
-                $scope.$apply();
-                return;
+        $ctrl.getStageIdForServiceid = function (serviceId) {
+            if (!$ctrl.customizeData)
+                return -1;
+            let result = -1;
+
+            for (var stageIdx = 0; stageIdx < $ctrl.customizeData.stages.length; stageIdx++) {
+                var stage = $ctrl.customizeData.stages[stageIdx];
+                for (var serviceIdx = 0; serviceIdx < stage.services.length; serviceIdx++) {
+                    var service = stage.services[serviceIdx];
+                    if (service.id == serviceId) {
+                        result = stage.id;
+                        break;
+                    }
+                };
+
+                if (result >= 0) {
+                    break;
+                }
+            }
+            return result;
+        }
+
+        $ctrl.getStageIdByStageType = function (stageType) {
+            let result = -1;
+            if (!$ctrl.customizeData)
+                return -1;
+
+            for (var stageIdx = 0; stageIdx < $ctrl.customizeData.stages.length; stageIdx++) {
+                var stage = $ctrl.customizeData.stages[stageIdx];
+                if (stage.stageType == stageType) {
+                    result = stage.id;
+                    break;
+                }
             }
 
-
-            for (var stIdx = 0; stIdx < $ctrl.customizeData.stages.length; stIdx++) {
-                var stage = $ctrl.customizeData.stages[stIdx];
-                stage.schedulerEvents = $ctrl.schedulerEvents.filter(ev => ev.unitid == stage.id);
-            }
-
-            $scope.stages = $ctrl.customizeData.stages;
-            $scope.$apply();
-        };
-
-        $ctrl.LoadCustomizeData = function() {
-            schedulerDataService.getCustomizeData()
-                .then(function (result) {
-                    if (result.error) {
-                        $ctrl.handleWrappedError(result);
-                        return;
-                    }
-                    if (result.data) {
-                        $ctrl.customizeData = result.data;
-                        $ctrl.UpdateStages();
-                       // $ctrl.RemapEventToUnits();
-                    }
-                }, function (result) {
-                    $ctrl.handleError(result);
-                    return;
-                });
-        };
-
-        $ctrl.LoadTodayAppointments = function () {
-            schedulerDataService.loadTodayAppointments()
-                .then(function (result) {
-                    if (result.error) {
-                        $ctrl.handleWrappedError(result);
-                        return;
-                    }
-                    if (result.data) {
-                        $scope.currentDateStr = result.data.currentDateStr;
-                        $ctrl.schedulerEvents = result.data.schedulerEvents;
-                        $ctrl.UpdateStages();
-                        $scope.$apply();
-                    }
-                }, function (result) {
-                    $ctrl.handleError(result);
-                    return;
-                });
-            return true;
-        };
-
-        $ctrl.LoadCustomizeData();
-        $ctrl.LoadTodayAppointments();
-        
+            return result;
+        }
 
         $ctrl.getStageObjectById = function (stageId) {
             let result = null;
@@ -910,6 +810,76 @@ __webpack_require__.r(__webpack_exports__);
 
             return result;
         }
+
+        $ctrl.updateStages = function () {
+            if (!$ctrl.customizeData) {
+                $scope.stages = [];
+                $scope.$apply();
+                return;
+            }
+
+
+            for (var stIdx = 0; stIdx < $ctrl.customizeData.stages.length; stIdx++) {
+                var stage = $ctrl.customizeData.stages[stIdx];
+                if (!$ctrl.schedulerEvents) {
+                    stage.schedulerEvents = [];
+                }
+                else {
+                    stage.schedulerEvents = $ctrl.schedulerEvents.filter(ev => ev.stageId == stage.id);
+                }
+            }
+
+            $scope.stages = $ctrl.customizeData.stages;
+            $scope.$apply();
+        };
+
+        $ctrl.loadCustomizeData = function(loadAppointments) {
+            schedulerDataService.getCustomizeData()
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $ctrl.customizeData = result.data;
+                        if (loadAppointments) {
+                            $ctrl.loadTodayAppointments();
+                        }
+                        else {
+                            $ctrl.remapEventsToStages();
+                        }
+
+                        $ctrl.updateStages();
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
+                    return;
+                });
+        };
+
+        $ctrl.loadTodayAppointments = function () {
+            schedulerDataService.loadTodayAppointments()
+                .then(function (result) {
+                    if (result.error) {
+                        $ctrl.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $scope.currentDateStr = result.data.currentDateStr;
+                        $ctrl.schedulerEvents = result.data.schedulerEvents;             
+                        $ctrl.updateStages();
+                    }
+                }, function (result) {
+                    $ctrl.handleError(result);
+                    return;
+                });
+            return true;
+        };
+
+     
+        
+
+      
 
         $scope.handledrop = function (event, stageobj, data) {
 
@@ -931,7 +901,7 @@ __webpack_require__.r(__webpack_exports__);
 
             for (var stIdx = 0; stIdx < $ctrl.customizeData.stages.length; stIdx++) {
                 var stage = $ctrl.customizeData.stages[stIdx];
-                if (stage.id == scheduledEvent.unitid) {
+                if (stage.id == scheduledEvent.stageId) {
                     previousStage = stage;
                     break;
                 }
@@ -941,13 +911,13 @@ __webpack_require__.r(__webpack_exports__);
                 return;
             };
 
-            let previousUnitId = scheduledEvent.unitid;
-            let nextUnitId = stageobj.id;
-            if (previousUnitId == nextUnitId) {
+            let previousStageId = scheduledEvent.stageId;
+            let nextStageId = stageobj.id;
+            if (previousStageId == nextStageId) {
                 return;
             }
 
-            schedulerDataService.eventChanged({ previousUnitId: previousUnitId, nextUnitId: nextUnitId, schedulerEvent: scheduledEvent })
+            schedulerDataService.eventChanged({ previousStageId: previousStageId, nextStageId: nextStageId, schedulerEvent: scheduledEvent })
                 .then(function (result) {
 
                     if (result.error) {
@@ -957,10 +927,10 @@ __webpack_require__.r(__webpack_exports__);
                     if (result.data.appointmentId) {
                         scheduledEvent.appointmentId = result.data.appointmentId;
                         scheduledEvent.serviceId = result.data.serviceId;
-                        scheduledEvent.unitid = result.data.unitid;
+                        scheduledEvent.stageId = result.data.stageId;
                         scheduledEvent.serviceName = result.data.serviceName;
                         $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
-                        let newStageObj = $ctrl.getStageObjectById(scheduledEvent.unitid);
+                        let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
                         if (newStageObj) {
                             newStageObj.schedulerEvents.push(scheduledEvent);
                         }
@@ -975,47 +945,8 @@ __webpack_require__.r(__webpack_exports__);
 
         }
 
-        //scheduler.attachEvent("onBeforeEventChanged", function (ev, e, is_new, original) {
-        //    _originalEvent.set(ev.appointmentId, $.extend(true, {}, original));
-        //    return true;
-        //});
 
-        //scheduler.attachEvent("onEventChanged", function (id, ev) {
-        //    let linkToEvent = ev;
-
-        //    let theEventCopy = $.extend(true, {}, ev); // make a copy.
-        //    let timeZoneOffsetMs = ev.start_date.getTimezoneOffset() * 60000;
-        //    theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
-        //    theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
-        //    let originalEvent = _originalEvent.get(ev.appointmentId);
-        //    let previousUnitId = 0;
-        //    if (originalEvent) {
-        //        previousUnitId = originalEvent.unitid;
-        //    }
-            
-
-        //    schedulerDataService.eventChanged({ previousUnitId: previousUnitId, schedulerEvent: theEventCopy})
-        //        .then(function (result) {
-                    
-        //            if (result.error) {
-        //                $ctrl.handleWrappedError(result);
-        //                $ctrl.rollbackEvent(ev);
-        //                return;
-        //            }
-        //            if (result.data.appointmentId) {
-        //                linkToEvent.appointmentId = result.data.appointmentId;
-        //                linkToEvent.serviceId = result.data.serviceId;
-        //                linkToEvent.unitid = result.data.unitid;
-        //                linkToEvent.text = result.data.text;
-        //            }
-
-        //            $ctrl.rollbackEventTime(ev);
-        //            console.log('saved');
-        //        }, function (result) {
-        //            $ctrl.handleError(result);
-        //            $ctrl.rollbackEvent(ev);
-        //        });
-        //});
+        $ctrl.loadCustomizeData(true);
     }
 }
 )();
@@ -1055,7 +986,8 @@ module.exports = "<div class=\"pq-scheduler\"> <button ng-click=\"$ctrl.openCust
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scheduler_component_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scheduler.component.scss */ "./src/scheduler/scheduler.component/scheduler.component.scss");
 /* harmony import */ var _scheduler_component_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_scheduler_component_scss__WEBPACK_IMPORTED_MODULE_0__);
-﻿
+﻿// after rrefactor /renaming it was not restored.
+
 
 (function () {
     'use strict';
@@ -1063,7 +995,6 @@ __webpack_require__.r(__webpack_exports__);
     angular
         .module('scheduler.module')
         .component('pqScheduler', {
-            // templateUrl: './scheduler.component.html',
             template: __webpack_require__(/*! ./scheduler.component.html */ "./src/scheduler/scheduler.component/scheduler.component.html"),
             controller: SchedulerController,
         });
@@ -1123,7 +1054,7 @@ __webpack_require__.r(__webpack_exports__);
         };
 
         $ctrl.onSaveCustomize = function onSaveCustomize() {
-            $ctrl.LoadUnits(true);
+            $ctrl.LoadStages(true);
         };
 
         $ctrl.rollbackEvent = function (ev) {
@@ -1134,7 +1065,7 @@ __webpack_require__.r(__webpack_exports__);
 
             ev.start_date = originalEvent.start_date;
             ev.end_date = originalEvent.end_date;
-            ev.unitid = originalEvent.unitid;
+            ev.stageId = originalEvent.stageId;
             scheduler.updateView();
 
         };
@@ -1162,7 +1093,7 @@ __webpack_require__.r(__webpack_exports__);
         var sections = scheduler.serverList("units");
         scheduler.createUnitsView({
             name: "unit",
-            property: "unitid",
+            property: "stageId",
             skip_incorrect: true,
             list: sections
         });
@@ -1200,8 +1131,8 @@ __webpack_require__.r(__webpack_exports__);
             return true;
         });
 
-        $ctrl.LoadUnits =  function(reloadCustomize) {
-            schedulerDataService.loadUnits()
+        $ctrl.LoadStages =  function(reloadCustomize) {
+            schedulerDataService.loadStages()
                 .then(function (result) {
                     if (result.error) {
                         $ctrl.handleWrappedError(result);
@@ -1221,7 +1152,7 @@ __webpack_require__.r(__webpack_exports__);
                 });
         };
 
-        $ctrl.LoadUnits(false);
+        $ctrl.LoadStages(false);
 
         $ctrl.LoadCustomizeData = function() {
             schedulerDataService.getCustomizeData()
@@ -1247,19 +1178,20 @@ __webpack_require__.r(__webpack_exports__);
 
             for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
                 var ev = evs[eventIdx];
-                ev.unitid = $ctrl.getUnitIdForServiceid(ev.serviceId, ev.calendarStageType)
+                ev.stageId = $ctrl.getStageIdForServiceid(ev.serviceId);
             }
         }
 
-        $ctrl.getUnitIdForServiceid = function (serviceId, stageTypeId) {
+        $ctrl.getStageIdForServiceid = function (serviceId) {
             if (!$ctrl.customizeData)
                 return - 1;
             let result = -1;
 
             for (var stageIdx = 0; stageIdx < $ctrl.customizeData.length; stageIdx++) {
                 var stage = $ctrl.customizeData[stageIdx];
-                for (var statusIdx = 0; statusIdx < stage.statuses.length; statusIdx++) {
-                    if (status.Id == serviceId) {
+                for (var serviceIdx = 0; statusIdx < stage.services.length; statusIdx++) {
+                    var service = stage.services[serviceIdx];
+                    if (service.Id == serviceId) {
                         result = stage.Id;
                         break;
                     }
@@ -1285,13 +1217,13 @@ __webpack_require__.r(__webpack_exports__);
             theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
             theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
             let originalEvent = _originalEvent.get(ev.appointmentId);
-            let previousUnitId = 0;
+            let previousStageId = 0;
             if (originalEvent) {
-                previousUnitId = originalEvent.unitid;
+                previousStageId = originalEvent.stageId;
             }
             
 
-            schedulerDataService.eventChanged({ previousUnitId: previousUnitId, schedulerEvent: theEventCopy})
+            schedulerDataService.eventChanged({ previousStageId: previousStageId, schedulerEvent: theEventCopy})
                 .then(function (result) {
                     
                     if (result.error) {
@@ -1302,7 +1234,7 @@ __webpack_require__.r(__webpack_exports__);
                     if (result.data.appointmentId) {
                         linkToEvent.appointmentId = result.data.appointmentId;
                         linkToEvent.serviceId = result.data.serviceId;
-                        linkToEvent.unitid = result.data.unitid;
+                        linkToEvent.stageId = result.data.stageId;
                         linkToEvent.text = result.data.text;
                     }
 
@@ -1337,7 +1269,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> Available services <div ng-repeat=\"status in statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{status.id}}\"> {{status.name}} </div> </div> <div class=\"stages-block\"> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.stageType == 3}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stagestatus in stageobj.statuses\" class=\"status\" pq-drag-me=\"statusid\" id=\"status_{{stagestatus.id}}\" statusid=\"{{stagestatus.id}}\"> {{stagestatus.name}} </div> </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
+module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> <span class=\"availableservice\">Available services</span> <div ng-repeat=\"service in availableservices\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{service.id}}\" serviceid=\"{{service.id}}\"> {{service.name}} </div> </div> <div class=\"stages-block\"> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.stageType == 3}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stageservice in stageobj.services\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{stagestatus.id}}\" serviceid=\"{{stageservice.id}}\"> {{stageservice.name}} </div> </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
 
 /***/ }),
 
@@ -1367,13 +1299,26 @@ __webpack_require__.r(__webpack_exports__);
             }
         });
     
-    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService', 'schedulerDataService', 'Stage', 'Status','alertService'];
+    SchedulerCustomizeController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService', 'schedulerDataService', 'Stage', 'alertService'];
    
 
-    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status, alertService) {
+    function SchedulerCustomizeController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, alertService) {
         let $ctrl = this;
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
+        let allStages = [];
+        let availableservices = [];
+        $scope.stages = allStages;
+        $scope.availableservices = availableservices;
+
         $ctrlAddColumn.hide();
+
+        let onInitCustomizeListener = $scope.$on('pq-board-init-customize', function (e) {
+            $ctrl.getCustomizeData();
+        });
+           
+       $scope.$on('$destroy', function () {
+           onInitCustomizeListener();
+       });
 
         function getLastIndexOfServiceStage() {
             let index = -1;
@@ -1418,7 +1363,7 @@ __webpack_require__.r(__webpack_exports__);
 
         $ctrl.closeModal = function closeModal(save) {
             if (save) {
-                let data = { stages: $ctrl.allStages, available: $ctrl.availablestatuses};
+                let data = { stages: $ctrl.allStages, available: $ctrl.availableservices};
                 schedulerDataService.saveCustomizeData(data)
                 .then(function (result) {
                     if (result.error) {
@@ -1448,8 +1393,8 @@ __webpack_require__.r(__webpack_exports__);
             }
 
 
-            stageobj.statuses.forEach(function (status) {
-                $ctrl.availablestatuses.push(status);
+            stageobj.services.forEach(function (service) {
+                $ctrl.availableservices.push(service);
             });
 
             $ctrl.removeFromArray($ctrl.allStages, stageobj);
@@ -1461,76 +1406,70 @@ __webpack_require__.r(__webpack_exports__);
             $ctrlAddColumn.show();
         };
 
+        $ctrl.getCustomizeData = function getCustomizeData() {
+            schedulerDataService.getCustomizeData()
+                .then(function (result) {
+                    if (result.error) {
+                        schedulerDataService.handleWrappedError(result);
+                        return;
+                    }
+                    if (result.data) {
+                        $ctrl.allStages = result.data.stages;
+                        $ctrl.availableservices = result.data.available;
 
-        let allStages = [];
-        let availablestatuses = [];
-        let allstatuses = [];
+                        $scope.stages = $ctrl.allStages;
+                        $scope.availableservices = $ctrl.availableservices;
 
-        schedulerDataService.getCustomizeData()
-            .then(function (result) {
-                if (result.error) {
-                    schedulerDataService.handleWrappedError(result);
+                        $scope.$apply();
+                    }
+                }, function (result) {
+                    schedulerDataService.handleError(result);
                     return;
-                }
-                if (result.data) {
-                    $ctrl.allStages = result.data.stages;
-                    $ctrl.availablestatuses = result.data.available;
+                });
 
-                    $scope.stages = $ctrl.allStages;
-                    $scope.statuses = $ctrl.availablestatuses;
-
-                    $scope.$apply();
-                }
-            }, function (result) {
-                schedulerDataService.handleError(result);
-                return;
-            });
-
-        $scope.stages = allStages;
-        $scope.statuses = availablestatuses;
-
-        // stateObj - object where drag new status, data - id of status which is drag.
+        };
+        // stateObj - object where drag new service, data - id of service which is drag.
         $scope.handledrop = function (event, stageobj, data) {
-            let statusObj;
-            let statusId = data;
+            let serviceObj;
+            let serviceId = data;
 
             $ctrl.allStages.forEach(function (stage) {
-                stage.statuses.forEach(function (status) {
-                    if (status.id == statusId) {
-                        statusObj = status;
+                stage.services.forEach(function (service) {
+                    if (service.id == serviceId) {
+                        serviceObj = service;
                     }
                 });
             });
 
-            if (!statusObj) {
-                $ctrl.availablestatuses.forEach(function (status) {
-                    if (status.id == statusId) {
-                        statusObj = status;
+            if (!serviceObj) {
+                $ctrl.availableservices.forEach(function (service) {
+                    if (service.id == serviceId) {
+                        serviceObj = service;
                     }
                 });
             }
 
           
-            if (!statusObj) {
+            if (!serviceObj) {
                 return;
             }
 
-            let previousStageId = statusObj.stageId;
+            let previousStageId = serviceObj.stageId;
             if (previousStageId == -1) {
-                $ctrl.removeFromArray($ctrl.availablestatuses, statusObj);
+                $ctrl.removeFromArray($ctrl.availableservices, serviceObj);
             } else {
                 let previousStage = $ctrl.allStages.find(item => item.id == previousStageId);
                 if (previousStage) {
-                    $ctrl.removeFromArray(previousStage.statuses, statusObj);
+                    $ctrl.removeFromArray(previousStage.services, serviceObj);
                 }
             }
 
             if (stageobj) {
-                statusObj.stageId = stageobj.id;
-                stageobj.statuses.push(statusObj);
+                serviceObj.stageId = stageobj.id;
+                stageobj.services.push(serviceObj);
             }else {
-                statusObj.stageId = -1;
-                $ctrl.availablestatuses.push(statusObj);
+                serviceObj.stageId = -1;
+                $ctrl.availableservices.push(serviceObj);
             }
 
             $scope.$apply();
@@ -1748,10 +1687,10 @@ __webpack_require__.r(__webpack_exports__);
             }
         });
     
-    SchedulerEditColumnController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
+    SchedulerEditColumnController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService', 'schedulerDataService'];
    
 
-    function SchedulerEditColumnController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
+    function SchedulerEditColumnController($scope, $window, $document, $timeout, modalService, schedulerDataService) {
         let $ctrl = this;
         $scope.name = '';
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
@@ -1796,10 +1735,10 @@ __webpack_require__.r(__webpack_exports__);
             this.id = 0;
             this.serviceName = '';
             this.customerName = '';
-            this.unitid = 0;
+            this.stageId = 0;
             this.serviceId = 0;
             this.appointmentId = 0;
-            this.calendarStageType = -1;
+            this.stageType = -1;
             this.processId = 0;
         }
         return SchedulerEvent;
@@ -1822,50 +1761,19 @@ __webpack_require__.r(__webpack_exports__);
 
     var app = angular.module('scheduler.module');
     app.factory('Stage', function () {
-        function Stage(id, name, stageType, statuses) {
+        function Stage(id, name, stageType, services) {
             this.id = id;
             this.name = name;
             this.stageType = stageType;
-            this.statuses = [];
-            if (statuses) {
-                this.statuses = statuses;
+            this.services = [];
+            if (services) {
+                this.services = services;
             }
             this.schedulerEvents = [];
         }
         return Stage;
     });
 })();
-
-
-
-/***/ }),
-
-/***/ "./src/scheduler/scheduler.model/status.js":
-/*!*************************************************!*\
-  !*** ./src/scheduler/scheduler.model/status.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-﻿//to-do rename to service.
-(function () {
-    'use strict';
-    angular
-        .module('scheduler.module')
-        .factory('Status', function () {
-            function Status(id, name, isQflow) {
-                this.id = id;
-                this.name = name;
-                this.isQflow = isQflow;
-                this.stageId = -1;
-            };
-
-            return Status
-        }
-        );
-}     
-)();
-
 
 
 
@@ -2097,9 +2005,9 @@ __webpack_require__.r(__webpack_exports__);
                 });
             },
 
-            loadUnits: function (params) {
+            loadStages: function (params) {
               return  $.ajax({
-                    url: basePath + 'load-units',
+                    url: basePath + 'load-stages',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',

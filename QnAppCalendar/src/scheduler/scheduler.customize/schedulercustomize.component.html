@@ -1,9 +1,9 @@
 ﻿<div class="scheduler-customize-container">
     <div class="scheduler-centered-content">
         <div class="avaiable-container" pq-drop-on-me on-drop="handledrop(event, null, data)">
-            Available services
-            <div ng-repeat="status in statuses" class="status" pq-drag-me="statusid" id="status_{{stagestatus.id}}" statusid="{{status.id}}">
-                {{status.name}}
+            <span class="availableservice">Available services</span>
+            <div ng-repeat="service in availableservices" class="stageservice" pq-drag-me="serviceid" id="service_{{service.id}}" serviceid="{{service.id}}">
+                {{service.name}}
             </div>
         </div>
 
@@ -29,8 +29,8 @@
                         </span>
                     </div>
 
-                    <div ng-repeat="stagestatus in stageobj.statuses" class="status" pq-drag-me="statusid" id="status_{{stagestatus.id}}" statusid="{{stagestatus.id}}">
-                        {{stagestatus.name}}
+                    <div ng-repeat="stageservice in stageobj.services" class="stageservice" pq-drag-me="serviceid" id="service_{{stagestatus.id}}" serviceid="{{stageservice.id}}">
+                        {{stageservice.name}}
                     </div>
                 </div>
             </div>

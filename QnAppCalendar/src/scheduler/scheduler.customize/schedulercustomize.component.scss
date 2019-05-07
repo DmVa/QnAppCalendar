@@ -57,9 +57,16 @@
         width: 110px;
     }
 
-    .status {
+    .stageservice {
         background: LightGray;
         margin: 2px 5px 2px 5px;
+    }
+
+    .availableservice {
+        white-space: nowrap;
+        margin: 2px 5px 2px 5px;
+        font-size: 14px;
+        font-family: arial;
     }
 
     .pq-modal-footer {

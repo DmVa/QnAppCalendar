@@ -1,4 +1,5 @@
-﻿import './scheduler.component.scss';
+﻿// after rrefactor /renaming it was not restored.
+import './scheduler.component.scss';
 
 (function () {
     'use strict';
@@ -6,7 +7,6 @@
     angular
         .module('scheduler.module')
         .component('pqScheduler', {
-            // templateUrl: './scheduler.component.html',
             template: require('./scheduler.component.html'),
             controller: SchedulerController,
         });
@@ -66,7 +66,7 @@
         };
 
         $ctrl.onSaveCustomize = function onSaveCustomize() {
-            $ctrl.LoadUnits(true);
+            $ctrl.LoadStages(true);
         };
 
         $ctrl.rollbackEvent = function (ev) {
@@ -77,7 +77,7 @@
 
             ev.start_date = originalEvent.start_date;
             ev.end_date = originalEvent.end_date;
-            ev.unitid = originalEvent.unitid;
+            ev.stageId = originalEvent.stageId;
             scheduler.updateView();
 
         };
@@ -105,7 +105,7 @@
         var sections = scheduler.serverList("units");
         scheduler.createUnitsView({
             name: "unit",
-            property: "unitid",
+            property: "stageId",
             skip_incorrect: true,
             list: sections
         });
@@ -143,8 +143,8 @@
             return true;
         });
 
-        $ctrl.LoadUnits =  function(reloadCustomize) {
-            schedulerDataService.loadUnits()
+        $ctrl.LoadStages =  function(reloadCustomize) {
+            schedulerDataService.loadStages()
                 .then(function (result) {
                     if (result.error) {
                         $ctrl.handleWrappedError(result);
@@ -164,7 +164,7 @@
                 });
         };
 
-        $ctrl.LoadUnits(false);
+        $ctrl.LoadStages(false);
 
         $ctrl.LoadCustomizeData = function() {
             schedulerDataService.getCustomizeData()
@@ -190,19 +190,20 @@
 
             for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
                 var ev = evs[eventIdx];
-                ev.unitid = $ctrl.getUnitIdForServiceid(ev.serviceId, ev.calendarStageType)
+                ev.stageId = $ctrl.getStageIdForServiceid(ev.serviceId);
             }
         }
 
-        $ctrl.getUnitIdForServiceid = function (serviceId, stageTypeId) {
+        $ctrl.getStageIdForServiceid = function (serviceId) {
             if (!$ctrl.customizeData)
                 return - 1;
             let result = -1;
 
             for (var stageIdx = 0; stageIdx < $ctrl.customizeData.length; stageIdx++) {
                 var stage = $ctrl.customizeData[stageIdx];
-                for (var statusIdx = 0; statusIdx < stage.statuses.length; statusIdx++) {
-                    if (status.Id == serviceId) {
+                for (var serviceIdx = 0; statusIdx < stage.services.length; statusIdx++) {
+                    var service = stage.services[serviceIdx];
+                    if (service.Id == serviceId) {
                         result = stage.Id;
                         break;
                     }
@@ -228,13 +229,13 @@
             theEventCopy.start_date = new Date(ev.start_date.getTime() - timeZoneOffsetMs);
             theEventCopy.end_date = new Date(ev.end_date.getTime() - timeZoneOffsetMs);
             let originalEvent = _originalEvent.get(ev.appointmentId);
-            let previousUnitId = 0;
+            let previousStageId = 0;
             if (originalEvent) {
-                previousUnitId = originalEvent.unitid;
+                previousStageId = originalEvent.stageId;
             }
             
 
-            schedulerDataService.eventChanged({ previousUnitId: previousUnitId, schedulerEvent: theEventCopy})
+            schedulerDataService.eventChanged({ previousStageId: previousStageId, schedulerEvent: theEventCopy})
                 .then(function (result) {
                     
                     if (result.error) {
@@ -245,7 +246,7 @@
                     if (result.data.appointmentId) {
                         linkToEvent.appointmentId = result.data.appointmentId;
                         linkToEvent.serviceId = result.data.serviceId;
-                        linkToEvent.unitid = result.data.unitid;
+                        linkToEvent.stageId = result.data.stageId;
                         linkToEvent.text = result.data.text;
                     }
 

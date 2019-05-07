@@ -144,9 +144,15 @@ pq-scheduler-customize .stageheadername {
   margin: 0 auto;
   width: 110px; }
 
-pq-scheduler-customize .status {
+pq-scheduler-customize .stageservice {
   background: LightGray;
   margin: 2px 5px 2px 5px; }
+
+pq-scheduler-customize .availableservice {
+  white-space: nowrap;
+  margin: 2px 5px 2px 5px;
+  font-size: 14px;
+  font-family: arial; }
 
 pq-scheduler-customize .pq-modal-footer {
   margin-top: 15px;

@@ -8,7 +8,7 @@ namespace PQ.QnAppCalendar.ViewService
     public class QueryStringParams : NameValueCollection
     {
         private const string ACTION = "act";
-        public const string GET_UNITS = "load-units";
+        public const string GET_STAGES = "load-stages";
         public const string GET_APPOINTMENTS = "load-appointmens";
         public const string SAVE_APPOINTMENT = "save-appointment";
         public const string GET_CUSTOMIZEDATA = "get-customizedata";

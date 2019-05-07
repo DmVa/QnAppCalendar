@@ -3,15 +3,14 @@
     'use strict';
     angular
         .module('scheduler.module')
-        .factory('Status', function () {
-            function Status(id, name, isQflow) {
+        .factory('StageService', function () {
+            function StageService(id, name) {
                 this.id = id;
                 this.name = name;
-                this.isQflow = isQflow;
                 this.stageId = -1;
             };
 
-            return Status
+            return StageService
         }
         );
 }     

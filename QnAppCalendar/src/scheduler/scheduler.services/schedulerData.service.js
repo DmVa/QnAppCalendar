@@ -107,9 +107,9 @@
                 });
             },
 
-            loadUnits: function (params) {
+            loadStages: function (params) {
               return  $.ajax({
-                    url: basePath + 'load-units',
+                    url: basePath + 'load-stages',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',

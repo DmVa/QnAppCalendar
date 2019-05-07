@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PQ.QnAppCalendar.Dto
 {
-    public class UnitInfo
+    public class StageInfo
     {
         public int Key;
         public string Label;

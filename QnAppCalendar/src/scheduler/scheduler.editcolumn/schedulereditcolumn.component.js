@@ -13,10 +13,10 @@
             }
         });
     
-    SchedulerEditColumnController.inject = ['$scope', '$window', '$document', '$timeout','modalService','schedulerDataService', 'Stage', 'Status'];
+    SchedulerEditColumnController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService', 'schedulerDataService'];
    
 
-    function SchedulerEditColumnController($scope, $window, $document, $timeout, modalService, schedulerDataService, Stage, Status) {
+    function SchedulerEditColumnController($scope, $window, $document, $timeout, modalService, schedulerDataService) {
         let $ctrl = this;
         $scope.name = '';
         let $ctrlAddColumn = $('pq-scheduler-edit-column');

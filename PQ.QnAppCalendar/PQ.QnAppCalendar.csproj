@@ -70,7 +70,7 @@
     <Compile Include="DataService\QNomySettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\SchedulerEvent.cs" />
-    <Compile Include="Dto\UnitInfo.cs" />
+    <Compile Include="Dto\StageInfo.cs" />
     <Compile Include="ViewService\QueryStringParams.cs" />
     <Compile Include="ViewService\SchedulerDataService.cs" />
   </ItemGroup>

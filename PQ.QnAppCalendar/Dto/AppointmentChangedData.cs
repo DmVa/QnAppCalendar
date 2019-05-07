@@ -8,8 +8,8 @@ namespace PQ.QnAppCalendar.Dto
 {
     public class AppointmentChangedData
     {
-        public int PreviousUnitId;
-        public int NextUnitId;
+        public int PreviousStageId;
+        public int NextStageId;
         public SchedulerEvent SchedulerEvent;
     }
 }

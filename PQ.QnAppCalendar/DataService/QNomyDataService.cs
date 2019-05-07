@@ -378,9 +378,9 @@ namespace PQ.QnAppCalendar.DataService
 
             stagedata.Id = stage.Id;
 
-            if (stagedata.Statuses?.Count > 0)
+            if (stagedata.Services?.Count > 0)
             {
-                foreach(var stageStatus in stagedata.Statuses)
+                foreach(var stageStatus in stagedata.Services)
                 {
                     var stageService = new CalendarStageService() { CalendarStageId = stage.Id, ServiceId = stageStatus.Id };
                     InserCalendarStageService(stageService);

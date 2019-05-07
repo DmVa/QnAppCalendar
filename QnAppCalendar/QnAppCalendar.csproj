@@ -69,8 +69,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="components\pqscheduler\pqscheduler.css" />
-    <Content Include="components\pqscheduler\pqscheduler.js" />
     <Content Include="components\dhtmlxScheduler\sources\dhtmlxscheduler.js.map" />
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_active_links.js.map" />
     <Content Include="components\dhtmlxScheduler\sources\ext\dhtmlxscheduler_agenda_view.js.map" />
@@ -115,8 +113,6 @@
     <Content Include="src\scheduler\scheduler.board\scheduler.board.js" />
     <Content Include="src\scheduler\scheduler.component\scheduler.component.html" />
     <Content Include="src\scheduler\scheduler.component\scheduler.component.js" />
-    <Content Include="components\pqscheduler\pqscheduler.css.map" />
-    <Content Include="components\pqscheduler\pqscheduler.js.map" />
     <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.scss" />
     <Content Include="src\scheduler\scheduler.board\scheduler.board.scss" />
     <None Include="src\scheduler\scheduler.customize\schedulercustomize.component.scss" />
@@ -126,7 +122,7 @@
     <Content Include="src\scheduler\scheduler.customize\schedulercustomize.component.js" />
     <Content Include="src\scheduler\scheduler.model\schedulerEvent.js" />
     <Content Include="src\scheduler\scheduler.model\stage.js" />
-    <Content Include="src\scheduler\scheduler.model\status.js" />
+    <Content Include="src\scheduler\scheduler.model\stageService.js" />
     <Content Include="src\scheduler\scheduler.directives\draganddrop.js" />
     <None Include="src\scheduler\scheduler.directives\modal.directive.scss" />
     <Content Include="src\scheduler\scheduler.directives\modal.directive.js" />

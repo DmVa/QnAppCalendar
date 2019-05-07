@@ -43,8 +43,8 @@ namespace PQ.QnAppCalendar
 
                 switch (query.Action)
                 {
-                    case QueryStringParams.GET_UNITS:
-                        data = dataService.GetUnits(userInfo.UnitId);
+                    case QueryStringParams.GET_STAGES:
+                        data = dataService.GetStages(userInfo.UnitId);
                         break;
                     case QueryStringParams.GET_CUSTOMIZEDATA:
                         data = dataService.GetCustomizeData(userInfo.UnitId);
@@ -68,7 +68,7 @@ namespace PQ.QnAppCalendar
                     case QueryStringParams.APPOINTMENT_CHANGED:
                         string objJsonApp = GetData(context.Request);
                         var appData = JsonConvert.DeserializeObject<AppointmentChangedData>(objJsonApp);
-                        data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousUnitId, appData.NextUnitId, appData.SchedulerEvent);
+                        data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousStageId, appData.NextStageId, appData.SchedulerEvent);
                         break;
                         
                     default:
