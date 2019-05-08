@@ -10,6 +10,7 @@ CREATE TABLE [pq].[CalendarStage] (
     [SortOrder] [int] NOT NULL DEFAULT 0,
     [Name] [nvarchar](250),
     [StageType] [int] NOT NULL,
+    [IsServiceDefault] [int] NOT NULL DEFAULT 0,
     CONSTRAINT [PK_pq.CalendarStage] PRIMARY KEY ([Id])
 )
 	

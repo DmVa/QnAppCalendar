@@ -42,7 +42,7 @@ namespace PQ.QnAppCalendar.ViewService
             return result;
         }
 
-        public int GetStageByServiceId(int serviceId, CalendarStageType stageType, List<CalendarStage> calendarStages, CustomizeData customizeData)
+        public int GetStageByServiceId(int serviceId, CalendarStageType stageType, List<DataService.CalendarStage> calendarStages, CustomizeData customizeData)
         {
             int inServiceStageId = GetInServiceStageByServiceId(serviceId, customizeData);
             if (inServiceStageId == -1)
@@ -75,9 +75,9 @@ namespace PQ.QnAppCalendar.ViewService
 
             foreach (var stage in customizeData.Stages)
             {
-                foreach (var status in stage.Services)
+                foreach (var stageService in stage.Services)
                 {
-                    if (status.Id == serviceId)
+                    if (stageService.ServiceId == serviceId)
                     {
                         result = stage.Id;
                         break;
@@ -168,6 +168,16 @@ namespace PQ.QnAppCalendar.ViewService
             var stageIds = new List<int>();
             var dataService = new QNomyDataService();
             dataService.DeleteCalendarStageServices();
+            var dataNotShownStage = dataService.GetClendarStageByType(CalendarStageType.None);
+            if (dataNotShownStage == null)
+            {
+                dataNotShownStage = new CalendarStage() { Name = "None", StageType = CalendarStageType.None };
+                dataNotShownStage.Id = dataService.InserCalendarStage(dataNotShownStage);
+            }
+
+            stageIds.Add(dataNotShownStage.Id);
+            dataService.InsertCalendarStageServices(dataNotShownStage.Id, data.NotShownServices);
+
             foreach (var stage in data.Stages)
             {
                 sortOrder++;
@@ -175,6 +185,7 @@ namespace PQ.QnAppCalendar.ViewService
                 dataService.UpdateOrInsertStage(stage);
                 stageIds.Add(stage.Id);
             }
+
 
             dataService.DeleteCalendarStagesExcept(stageIds);
 
@@ -185,8 +196,8 @@ namespace PQ.QnAppCalendar.ViewService
         {
             var result = new CustomizeData();
             var dataService = new QNomyDataService();
-            result.Available = new List<StageService>();
-            result.Stages = new List<CalendarStageWithStatuses>();
+            result.NotShownServices = new List<CustomizeStageService>();
+            result.Stages = new List<CustomizeCalendarStage>();
             var calendarStages = dataService.GetClendarStages();
             var services = dataService.GetServicesForUnit(currentUnitId);
             var stageServices = dataService.GetClendarStageServices();
@@ -194,27 +205,41 @@ namespace PQ.QnAppCalendar.ViewService
 
             foreach (var stage in calendarStages)
             {
-                CalendarStageWithStatuses item = new CalendarStageWithStatuses() { Id = stage.Id, Name = stage.Name, StageType = stage.StageType, SortOrder = stage.SortOrder };
-                item.Services = new List<StageService>();
-                result.Stages.Add(item);
+                if (stage.StageType == CalendarStageType.None)
+                    continue;
+
+                var calendarStage = new CustomizeCalendarStage { Id = stage.Id, Name = stage.Name, StageType = stage.StageType, SortOrder = stage.SortOrder, IsServiceDefault = stage.IsServiceDefault };
+                calendarStage.Services = new List<CustomizeStageService>();
+                result.Stages.Add(calendarStage);
             }
+
+            CustomizeCalendarStage defaultInServiceStageForNotMappedServices = result.Stages.Find(x => x.IsServiceDefault); //can be null;
 
             foreach (var service in services)
             {
+                CustomizeCalendarStage stage = null;
                 CalendarStageService stageForService = stageServices.Find(x => x.ServiceId == service.Id);
-                CalendarStageWithStatuses stage = null;
-                if (stageForService != null)
+                if (stageForService == null)
                 {
-                    stage = result.Stages.Find(x => x.Id == stageForService.CalendarStageId);
-
-                }
-                if (stageForService == null || stage == null)
-                {
-                    result.Available.Add(new StageService() { Id = service.Id, Name = service.Name, StageId = -1 });
+                    stage = defaultInServiceStageForNotMappedServices;
                 }
                 else
                 {
-                    stage.Services.Add(new StageService() { Id = service.Id, Name = service.Name, StageId = stage.Id });
+                    stage = result.Stages.Find(x => x.Id == stageForService.CalendarStageId);
+                }
+
+                if (stage != null && stage.StageType == CalendarStageType.None)
+                {
+                    stage = null;
+                }
+
+                if (stage == null)
+                {
+                    result.NotShownServices.Add(new CustomizeStageService() { ServiceId = service.Id, Name = service.Name, CalendarStageId = -1 });
+                }
+                else
+                {
+                    stage.Services.Add(new CustomizeStageService() { ServiceId = service.Id, Name = service.Name, CalendarStageId = stage.Id });
                 }
             }
 
@@ -361,8 +386,13 @@ namespace PQ.QnAppCalendar.ViewService
             {
                 throw new DataException(routeResult.Status.ToString());
             }
-            theEvent.ServiceId = routeResult.NewServiceId;
-            theEvent.ProcessId = routeResult.NewProcessId;
+
+            if (routeResult.NewServiceId > 0)
+                theEvent.ServiceId = routeResult.NewServiceId;
+
+            if (routeResult.NewProcessId > 0)
+                theEvent.ProcessId = routeResult.NewProcessId;
+
             if (callAfterRoute && routeResult.NewEntityStatus == (int)EntityStatus.Waiting)
             {
                 try
@@ -390,10 +420,12 @@ namespace PQ.QnAppCalendar.ViewService
                 }
                 throw new DataException(callResult.Status.ToString());
             }
-            theEvent.ServiceId = callResult.ServiceId;
+
+            if (callResult.ServiceId > 0)
+                theEvent.ServiceId = callResult.ServiceId;
         }
 
-        private string GetStageName(CalendarStageService calendarStageService, List<CalendarStage> calendarStages)
+        private string GetStageName(CalendarStageService calendarStageService, List<DataService.CalendarStage> calendarStages)
         {
             string result = "undefined";
             foreach(var stage in calendarStages)
@@ -456,7 +488,7 @@ namespace PQ.QnAppCalendar.ViewService
             return result;
         }
 
-        private CalendarStageType GetStageTypeById(int stageid, List<CalendarStage> calendarStages)
+        private CalendarStageType GetStageTypeById(int stageid, List<DataService.CalendarStage> calendarStages)
         {
             var calendarStage = calendarStages.Find(x => x.Id == stageid);
             if (calendarStage == null)

@@ -15,6 +15,7 @@ namespace PQ.QnAppCalendar.Db.Migrations
                         SortOrder = c.Int(nullable: false, defaultValue: 0),
                         Name = c.String(maxLength: 250),
                         StageType = c.Int(nullable: false),
+                        IsServiceDefault = c.Int(nullable: false, defaultValue: 0),
                     })
                 .PrimaryKey(t => t.Id);
             

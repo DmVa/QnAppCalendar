@@ -748,7 +748,7 @@ __webpack_require__.r(__webpack_exports__);
                     ev.stageId = -1;
                 else {
                     if (ev.stageType == 3) { //inservice
-                        ev.stageId == stageId;
+                        ev.stageId = stageId;
                     }
                     else {
                         ev.stageId = $ctrl.getStageIdByStageType(ev.stageType);
@@ -766,7 +766,7 @@ __webpack_require__.r(__webpack_exports__);
                 var stage = $ctrl.customizeData.stages[stageIdx];
                 for (var serviceIdx = 0; serviceIdx < stage.services.length; serviceIdx++) {
                     var service = stage.services[serviceIdx];
-                    if (service.id == serviceId) {
+                    if (service.serviceId == serviceId) {
                         result = stage.id;
                         break;
                     }
@@ -1269,7 +1269,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> <span class=\"availableservice\">Not mapped services</span> <div ng-repeat=\"service in availableservices\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{service.id}}\" serviceid=\"{{service.id}}\"> {{service.name}} </div> </div> <div class=\"stages-block\"> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.stageType == 3}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stageservice in stageobj.services\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{stagestatus.id}}\" serviceid=\"{{stageservice.id}}\"> {{stageservice.name}} </div> </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
+module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> <span class=\"availableservice\">Not shown services</span> <div ng-repeat=\"service in notShownServices\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{service.id}}\" serviceid=\"{{service.serviceId}}\"> {{service.name}} </div> </div> <div class=\"stages-block\"> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.addStage($event)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.stageType == 3}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"checkbox\" title=\"Default column for new services\" ng-model=\"stageobj.isServiceDefault\" ng-change=\"$ctrl.changeIsServiceDefault($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stageservice in stageobj.services\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{stagestatus.id}}\" serviceid=\"{{stageservice.serviceId}}\"> {{stageservice.name}} </div> </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> <pq-scheduler-edit-column on-add-stage=\"$ctrl.onAddStage(stagename)\"></pq-scheduler-edit-column>";
 
 /***/ }),
 
@@ -1306,9 +1306,9 @@ __webpack_require__.r(__webpack_exports__);
         let $ctrl = this;
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
         let allStages = [];
-        let availableservices = [];
+        let notShownServices = [];
         $scope.stages = allStages;
-        $scope.availableservices = availableservices;
+        $scope.notShownServices = notShownServices;
 
         $ctrlAddColumn.hide();
 
@@ -1363,7 +1363,7 @@ __webpack_require__.r(__webpack_exports__);
 
         $ctrl.closeModal = function closeModal(save) {
             if (save) {
-                let data = { stages: $ctrl.allStages, available: $ctrl.availableservices};
+                let data = { stages: $ctrl.allStages, notShownServices: $ctrl.notShownServices};
                 schedulerDataService.saveCustomizeData(data)
                 .then(function (result) {
                     if (result.error) {
@@ -1394,10 +1394,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
             stageobj.services.forEach(function (service) {
-                $ctrl.availableservices.push(service);
+                $ctrl.notShownServices.push(service);
             });
 
             $ctrl.removeFromArray($ctrl.allStages, stageobj);
+        };
+
+        $ctrl.changeIsServiceDefault = function changeIsServiceDefault($event, stageobj) {
+            if (stageobj.isServiceDefault) {
+                for (let i = 0; i < $ctrl.allStages.length; i++) {
+                    let stage = $ctrl.allStages[i];
+                    if (stage != stageobj) {
+                        stage.isServiceDefault = false;
+                    }
+                }
+            }
         };
 
         $ctrl.addStage = function addStage($event) {
@@ -1415,10 +1426,10 @@ __webpack_require__.r(__webpack_exports__);
                     }
                     if (result.data) {
                         $ctrl.allStages = result.data.stages;
-                        $ctrl.availableservices = result.data.available;
+                        $ctrl.notShownServices = result.data.notShownServices;
 
                         $scope.stages = $ctrl.allStages;
-                        $scope.availableservices = $ctrl.availableservices;
+                        $scope.notShownServices = $ctrl.notShownServices;
 
                         $scope.$apply();
                     }
@@ -1435,15 +1446,15 @@ __webpack_require__.r(__webpack_exports__);
 
             $ctrl.allStages.forEach(function (stage) {
                 stage.services.forEach(function (service) {
-                    if (service.id == serviceId) {
+                    if (service.serviceId == serviceId) {
                         serviceObj = service;
                     }
                 });
             });
 
             if (!serviceObj) {
-                $ctrl.availableservices.forEach(function (service) {
-                    if (service.id == serviceId) {
+                $ctrl.notShownServices.forEach(function (service) {
+                    if (service.serviceId == serviceId) {
                         serviceObj = service;
                     }
                 });
@@ -1454,9 +1465,9 @@ __webpack_require__.r(__webpack_exports__);
                 return;
             }
 
-            let previousStageId = serviceObj.stageId;
+            let previousStageId = serviceObj.calendarStageId;
             if (previousStageId == -1) {
-                $ctrl.removeFromArray($ctrl.availableservices, serviceObj);
+                $ctrl.removeFromArray($ctrl.notShownServices, serviceObj);
             } else {
                 let previousStage = $ctrl.allStages.find(item => item.id == previousStageId);
                 if (previousStage) {
@@ -1465,11 +1476,11 @@ __webpack_require__.r(__webpack_exports__);
             }
 
             if (stageobj) {
-                serviceObj.stageId = stageobj.id;
+                serviceObj.calendarStageId = stageobj.id;
                 stageobj.services.push(serviceObj);
             }else {
-                serviceObj.stageId = -1;
-                $ctrl.availableservices.push(serviceObj);
+                serviceObj.calendarStageId = -1;
+                $ctrl.notShownServices.push(serviceObj);
             }
 
             $scope.$apply();
@@ -1765,6 +1776,7 @@ __webpack_require__.r(__webpack_exports__);
             this.id = id;
             this.name = name;
             this.stageType = stageType;
+            this.isServiceDefault = false;
             this.services = [];
             if (services) {
                 this.services = services;

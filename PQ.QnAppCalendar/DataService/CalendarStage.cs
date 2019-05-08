@@ -12,5 +12,6 @@ namespace PQ.QnAppCalendar.DataService
         public int SortOrder { get; set; }
         public string Name { get; set; }
         public CalendarStageType StageType  {get;set; }
+        public bool IsServiceDefault { get; set; }
     }
 }

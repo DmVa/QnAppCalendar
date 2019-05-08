@@ -9,23 +9,17 @@ namespace PQ.QnAppCalendar.Dto
 {
     public class CustomizeData
     {
-        public List<CalendarStageWithStatuses> Stages { get; set; }
-        public List<StageService> Available { get; set; }
+        public List<CustomizeCalendarStage> Stages { get; set; }
+        public List<CustomizeStageService> NotShownServices { get; set; } 
     }
 
-    public class CalendarStageWithStatuses
+    public class CustomizeCalendarStage : CalendarStage
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int SortOrder { get; set; }
-        public List<StageService> Services { get; set; }
-        public CalendarStageType StageType { get;  set; }
+        public List<CustomizeStageService> Services { get; set; }
     }
 
-    public class StageService
+    public class CustomizeStageService: CalendarStageService
     {
-        public int Id { get; set; } // id equals to service.id;
         public string Name { get; set; }
-        public int StageId { get; set; }
     }
 }

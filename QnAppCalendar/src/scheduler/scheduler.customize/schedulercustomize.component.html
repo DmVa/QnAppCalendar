@@ -1,8 +1,8 @@
 ﻿<div class="scheduler-customize-container">
     <div class="scheduler-centered-content">
         <div class="avaiable-container" pq-drop-on-me on-drop="handledrop(event, null, data)">
-            <span class="availableservice">Not mapped services</span>
-            <div ng-repeat="service in availableservices" class="stageservice" pq-drag-me="serviceid" id="service_{{service.id}}" serviceid="{{service.id}}">
+            <span class="availableservice">Not shown services</span>
+            <div ng-repeat="service in notShownServices" class="stageservice" pq-drag-me="serviceid" id="service_{{service.id}}" serviceid="{{service.serviceId}}">
                 {{service.name}}
             </div>
         </div>
@@ -27,9 +27,12 @@
                         <span ng-if="stageobj.stageType == 3">
                             <input type="submit" class="flatbutton" value="-" title="Remove Column" ng-click="$ctrl.removeStage($event, stageobj)" />
                         </span>
+                        <span ng-if="stageobj.stageType == 3">
+                            <input type="checkbox" title="Default column for new services" ng-model="stageobj.isServiceDefault" ng-change="$ctrl.changeIsServiceDefault($event, stageobj)" />
+                        </span>
                     </div>
 
-                    <div ng-repeat="stageservice in stageobj.services" class="stageservice" pq-drag-me="serviceid" id="service_{{stagestatus.id}}" serviceid="{{stageservice.id}}">
+                    <div ng-repeat="stageservice in stageobj.services" class="stageservice" pq-drag-me="serviceid" id="service_{{stagestatus.id}}" serviceid="{{stageservice.serviceId}}">
                         {{stageservice.name}}
                     </div>
                 </div>

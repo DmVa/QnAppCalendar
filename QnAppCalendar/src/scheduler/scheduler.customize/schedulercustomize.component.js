@@ -20,9 +20,9 @@
         let $ctrl = this;
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
         let allStages = [];
-        let availableservices = [];
+        let notShownServices = [];
         $scope.stages = allStages;
-        $scope.availableservices = availableservices;
+        $scope.notShownServices = notShownServices;
 
         $ctrlAddColumn.hide();
 
@@ -77,7 +77,7 @@
 
         $ctrl.closeModal = function closeModal(save) {
             if (save) {
-                let data = { stages: $ctrl.allStages, available: $ctrl.availableservices};
+                let data = { stages: $ctrl.allStages, notShownServices: $ctrl.notShownServices};
                 schedulerDataService.saveCustomizeData(data)
                 .then(function (result) {
                     if (result.error) {
@@ -108,10 +108,21 @@
 
 
             stageobj.services.forEach(function (service) {
-                $ctrl.availableservices.push(service);
+                $ctrl.notShownServices.push(service);
             });
 
             $ctrl.removeFromArray($ctrl.allStages, stageobj);
+        };
+
+        $ctrl.changeIsServiceDefault = function changeIsServiceDefault($event, stageobj) {
+            if (stageobj.isServiceDefault) {
+                for (let i = 0; i < $ctrl.allStages.length; i++) {
+                    let stage = $ctrl.allStages[i];
+                    if (stage != stageobj) {
+                        stage.isServiceDefault = false;
+                    }
+                }
+            }
         };
 
         $ctrl.addStage = function addStage($event) {
@@ -129,10 +140,10 @@
                     }
                     if (result.data) {
                         $ctrl.allStages = result.data.stages;
-                        $ctrl.availableservices = result.data.available;
+                        $ctrl.notShownServices = result.data.notShownServices;
 
                         $scope.stages = $ctrl.allStages;
-                        $scope.availableservices = $ctrl.availableservices;
+                        $scope.notShownServices = $ctrl.notShownServices;
 
                         $scope.$apply();
                     }
@@ -149,15 +160,15 @@
 
             $ctrl.allStages.forEach(function (stage) {
                 stage.services.forEach(function (service) {
-                    if (service.id == serviceId) {
+                    if (service.serviceId == serviceId) {
                         serviceObj = service;
                     }
                 });
             });
 
             if (!serviceObj) {
-                $ctrl.availableservices.forEach(function (service) {
-                    if (service.id == serviceId) {
+                $ctrl.notShownServices.forEach(function (service) {
+                    if (service.serviceId == serviceId) {
                         serviceObj = service;
                     }
                 });
@@ -168,9 +179,9 @@
                 return;
             }
 
-            let previousStageId = serviceObj.stageId;
+            let previousStageId = serviceObj.calendarStageId;
             if (previousStageId == -1) {
-                $ctrl.removeFromArray($ctrl.availableservices, serviceObj);
+                $ctrl.removeFromArray($ctrl.notShownServices, serviceObj);
             } else {
                 let previousStage = $ctrl.allStages.find(item => item.id == previousStageId);
                 if (previousStage) {
@@ -179,11 +190,11 @@
             }
 
             if (stageobj) {
-                serviceObj.stageId = stageobj.id;
+                serviceObj.calendarStageId = stageobj.id;
                 stageobj.services.push(serviceObj);
             }else {
-                serviceObj.stageId = -1;
-                $ctrl.availableservices.push(serviceObj);
+                serviceObj.calendarStageId = -1;
+                $ctrl.notShownServices.push(serviceObj);
             }
 
             $scope.$apply();

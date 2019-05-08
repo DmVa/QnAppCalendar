@@ -17,5 +17,6 @@ namespace PQ.QnAppCalendar.Db
         [StringLength(250)]
         public string Name { get; set; }
         public int StageType  {get;set; }
+        public int IsServiceDefault { get; set; }
     }
 }

@@ -7,6 +7,7 @@
             this.id = id;
             this.name = name;
             this.stageType = stageType;
+            this.isServiceDefault = false;
             this.services = [];
             if (services) {
                 this.services = services;

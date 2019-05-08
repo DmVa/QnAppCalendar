@@ -91,7 +91,7 @@
                     ev.stageId = -1;
                 else {
                     if (ev.stageType == 3) { //inservice
-                        ev.stageId == stageId;
+                        ev.stageId = stageId;
                     }
                     else {
                         ev.stageId = $ctrl.getStageIdByStageType(ev.stageType);
@@ -109,7 +109,7 @@
                 var stage = $ctrl.customizeData.stages[stageIdx];
                 for (var serviceIdx = 0; serviceIdx < stage.services.length; serviceIdx++) {
                     var service = stage.services[serviceIdx];
-                    if (service.id == serviceId) {
+                    if (service.serviceId == serviceId) {
                         result = stage.id;
                         break;
                     }
