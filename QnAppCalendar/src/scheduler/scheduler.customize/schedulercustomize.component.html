@@ -1,7 +1,7 @@
 ﻿<div class="scheduler-customize-container">
     <div class="scheduler-centered-content">
         <div class="avaiable-container" pq-drop-on-me on-drop="handledrop(event, null, data)">
-            <span class="availableservice">Available services</span>
+            <span class="availableservice">Not mapped services</span>
             <div ng-repeat="service in availableservices" class="stageservice" pq-drag-me="serviceid" id="service_{{service.id}}" serviceid="{{service.id}}">
                 {{service.name}}
             </div>

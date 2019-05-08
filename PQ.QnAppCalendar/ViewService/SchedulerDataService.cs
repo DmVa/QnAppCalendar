@@ -269,12 +269,12 @@ namespace PQ.QnAppCalendar.ViewService
                             }
                             else
                             {
-                                RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage);
+                                RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage, true);
                             }
                         }
                         else
                         {
-                            RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage);
+                            RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage, true);
                         }
 
                         break;
@@ -324,7 +324,7 @@ namespace PQ.QnAppCalendar.ViewService
             return theEvent;
         }
 
-        private static void RouteUser(int currentUserId, SchedulerEvent theEvent, QNomyDataService dataService, int delegateId, List<int> servicesInStage)
+        private static void RouteUser(int currentUserId, SchedulerEvent theEvent, QNomyDataService dataService, int delegateId, List<int> servicesInStage, bool callAfterRoute)
         {
             List<RouteListItem> availableRoutes = Service.GetAvailableRoutes(theEvent.ServiceId);
             int? transferedFromServiceId = dataService.GetTranseredFromServiceId(theEvent.ProcessId);
@@ -338,7 +338,7 @@ namespace PQ.QnAppCalendar.ViewService
                     routesToStage.Add(rout);
                     continue;
                 }
-                    
+
 
                 if (servicesInStage.Contains(rout.TargetServiceId))
                 {
@@ -362,6 +362,18 @@ namespace PQ.QnAppCalendar.ViewService
                 throw new DataException(routeResult.Status.ToString());
             }
             theEvent.ServiceId = routeResult.NewServiceId;
+            theEvent.ProcessId = routeResult.NewProcessId;
+            if (callAfterRoute && routeResult.NewEntityStatus == (int)EntityStatus.Waiting)
+            {
+                try
+                {
+                    CallUser(currentUserId, theEvent, delegateId);
+                }
+                catch (DataException)
+                {
+
+                }
+            }
         }
 
         private static void CallUser(int currentUserId, SchedulerEvent theEvent, int delegateId)
