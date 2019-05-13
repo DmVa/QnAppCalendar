@@ -13,7 +13,7 @@ namespace PQ.QnAppCalendar.ViewService
 {
     public class SchedulerDataService
     {
-        public GetAppointmentsData GetAppointmentsData(int? unitId)
+        public GetAppointmentsData GetAppointmentsData(int unitId)
         {
             var result = new GetAppointmentsData();
             var dt = DateTime.Now.Date;
@@ -22,14 +22,15 @@ namespace PQ.QnAppCalendar.ViewService
             return result;
         }
 
-        public List<SchedulerEvent> GetSchedulerEvents(DateTime? from, DateTime? to, int? unitId)
+        public List<SchedulerEvent> GetSchedulerEvents(DateTime? from, DateTime? to, int unitId)
         {
             var result = new List<SchedulerEvent>();
             var now = DateTime.Now;
             var dataService = new QNomyDataService();
             var appointments = dataService.GetAppointments(from, to);
-            var calendarStages = dataService.GetClendarStages();
+            
             var customizeData = GetCustomizeData(unitId);
+            var calendarStages = dataService.GetClendarStages(customizeData.ConfigId);
             var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
 
             foreach (var app in appointments)
@@ -148,11 +149,13 @@ namespace PQ.QnAppCalendar.ViewService
             return result;
         }
 
-        internal List<StageInfo> GetStages(int? rootUnitId)
+        internal List<StageInfo> GetStages(int rootUnitId)
         {
             var dataService = new QNomyDataService();
+            var configId = dataService.GetConfigId(rootUnitId);
+            List<CalendarStage> calendarStages = dataService.GetClendarStages(configId);
+            
 
-            var calendarStages = dataService.GetClendarStages();
             var result = new List<StageInfo>();
             foreach (var stage in calendarStages)
             {
@@ -164,14 +167,23 @@ namespace PQ.QnAppCalendar.ViewService
         }
         internal bool SaveCustomizeData(CustomizeData data)
         {
+            if (data.UnitId <= 0)
+                throw new ArgumentException("unit is not defined");
+
             int sortOrder = 0;
             var stageIds = new List<int>();
             var dataService = new QNomyDataService();
-            dataService.DeleteCalendarStageServices();
-            var dataNotShownStage = dataService.GetClendarStageByType(CalendarStageType.None);
+            
+            if (data.ConfigId <= 0)
+            {
+                data.ConfigId = dataService.InsertConfigId(data.UnitId);
+            }
+
+            dataService.DeleteCalendarStageServices(data.ConfigId);
+            var dataNotShownStage = dataService.GetClendarStageByType(data.ConfigId, CalendarStageType.None);
             if (dataNotShownStage == null)
             {
-                dataNotShownStage = new CalendarStage() { Name = "None", StageType = CalendarStageType.None };
+                dataNotShownStage = new CalendarStage() { Name = "None", StageType = CalendarStageType.None, CalendarStageConfigId = data.ConfigId };
                 dataNotShownStage.Id = dataService.InserCalendarStage(dataNotShownStage);
             }
 
@@ -182,23 +194,26 @@ namespace PQ.QnAppCalendar.ViewService
             {
                 sortOrder++;
                 stage.SortOrder = sortOrder;
-                dataService.UpdateOrInsertStage(stage);
+                dataService.UpdateOrInsertStage(data.ConfigId, stage);
                 stageIds.Add(stage.Id);
             }
 
 
-            dataService.DeleteCalendarStagesExcept(stageIds);
+            dataService.DeleteCalendarStagesExcept(data.ConfigId, stageIds);
 
             return true;
         }
 
-        internal CustomizeData GetCustomizeData(int? currentUnitId)
+        internal CustomizeData GetCustomizeData(int currentUnitId)
         {
             var result = new CustomizeData();
             var dataService = new QNomyDataService();
+            result.UnitId = currentUnitId;
+            result.ConfigId = dataService.GetConfigId(currentUnitId);
             result.NotShownServices = new List<CustomizeStageService>();
             result.Stages = new List<CustomizeCalendarStage>();
-            var calendarStages = dataService.GetClendarStages();
+            List<CalendarStage> calendarStages = dataService.GetClendarStages(result.ConfigId);
+
             var services = dataService.GetServicesForUnit(currentUnitId);
             var stageServices = dataService.GetClendarStageServices();
 
@@ -208,7 +223,7 @@ namespace PQ.QnAppCalendar.ViewService
                 if (stage.StageType == CalendarStageType.None)
                     continue;
 
-                var calendarStage = new CustomizeCalendarStage { Id = stage.Id, Name = stage.Name, StageType = stage.StageType, SortOrder = stage.SortOrder, IsServiceDefault = stage.IsServiceDefault };
+                var calendarStage = new CustomizeCalendarStage { Id = stage.Id, Name = stage.Name, StageType = stage.StageType, SortOrder = stage.SortOrder, IsServiceDefault = stage.IsServiceDefault, CalendarStageConfigId = stage.CalendarStageConfigId };
                 calendarStage.Services = new List<CustomizeStageService>();
                 result.Stages.Add(calendarStage);
             }
@@ -247,14 +262,15 @@ namespace PQ.QnAppCalendar.ViewService
         }
 
 
-        internal SchedulerEvent AppointmentChanged(int currentUserId,int? currentUnitId, int previousStageId, int nextStageId,  SchedulerEvent theEvent)
+        internal SchedulerEvent AppointmentChanged(int currentUserId,int currentUnitId, int previousStageId, int nextStageId,  SchedulerEvent theEvent)
         {
             var dataService = new QNomyDataService();
             
           
             CustomizeData customizeData = GetCustomizeData(currentUnitId);
             // qnomy
-            var calendarStages = dataService.GetClendarStages();
+            var calendarStages = dataService.GetClendarStages(customizeData.ConfigId);
+
             var allCalendarStageServices = dataService.GetClendarStageServices();
             var prevCalendarStageType = GetStageTypeById(previousStageId, calendarStages);
             var nextCalendarStageType = GetStageTypeById(nextStageId, calendarStages);

@@ -1307,6 +1307,9 @@ __webpack_require__.r(__webpack_exports__);
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
         let allStages = [];
         let notShownServices = [];
+        let unitId = -1;
+        let configId = -1;
+
         $scope.stages = allStages;
         $scope.notShownServices = notShownServices;
 
@@ -1363,7 +1366,7 @@ __webpack_require__.r(__webpack_exports__);
 
         $ctrl.closeModal = function closeModal(save) {
             if (save) {
-                let data = { stages: $ctrl.allStages, notShownServices: $ctrl.notShownServices};
+                let data = { unitId: $ctrl.unitId, configId: $ctrl.configId, stages: $ctrl.allStages, notShownServices: $ctrl.notShownServices};
                 schedulerDataService.saveCustomizeData(data)
                 .then(function (result) {
                     if (result.error) {
@@ -1425,6 +1428,8 @@ __webpack_require__.r(__webpack_exports__);
                         return;
                     }
                     if (result.data) {
+                        $ctrl.unitId = result.data.unitId;
+                        $ctrl.configId = result.data.configId;
                         $ctrl.allStages = result.data.stages;
                         $ctrl.notShownServices = result.data.notShownServices;
 

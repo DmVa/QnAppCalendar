@@ -96,8 +96,8 @@ namespace PQ.QnAppCalendar.DataService
 
         public int InserCalendarStage(CalendarStage calendarStage)
         {
-            var sql = $@"INSERT INTO [pq].[CalendarStage]      ([SortOrder],[Name],[StageType], [IsServiceDefault]) output INSERTED.ID  
-            VALUES (@SortOrder,@Name, @StageType, @IsServiceDefault)";
+            var sql = $@"INSERT INTO [pq].[CalendarStage]      ([SortOrder],[Name],[StageType], [IsServiceDefault],[CalendarStageConfigId]) output INSERTED.ID  
+            VALUES (@SortOrder,@Name, @StageType, @IsServiceDefault, @CalendarStageConfigId)";
            
             int result = 0;
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
@@ -116,6 +116,9 @@ namespace PQ.QnAppCalendar.DataService
                     sqlCommand.Parameters.Add("@IsServiceDefault", SqlDbType.Int);
                     sqlCommand.Parameters["@IsServiceDefault"].Value = calendarStage.IsServiceDefault ? 1 :0;
 
+                    sqlCommand.Parameters.Add("@CalendarStageConfigId", SqlDbType.Int);
+                    sqlCommand.Parameters["@CalendarStageConfigId"].Value = calendarStage.CalendarStageConfigId;
+
                     sqlCommand.CommandType = CommandType.Text;
 
                     connection.Open();
@@ -128,7 +131,7 @@ namespace PQ.QnAppCalendar.DataService
 
         public void UpdateCalendarStage(CalendarStage calendarStage)
         {
-            var sql = $@"UPDATE [pq].[CalendarStage] SET [SortOrder] = @SortOrder, [Name] = @Name, [IsServiceDefault] = @IsServiceDefault WHERE ID = @Id";
+            var sql = $@"UPDATE [pq].[CalendarStage] SET [SortOrder] = @SortOrder, [Name] = @Name, [IsServiceDefault] = @IsServiceDefault, CalendarStageConfigId = @CalendarStageConfigId WHERE ID = @Id";
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
             {
                 using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
@@ -145,6 +148,9 @@ namespace PQ.QnAppCalendar.DataService
                     sqlCommand.Parameters.Add("@IsServiceDefault", SqlDbType.Int);
                     sqlCommand.Parameters["@IsServiceDefault"].Value = calendarStage.IsServiceDefault ? 1 : 0;
 
+                    sqlCommand.Parameters.Add("@CalendarStageConfigId", SqlDbType.Int);
+                    sqlCommand.Parameters["@CalendarStageConfigId"].Value = calendarStage.CalendarStageConfigId;
+
                     sqlCommand.CommandType = CommandType.Text;
 
                     connection.Open();
@@ -153,9 +159,11 @@ namespace PQ.QnAppCalendar.DataService
             }
         }
 
-        public void DeleteCalendarStageServices()
+        public void DeleteCalendarStageServices(int configId)
         {
-            var sql = $"delete from  pq.CalendarStageService";
+            var sql = $@"delete from  pq.CalendarStageService WHERE ID IN  
+                (SELECT css.ID FROM pq.CalendarStageService css  
+                INNER JOIN pq.CalendarStage  cs ON cs.Id = css.CalendarStageId AND cs.CalendarStageConfigId = {configId})";
             var result = new List<CalendarStage>();
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
             {
@@ -169,31 +177,31 @@ namespace PQ.QnAppCalendar.DataService
             }
         }
 
-        public CalendarStage GetClendarStage(int id)
+        private CalendarStage GetClendarStage(int configId, int id)
         {
-            var stages = GetClendarStages(id, null);
+            var stages = GetClendarStages(configId, id, null);
             if (stages.Count == 0)
                 return null;
             else
                 return stages[0];
         }
 
-        public CalendarStage GetClendarStageByType(CalendarStageType stageType)
+        public CalendarStage GetClendarStageByType(int configId, CalendarStageType stageType)
         {
-            var stages = GetClendarStages(null, stageType);
+            var stages = GetClendarStages(configId, null, stageType);
             if (stages.Count == 0)
                 return null;
             else
                 return stages[0];
         }
 
-        internal void DeleteCalendarStagesExcept(List<int> stageIds)
+        internal void DeleteCalendarStagesExcept(int configId, List<int> stageIds)
         {
-            string deleteClause = "";
+            string deleteClause = $" WHERE CalendarStageConfigId = {configId} ";
             if (stageIds.Count > 0)
             {
                 string ids = Converter.ToCommaSeparated(stageIds);
-                deleteClause = $"WHERE ID NOT IN ({ids})";
+                deleteClause  += $" AND ID NOT IN ({ids})";
             }
 
             var sql = $"delete from  pq.CalendarStage {deleteClause}";
@@ -211,26 +219,142 @@ namespace PQ.QnAppCalendar.DataService
             }
         }
 
-        public List<CalendarStage> GetClendarStages()
+        internal int GetConfigId(int unitId)
         {
-            return GetClendarStages(null, null);
+            var sql = @"select TOP 1  Id from pq.[CalendarStageConfig] WHERE UnitId = @UnitId";
+            var result = -1;;
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.CommandType = CommandType.Text;
+                    
+                    sqlCommand.Parameters.Add("@UnitId", SqlDbType.Int);
+                    sqlCommand.Parameters["@UnitId"].Value = unitId;
+
+                    connection.Open();
+                    int? resObj = Converter.ToInt32Nullable(sqlCommand.ExecuteScalar());
+                    if (resObj.HasValue)
+                        result = resObj.Value;
+                }
+            }
+            return result;
         }
-        
-        private List<CalendarStage> GetClendarStages(int? id, CalendarStageType? stageType)
+        internal int InsertConfigId(int unitId)
         {
-            string whereCalusesql = "";
+
+            var sql = $@"INSERT INTO [pq].[CalendarStageConfig] ([UnitId]) OUTPUT INSERTED.ID    
+                    VALUES   (@UnitId)  ";
+
+            int result = -1;
+            using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@UnitId", unitId);
+
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    connection.Open();
+                    result = (int)sqlCommand.ExecuteScalar();
+                }
+            }
+
+            return result;
+        }
+
+        public List<CalendarStage> GetClendarStages(int configId)
+        {
+            if (configId > 0)
+                return GetClendarStages(configId, null, null);
+            else
+                return GetDefaultCalendarStages();
+        }
+
+        private List<CalendarStage> GetDefaultCalendarStages()
+        {
+            List<CalendarStage> result = new List<CalendarStage>();
+            int configId = -1;
+
+            result.Add(new CalendarStage()
+            {
+                Id = -1,
+                Name = "None",
+                SortOrder = 0,
+                StageType = CalendarStageType.None,
+                IsServiceDefault = false,
+                CalendarStageConfigId = configId
+            });
+
+            result.Add(new CalendarStage()
+            {
+                Id = -1,
+                Name = "Expected",
+                SortOrder = 1,
+                StageType = CalendarStageType.Expected,
+                IsServiceDefault = false,
+                CalendarStageConfigId = configId
+            });
+
+            result.Add(new CalendarStage()
+            {
+                Id = -1,
+                Name = "Waiting",
+                SortOrder = 2,
+                StageType = CalendarStageType.Waiting,
+                IsServiceDefault = false,
+                CalendarStageConfigId = configId
+            });
+
+            result.Add(new CalendarStage()
+            {
+                Id = -1,
+                Name = "In Service",
+                SortOrder = 3,
+                StageType = CalendarStageType.InService,
+                IsServiceDefault = true,
+                CalendarStageConfigId = configId
+            });
+
+            result.Add(new CalendarStage()
+            {
+                Id = -1,
+                Name = "Completed",
+                SortOrder = 4,
+                StageType = CalendarStageType.Completed,
+                IsServiceDefault = false,
+                CalendarStageConfigId = configId
+            });
+
+            result.Add(new CalendarStage()
+            {
+                Id = -1,
+                Name = "Waiting for Customer Action",
+                SortOrder = 5,
+                StageType = CalendarStageType.WaitingCustomerAction,
+                IsServiceDefault = false,
+                CalendarStageConfigId = configId
+            });
+            return result;
+        }
+
+        private List<CalendarStage> GetClendarStages(int configId, int? id, CalendarStageType? stageType)
+        {
+            string whereCalusesql = $" WHERE CalendarStageConfigId = {configId} ";
+
             var clauses = new List<string>();
             if (id.HasValue)
                 clauses.Add($"(ID = {id.Value})");
 
             if (stageType.HasValue)
                 clauses.Add($"(StageType = {(int)stageType.Value})");
+
             if (clauses.Count > 0)
             {
-                whereCalusesql = $" WHERE {string.Join(" AND ", clauses)}";
+                whereCalusesql += $" AND {string.Join(" AND ", clauses)}";
             }
 
-            var sql = $"select Id, Name, SortOrder, StageType, IsServiceDefault from pq.CalendarStage {whereCalusesql} order by SortOrder";
+            var sql = $"select Id, Name, SortOrder, StageType, IsServiceDefault, CalendarStageConfigId from pq.CalendarStage {whereCalusesql} order by SortOrder";
             var result = new List<CalendarStage>();
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
             {
@@ -249,6 +373,8 @@ namespace PQ.QnAppCalendar.DataService
                             item.SortOrder = Converter.ToInt32(sqlDataReader["SortOrder"]);
                             item.StageType = (CalendarStageType)Converter.ToInt32(sqlDataReader["StageType"]);
                             item.IsServiceDefault = Converter.ToBoolean(sqlDataReader["IsServiceDefault"]);
+                            item.CalendarStageConfigId = Converter.ToInt32(sqlDataReader["CalendarStageConfigId"]);
+                            
                             result.Add(item);
                         }
                     }
@@ -375,12 +501,12 @@ namespace PQ.QnAppCalendar.DataService
             return result;
         }
 
-        internal void UpdateOrInsertStage(CustomizeCalendarStage stagedata)
+        internal void UpdateOrInsertStage(int configId, CustomizeCalendarStage stagedata)
         {
             CalendarStage stage = null;
             if (stagedata.Id > 0)
             {
-                stage = GetClendarStage(stagedata.Id);
+                stage = GetClendarStage(configId, stagedata.Id);
             }
             
             if (stage == null)
@@ -390,7 +516,9 @@ namespace PQ.QnAppCalendar.DataService
                     Name = stagedata.Name,
                     SortOrder = stagedata.SortOrder,
                     IsServiceDefault = stagedata.IsServiceDefault,
-                    StageType = (CalendarStageType)stagedata.StageType
+                    StageType = (CalendarStageType)stagedata.StageType,
+                    CalendarStageConfigId = configId
+
                 };
                 stage.Id = InserCalendarStage(stage);
             }
@@ -399,6 +527,7 @@ namespace PQ.QnAppCalendar.DataService
                 stage.Name = stagedata.Name;
                 stage.SortOrder = stagedata.SortOrder;
                 stage.IsServiceDefault = stagedata.IsServiceDefault;
+                stage.CalendarStageConfigId = configId;
                 UpdateCalendarStage(stage);
             }
 

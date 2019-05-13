@@ -52,6 +52,7 @@
     <Compile Include="AjaxHandler.cs" />
     <Compile Include="DataException.cs" />
     <Compile Include="DataService\CalendarStage.cs" />
+    <Compile Include="DataService\CalendarStageConfig.cs" />
     <Compile Include="DataService\CalendarStageService.cs" />
     <Compile Include="DataService\CalendarStageType.cs" />
     <Compile Include="Dto\AppointmentChangedData.cs" />

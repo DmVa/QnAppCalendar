@@ -9,6 +9,7 @@ namespace PQ.QnAppCalendar.DataService
     public class CalendarStage
     {
         public int Id { get; set; }
+        public int CalendarStageConfigId { get; set; }
         public int SortOrder { get; set; }
         public string Name { get; set; }
         public CalendarStageType StageType  {get;set; }

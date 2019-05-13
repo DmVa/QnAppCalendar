@@ -9,6 +9,8 @@ namespace PQ.QnAppCalendar.Dto
 {
     public class CustomizeData
     {
+        public int UnitId { get; set; }
+        public int ConfigId { get; set; }
         public List<CustomizeCalendarStage> Stages { get; set; }
         public List<CustomizeStageService> NotShownServices { get; set; } 
     }

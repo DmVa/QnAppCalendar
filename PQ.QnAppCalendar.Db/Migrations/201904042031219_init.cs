@@ -12,10 +12,22 @@ namespace PQ.QnAppCalendar.Db.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        CalendarStageConfigId = c.Int(nullable: false),
                         SortOrder = c.Int(nullable: false, defaultValue: 0),
                         Name = c.String(maxLength: 250),
                         StageType = c.Int(nullable: false),
                         IsServiceDefault = c.Int(nullable: false, defaultValue: 0),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("pq.CalendarStageConfig", t => t.CalendarStageConfigId, cascadeDelete: true)
+                .Index(t => t.CalendarStageConfigId);
+            
+            CreateTable(
+                "pq.CalendarStageConfig",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UnitId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -36,8 +48,11 @@ namespace PQ.QnAppCalendar.Db.Migrations
         public override void Down()
         {
             DropForeignKey("pq.CalendarStageService", "CalendarStageId", "pq.CalendarStage");
+            DropForeignKey("pq.CalendarStage", "CalendarStageConfigId", "pq.CalendarStageConfig");
             DropIndex("pq.CalendarStageService", new[] { "CalendarStageId" });
+            DropIndex("pq.CalendarStage", new[] { "CalendarStageConfigId" });
             DropTable("pq.CalendarStageService");
+            DropTable("pq.CalendarStageConfig");
             DropTable("pq.CalendarStage");
         }
     }
