@@ -1,6 +1,9 @@
 ﻿pq-scheduler-customize {
 
+
     .scheduler-customize-container {
+        padding:5px;
+        background: #fff;
         height: 60%;
         align-items: center;
         justify-content: center;
@@ -69,54 +72,7 @@
         font-family: arial;
     }
 
-    .pq-modal-footer {
-        margin-top: 15px;
-        text-align: right;
-        border-top: 1px solid #e5e5e5;
-    }
-
     .centered {
         text-align: center;
-    }
-
-    .flatbutton {
-        display: inline;
-        background: darkgray;
-        border-radius: 2px;
-        font-family: "Arial";
-        border: 0;
-        font-size: 15px;
-        line-height: 15px;
-        color: white;
-        width: auto;
-        height: auto;
-        box-sizing: content-box;
-    }
-
-    .btn {
-        display: inline-block;
-        margin-bottom: 0;
-        font-weight: 400;
-        text-align: center;
-        vertical-align: middle;
-        cursor: pointer;
-        background-image: none;
-        border: 1px solid transparent;
-        white-space: nowrap;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        border-radius: 4px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        margin: 5px;
-    }
-
-    .btn-primary {
-        color: #fff;
-        background-color: #428bca;
-        border-color: #357ebd;
     }
 }

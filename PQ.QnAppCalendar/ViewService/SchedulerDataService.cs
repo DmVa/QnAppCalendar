@@ -262,8 +262,9 @@ namespace PQ.QnAppCalendar.ViewService
         }
 
 
-        internal SchedulerEvent AppointmentChanged(int currentUserId,int currentUnitId, int previousStageId, int nextStageId,  SchedulerEvent theEvent)
+        internal AppointmentChangedResult AppointmentChanged(int currentUserId,int currentUnitId, int previousStageId, int nextStageId,  SchedulerEvent theEvent, int? routeId)
         {
+            AppointmentChangedResult result = new AppointmentChangedResult();
             var dataService = new QNomyDataService();
             
           
@@ -275,7 +276,7 @@ namespace PQ.QnAppCalendar.ViewService
             var prevCalendarStageType = GetStageTypeById(previousStageId, calendarStages);
             var nextCalendarStageType = GetStageTypeById(nextStageId, calendarStages);
             int previousServiceId = theEvent.ServiceId;
-           
+            RouteResultData routeResult = null;
 
             int delegateId = 0;
           
@@ -310,12 +311,12 @@ namespace PQ.QnAppCalendar.ViewService
                             }
                             else
                             {
-                                RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage, true);
+                                routeResult= RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage, true, routeId);
                             }
                         }
                         else
                         {
-                            RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage, true);
+                            routeResult = RouteUser(currentUserId, theEvent, dataService, delegateId, servicesInStage, true, routeId);
                         }
 
                         break;
@@ -354,6 +355,12 @@ namespace PQ.QnAppCalendar.ViewService
                 }
             }
 
+            if (routeResult != null && !routeResult.IsRouted)
+            {
+                result.RouteData = routeResult;
+                return result;
+            }
+
             var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
 
             var qnomyApp = Appointment.Get(theEvent.AppointmentId);
@@ -361,29 +368,32 @@ namespace PQ.QnAppCalendar.ViewService
             theEvent.StageId = GetStageByServiceId(theEvent.ServiceId, theEvent.StageType, calendarStages, customizeData);
             var currentService = Service.Get(theEvent.ServiceId);
             theEvent.ServiceName = currentService.Name;
-            
-            return theEvent;
+            result.EventData = theEvent;
+            return result;
         }
 
-        private static void RouteUser(int currentUserId, SchedulerEvent theEvent, QNomyDataService dataService, int delegateId, List<int> servicesInStage, bool callAfterRoute)
+        private RouteResultData RouteUser(int currentUserId, SchedulerEvent theEvent, QNomyDataService dataService, int delegateId, List<int> servicesInStage, bool callAfterRoute, int? routeId)
         {
+            RouteResultData result = new RouteResultData();
             List<RouteListItem> availableRoutes = Service.GetAvailableRoutes(theEvent.ServiceId);
             int? transferedFromServiceId = dataService.GetTranseredFromServiceId(theEvent.ProcessId);
 
             var routesToStage = new List<RouteListItem>();
             var returnToSender = new List<RouteListItem>();
+            bool skipAddRoute = false;
             foreach (var rout in availableRoutes)
             {
-                if (transferedFromServiceId.HasValue && rout.TargetType == Route.RouteTargetType.ReturnToSender && servicesInStage.Contains(transferedFromServiceId.Value))
+                skipAddRoute = routeId.HasValue && routeId.Value > 0 && routeId.Value != rout.Id;
+                if (!skipAddRoute && transferedFromServiceId.HasValue && rout.TargetType == Route.RouteTargetType.ReturnToSender && servicesInStage.Contains(transferedFromServiceId.Value))
+                {
+                        routesToStage.Add(rout);
+                        continue;
+                }
+
+                if (!skipAddRoute && servicesInStage.Contains(rout.TargetServiceId))
                 {
                     routesToStage.Add(rout);
                     continue;
-                }
-
-
-                if (servicesInStage.Contains(rout.TargetServiceId))
-                {
-                    routesToStage.Add(rout);
                 }
             }
 
@@ -392,7 +402,16 @@ namespace PQ.QnAppCalendar.ViewService
                 throw new DataException("Route to this stage does not exists.");
 
             if (routesToStage.Count > 1)
-                throw new DataException("Was found multiple routs to this stage.");
+            {
+                result.Selection = new SelectOptionData();
+                result.Selection.Options = new List<KeyValuePair<int, string>>();
+                foreach (var item in routesToStage)
+                {
+                    result.Selection.Options.Add(new KeyValuePair<int, string>(item.Id, item.Name));
+                }
+
+                return result;
+            }
 
             var route = routesToStage[0];
 
@@ -420,6 +439,8 @@ namespace PQ.QnAppCalendar.ViewService
 
                 }
             }
+            result.IsRouted = true;
+            return result;
         }
 
         private static void CallUser(int currentUserId, SchedulerEvent theEvent, int delegateId)

@@ -612,10 +612,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_scheduler_scheduler_directives_draganddrop_js__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _scheduler_scheduler_directives_modal_directive_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scheduler/scheduler.directives/modal.directive.js */ "./src/scheduler/scheduler.directives/modal.directive.js");
 /* harmony import */ var _scheduler_scheduler_component_scheduler_component_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scheduler/scheduler.component/scheduler.component.js */ "./src/scheduler/scheduler.component/scheduler.component.js");
-/* harmony import */ var _scheduler_scheduler_board_scheduler_board_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scheduler/scheduler.board/scheduler.board.js */ "./src/scheduler/scheduler.board/scheduler.board.js");
-/* harmony import */ var _scheduler_scheduler_customize_schedulercustomize_component_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./scheduler/scheduler.customize/schedulercustomize.component.js */ "./src/scheduler/scheduler.customize/schedulercustomize.component.js");
-/* harmony import */ var _scheduler_scheduler_editcolumn_schedulereditcolumn_component_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./scheduler/scheduler.editcolumn/schedulereditcolumn.component.js */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js");
+/* harmony import */ var _scheduler_scheduler_selectroute_schedulerselectroute_component_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scheduler/scheduler.selectroute/schedulerselectroute.component.js */ "./src/scheduler/scheduler.selectroute/schedulerselectroute.component.js");
+/* harmony import */ var _scheduler_scheduler_board_scheduler_board_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./scheduler/scheduler.board/scheduler.board.js */ "./src/scheduler/scheduler.board/scheduler.board.js");
+/* harmony import */ var _scheduler_scheduler_customize_schedulercustomize_component_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./scheduler/scheduler.customize/schedulercustomize.component.js */ "./src/scheduler/scheduler.customize/schedulercustomize.component.js");
+/* harmony import */ var _scheduler_scheduler_editcolumn_schedulereditcolumn_component_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./scheduler/scheduler.editcolumn/schedulereditcolumn.component.js */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.js");
 ﻿
+
 
 
 
@@ -640,7 +642,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"pq-scheduler-board\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"pq-board-container\"> <div class=\"pq-board-header\"> {{currentDateStr}} </div> <div class=\"pq-board-body\"> <div ng-repeat=\"stageobj in stages\" class=\"pq-stage\" id=\"stage_{{stageobj.id}}\" pq-drop-on-me=\"true\" on-drop=\"handledrop(event, stageobj, data)\"> <div class=\"pq-stageheader\"> <div> {{stageobj.name}}</div> </div> <div class=\"pq-stagebody\"> <div ng-repeat=\"schedulerEvent in stageobj.schedulerEvents\" class=\"pq-stageevent\" id=\"schedulerEvent_{{schedulerEvent.id}}\" pq-drag-me=\"appoitnmnetId\" appoitnmnetId=\"{{schedulerEvent.appointmentId}}\"> <div class=\"pq-appointment\"> <div> {{schedulerEvent.customerName}}</div> <div> {{schedulerEvent.serviceName}}</div> </div> </div> </div> </div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize on-save-customize=\"$ctrl.onSaveCustomize()\" ng-init=\"\"></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
+module.exports = "<div class=\"pq-scheduler-board\"> <button ng-click=\"$ctrl.openCustomize($event)\">Customize</button> <div class=\"pq-board-container\"> <div class=\"pq-board-header\"> {{currentDateStr}} </div> <div class=\"pq-board-body\"> <div ng-repeat=\"stageobj in stages\" class=\"pq-stage\" id=\"stage_{{stageobj.id}}\" pq-drop-on-me=\"true\" on-drop=\"handledrop(event, stageobj, data)\"> <div class=\"pq-stageheader\"> <div> {{stageobj.name}}</div> </div> <div class=\"pq-stagebody\"> <div ng-repeat=\"schedulerEvent in stageobj.schedulerEvents\" class=\"pq-stageevent\" id=\"schedulerEvent_{{schedulerEvent.id}}\" pq-drag-me=\"appoitnmnetId\" appoitnmnetId=\"{{schedulerEvent.appointmentId}}\"> <div class=\"pq-appointment\"> <div> {{schedulerEvent.customerName}}</div> <div> {{schedulerEvent.serviceName}}</div> </div> </div> </div> </div> </div> </div> <pq-modal id=\"scheduler-customize-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-customize on-save-customize=\"$ctrl.onSaveCustomize()\"></pq-scheduler-customize> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> <pq-modal id=\"scheduler-select-route-modal\"> <div class=\"pq-modal\"> <div class=\"pq-modal-body\"> <pq-scheduler-select-route on-select-route=\"$ctrl.onSelectRoute(eventData,selected)\"></pq-scheduler-select-route> </div> </div> <div class=\"pq-modal-background\"></div> </pq-modal> </div>";
 
 /***/ }),
 
@@ -676,6 +678,7 @@ __webpack_require__.r(__webpack_exports__);
 
         $scope.currentDateStr = '';
         $scope.stages = [];
+        $scope.selectRoute = {};
         let schedulerEvents = [];
 
         let customizeData = null;
@@ -876,10 +879,64 @@ __webpack_require__.r(__webpack_exports__);
             return true;
         };
 
-     
-        
+        $ctrl.needSelectRouteService = function (routeData, eventData) {
+            
+            let selectRoute = {
+                selected: {},
+                options: routeData,
+                tostagename: eventData.nextStage.name,
+                eventData: eventData
+            };
 
-      
+            $scope.$broadcast('pq-board-select-route', selectRoute);
+            $ctrl.openModal('scheduler-select-route-modal');
+        };
+
+        $ctrl.onSelectRoute = function (eventData, selected) {
+            $ctrl.runEventChanged(eventData.previousStage, eventData.nextStage, eventData.scheduledEvent, selected.key);
+        }
+
+        $ctrl.runEventChanged = function (previousStage, nextStage, scheduledEvent, routeId) {
+
+            schedulerDataService.eventChanged({ previousStageId: previousStage.id, nextStageId: nextStage.id, schedulerEvent: scheduledEvent, routeId: routeId })
+            .then(function (result) {
+
+                if (result.error) {
+                    $ctrl.handleWrappedError(result);
+                    return;
+                }
+
+                if (result.data.routeData && result.data.routeData.selection && result.data.routeData.selection.options.length > 0) {
+                    let eventData = {
+                        previousStage: previousStage,
+                        nextStage: nextStage,
+                        scheduledEvent: scheduledEvent
+                    };
+
+                    $ctrl.needSelectRouteService(result.data.routeData.selection.options, eventData);
+                    return;
+                };
+
+                if (result.data.eventData && result.data.eventData.appointmentId) {
+                    scheduledEvent.appointmentId = result.data.eventData.appointmentId;
+                    scheduledEvent.serviceId = result.data.eventData.serviceId;
+                    scheduledEvent.stageId = result.data.eventData.stageId;
+                    scheduledEvent.serviceName = result.data.eventData.serviceName;
+                    $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
+                    let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
+                    if (newStageObj) {
+                        newStageObj.schedulerEvents.push(scheduledEvent);
+                    }
+                    $scope.$apply();
+                    return;
+                }
+                $ctrl.handleError("data doesnot returned, refresh the page");
+
+            }, function (result) {
+                $ctrl.handleError(result);
+                return;
+                });
+        };
 
         $scope.handledrop = function (event, stageobj, data) {
 
@@ -916,32 +973,41 @@ __webpack_require__.r(__webpack_exports__);
             if (previousStageId == nextStageId) {
                 return;
             }
+            $ctrl.runEventChanged(previousStage, stageobj, scheduledEvent, null);
+       
 
-            schedulerDataService.eventChanged({ previousStageId: previousStageId, nextStageId: nextStageId, schedulerEvent: scheduledEvent })
-                .then(function (result) {
+            //schedulerDataService.eventChanged({ previousStageId: previousStageId, nextStageId: nextStageId, schedulerEvent: scheduledEvent, routeId: routeId })
+            //    .then(function (result) {
 
-                    if (result.error) {
-                        $ctrl.handleWrappedError(result);
-                        return;
-                    }
-                    if (result.data.appointmentId) {
-                        scheduledEvent.appointmentId = result.data.appointmentId;
-                        scheduledEvent.serviceId = result.data.serviceId;
-                        scheduledEvent.stageId = result.data.stageId;
-                        scheduledEvent.serviceName = result.data.serviceName;
-                        $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
-                        let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
-                        if (newStageObj) {
-                            newStageObj.schedulerEvents.push(scheduledEvent);
-                        }
-                        $scope.$apply();
-                    }
+            //        if (result.error) {
+            //            $ctrl.handleWrappedError(result);
+            //            return;
+            //        }
 
-                    console.log('saved');
-                }, function (result) {
-                    $ctrl.handleError(result);
-                    return;
-                });
+            //        if (result.data.routeData && result.data.routeData.selection && result.data.routeData.selection.options.length > 0) {
+            //            $ctrl.needSelectRouteService(stageobj.name, result.data.routeData.selection.options);
+            //            return;
+            //        };
+
+            //        if (result.data.eventData && result.data.eventData.appointmentId) {
+            //            scheduledEvent.appointmentId = result.data.eventData.appointmentId;
+            //            scheduledEvent.serviceId = result.data.eventData.serviceId;
+            //            scheduledEvent.stageId = result.data.eventData.stageId;
+            //            scheduledEvent.serviceName = result.data.eventData.serviceName;
+            //            $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
+            //            let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
+            //            if (newStageObj) {
+            //                newStageObj.schedulerEvents.push(scheduledEvent);
+            //            }
+            //            $scope.$apply();
+            //            return;
+            //        }
+            //        $ctrl.handleError("data doesnot returned, refresh the page");
+                    
+            //    }, function (result) {
+            //        $ctrl.handleError(result);
+            //        return;
+            //    });
 
         }
 
@@ -1841,6 +1907,96 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/scheduler/scheduler.selectroute/schedulerselectroute.component.html":
+/*!*********************************************************************************!*\
+  !*** ./src/scheduler/scheduler.selectroute/schedulerselectroute.component.html ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"scheduler-select-route\"> <div class=\"top-content\"> <div> There are multiple routes to move to column {{tostagename}}. </div> <div> Select one: </div> <div> <select class=\"select-control\" ng-model=\"selected\" ng-options=\"option as option.value for option in options track by option.key\"></select> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, true)\" class=\"btn btn-primary\">Route</button> </div> </div> ";
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.selectroute/schedulerselectroute.component.js":
+/*!*******************************************************************************!*\
+  !*** ./src/scheduler/scheduler.selectroute/schedulerselectroute.component.js ***!
+  \*******************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _schedulerselectroute_component_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./schedulerselectroute.component.scss */ "./src/scheduler/scheduler.selectroute/schedulerselectroute.component.scss");
+/* harmony import */ var _schedulerselectroute_component_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_schedulerselectroute_component_scss__WEBPACK_IMPORTED_MODULE_0__);
+﻿
+
+(function () {
+    'use strict';
+
+    angular
+        .module('scheduler.module')
+        .component('pqSchedulerSelectRoute', {
+            template: __webpack_require__(/*! ./schedulerselectroute.component.html */ "./src/scheduler/scheduler.selectroute/schedulerselectroute.component.html"),
+            controller: SchedulerSelectRouteController,
+            bindings: {
+                onSelectRoute: '&'
+            }
+        });
+    
+    SchedulerSelectRouteController.inject = ['$scope', '$window', '$document', '$timeout', 'modalService'];
+   
+
+    function SchedulerSelectRouteController($scope, $window, $document, $timeout, modalService) {
+        let $ctrl = this;
+        $scope.options = [];
+        $scope.selected = {};
+        $scope.tostagename = '';
+     
+        $ctrl.closeModal = function closeModal($event, save) {
+            $event.preventDefault();
+            if (save) {
+                if (!$scope.selected || !$scope.selected.key) {
+                    return;
+                }
+                $ctrl.onSelectRoute({ eventData: $scope.eventData, selected: $scope.selected });
+            }
+            modalService.Close('scheduler-select-route-modal');
+        };
+
+        let initListener = $scope.$on('pq-board-select-route', function (events, args) {
+            $scope.tostagename = args.tostagename;
+            $scope.options = args.options;
+            $scope.eventData = args.eventData;
+            if ($scope.options && $scope.options.length > 0) {
+                $scope.selected = $scope.options[0];
+            }
+            else {
+                $scope.selected = {};
+            };
+            $scope.$apply();
+        });
+
+        $scope.$on('$destroy', function () {
+            initListener();
+        });
+    }
+}
+)();
+
+/***/ }),
+
+/***/ "./src/scheduler/scheduler.selectroute/schedulerselectroute.component.scss":
+/*!*********************************************************************************!*\
+  !*** ./src/scheduler/scheduler.selectroute/schedulerselectroute.component.scss ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "./src/scheduler/scheduler.services/alert.service.js":
 /*!***********************************************************!*\
   !*** ./src/scheduler/scheduler.services/alert.service.js ***!
@@ -1879,7 +2035,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-﻿(function () {
+﻿
+(function () {
     'use strict';
 
     angular
@@ -1895,37 +2052,41 @@ __webpack_require__.r(__webpack_exports__);
         service.Open = Open;
         service.Close = Close;
 
-        return service;
+        
 
-        function FindWhere(id) {
+        var findWhere = function FindWhere(id) {
             var arrayLength = modals.length;
             for (var i = 0; i < arrayLength; i++) {
                 if (modals[i].id === id) {
                     return modals[i];
                 }
             }
-        }
+        };
+        return service;
 
         function Add(modal) {
-            // add modal to array of active modals
             modals.push(modal);
         }
 
         function Remove(id) {
-            // remove modal from array of active modals
-            var modalToRemove = _.findWhere(modals, { id: id });
-            modals = _.without(modals, modalToRemove);
+            var arrayLength = modals.length;
+            for (var i = 0; i < arrayLength; i++) {
+                if (modals[i].id === id) {
+                    modals.splice(i, 1);
+                    i--;
+                }
+            }
         }
 
         function Open(id) {
             // open modal specified by id
-            var modal = _.findWhere(modals, { id: id });
+            var modal = findWhere(id);
             modal.open();
         }
 
         function Close(id) {
             // close modal specified by id
-            var modal = _.findWhere(modals, { id: id });
+            var modal = findWhere(id);
             modal.close();
         }
     }

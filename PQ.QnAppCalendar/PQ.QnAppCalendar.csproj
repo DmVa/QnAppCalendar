@@ -57,10 +57,13 @@
     <Compile Include="DataService\CalendarStageType.cs" />
     <Compile Include="Dto\AppointmentChangedData.cs" />
     <Compile Include="Dto\AppointmentTypeInfo.cs" />
+    <Compile Include="Dto\AppointmentChangedResult.cs" />
     <Compile Include="Dto\CustomizeData.cs" />
     <Compile Include="Dto\DateFromTo.cs" />
     <Compile Include="Dto\GetAppointmentsData.cs" />
     <Compile Include="Dto\RouteInfo.cs" />
+    <Compile Include="Dto\RouteResultData.cs" />
+    <Compile Include="Dto\SelectServiceData.cs" />
     <Compile Include="Dto\ServiceInfo.cs" />
     <Compile Include="Dto\UserInfo.cs" />
     <Compile Include="ResponseWrapper.cs" />

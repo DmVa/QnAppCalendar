@@ -7,12 +7,12 @@
         </div>
 
         <div class="pq-board-body">
-            <div ng-repeat="stageobj in stages" class="pq-stage"  id="stage_{{stageobj.id}}" pq-drop-on-me="true" on-drop="handledrop(event, stageobj, data)" >
+            <div ng-repeat="stageobj in stages" class="pq-stage" id="stage_{{stageobj.id}}" pq-drop-on-me="true" on-drop="handledrop(event, stageobj, data)">
                 <div class="pq-stageheader">
                     <div> {{stageobj.name}}</div>
                 </div>
                 <div class="pq-stagebody">
-                    <div ng-repeat="schedulerEvent in stageobj.schedulerEvents" class="pq-stageevent" id="schedulerEvent_{{schedulerEvent.id}}" pq-drag-me="appoitnmnetId"  appoitnmnetId="{{schedulerEvent.appointmentId}}">
+                    <div ng-repeat="schedulerEvent in stageobj.schedulerEvents" class="pq-stageevent" id="schedulerEvent_{{schedulerEvent.id}}" pq-drag-me="appoitnmnetId" appoitnmnetId="{{schedulerEvent.appointmentId}}">
                         <div class="pq-appointment">
                             <div> {{schedulerEvent.customerName}}</div>
                             <div> {{schedulerEvent.serviceName}}</div>
@@ -26,9 +26,18 @@
     <pq-modal id="scheduler-customize-modal">
         <div class="pq-modal">
             <div class="pq-modal-body">
-                <pq-scheduler-customize on-save-customize="$ctrl.onSaveCustomize()" ng-init="" ></pq-scheduler-customize>
+                <pq-scheduler-customize on-save-customize="$ctrl.onSaveCustomize()" ></pq-scheduler-customize>
             </div>
 
+        </div>
+        <div class="pq-modal-background"></div>
+    </pq-modal>
+
+    <pq-modal id="scheduler-select-route-modal">
+        <div class="pq-modal">
+            <div class="pq-modal-body">
+                <pq-scheduler-select-route on-select-route="$ctrl.onSelectRoute(eventData,selected)" ></pq-scheduler-select-route>
+            </div>
         </div>
         <div class="pq-modal-background"></div>
     </pq-modal>

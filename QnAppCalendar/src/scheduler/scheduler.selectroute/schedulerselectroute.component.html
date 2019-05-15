@@ -1,0 +1,19 @@
+﻿<div class="scheduler-select-route">
+    
+    <div class="top-content">
+        <div>
+            There are multiple routes to move to column {{tostagename}}.
+        </div>
+        <div>
+            Select one:
+        </div>
+        <div>
+            <select class="select-control" ng-model="selected" ng-options="option as option.value for option in options track by option.key"></select>
+        </div>
+    </div>
+    <div class="pq-modal-footer">
+        <button type="button" ng-click="$ctrl.closeModal($event, false)" class="btn btn-default" focus-element="autofocus" data-dismiss="pq-modal">Close</button>
+        <button type="button" ng-click="$ctrl.closeModal($event, true)" class="btn btn-primary">Route</button>
+    </div>
+
+</div>

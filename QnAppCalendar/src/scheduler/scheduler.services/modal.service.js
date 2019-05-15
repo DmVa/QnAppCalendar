@@ -1,4 +1,5 @@
-﻿(function () {
+﻿
+(function () {
     'use strict';
 
     angular
@@ -14,37 +15,41 @@
         service.Open = Open;
         service.Close = Close;
 
-        return service;
+        
 
-        function FindWhere(id) {
+        var findWhere = function FindWhere(id) {
             var arrayLength = modals.length;
             for (var i = 0; i < arrayLength; i++) {
                 if (modals[i].id === id) {
                     return modals[i];
                 }
             }
-        }
+        };
+        return service;
 
         function Add(modal) {
-            // add modal to array of active modals
             modals.push(modal);
         }
 
         function Remove(id) {
-            // remove modal from array of active modals
-            var modalToRemove = _.findWhere(modals, { id: id });
-            modals = _.without(modals, modalToRemove);
+            var arrayLength = modals.length;
+            for (var i = 0; i < arrayLength; i++) {
+                if (modals[i].id === id) {
+                    modals.splice(i, 1);
+                    i--;
+                }
+            }
         }
 
         function Open(id) {
             // open modal specified by id
-            var modal = _.findWhere(modals, { id: id });
+            var modal = findWhere(id);
             modal.open();
         }
 
         function Close(id) {
             // close modal specified by id
-            var modal = _.findWhere(modals, { id: id });
+            var modal = findWhere(id);
             modal.close();
         }
     }

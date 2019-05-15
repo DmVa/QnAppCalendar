@@ -68,7 +68,7 @@ namespace PQ.QnAppCalendar
                     case QueryStringParams.APPOINTMENT_CHANGED:
                         string objJsonApp = GetData(context.Request);
                         var appData = JsonConvert.DeserializeObject<AppointmentChangedData>(objJsonApp);
-                        data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousStageId, appData.NextStageId, appData.SchedulerEvent);
+                        data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousStageId, appData.NextStageId, appData.SchedulerEvent, appData.RouteId);
                         break;
                         
                     default:

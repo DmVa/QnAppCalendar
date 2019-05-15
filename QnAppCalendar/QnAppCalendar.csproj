@@ -113,6 +113,8 @@
     <Content Include="src\scheduler\scheduler.board\scheduler.board.js" />
     <Content Include="src\scheduler\scheduler.component\scheduler.component.html" />
     <Content Include="src\scheduler\scheduler.component\scheduler.component.js" />
+    <Content Include="src\scheduler\scheduler.selectroute\schedulerselectroute.component.html" />
+    <Content Include="src\scheduler\scheduler.selectroute\schedulerselectroute.component.js" />
     <Content Include="src\scheduler\scheduler.editcolumn\schedulereditcolumn.component.scss" />
     <Content Include="src\scheduler\scheduler.board\scheduler.board.scss" />
     <None Include="src\scheduler\scheduler.customize\schedulercustomize.component.scss" />
@@ -135,6 +137,7 @@
     <Content Include="package.json" />
     <None Include="packages.config" />
     <Content Include="src\scheduler\scheduler.component\scheduler.component.scss" />
+    <Content Include="src\scheduler\scheduler.selectroute\schedulerselectroute.component.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

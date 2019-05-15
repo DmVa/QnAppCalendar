@@ -10,6 +10,7 @@ namespace PQ.QnAppCalendar.Dto
     {
         public int PreviousStageId;
         public int NextStageId;
+        public int? RouteId;
         public SchedulerEvent SchedulerEvent;
     }
 }

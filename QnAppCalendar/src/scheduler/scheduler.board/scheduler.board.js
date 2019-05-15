@@ -19,6 +19,7 @@
 
         $scope.currentDateStr = '';
         $scope.stages = [];
+        $scope.selectRoute = {};
         let schedulerEvents = [];
 
         let customizeData = null;
@@ -219,10 +220,64 @@
             return true;
         };
 
-     
-        
+        $ctrl.needSelectRouteService = function (routeData, eventData) {
+            
+            let selectRoute = {
+                selected: {},
+                options: routeData,
+                tostagename: eventData.nextStage.name,
+                eventData: eventData
+            };
 
-      
+            $scope.$broadcast('pq-board-select-route', selectRoute);
+            $ctrl.openModal('scheduler-select-route-modal');
+        };
+
+        $ctrl.onSelectRoute = function (eventData, selected) {
+            $ctrl.runEventChanged(eventData.previousStage, eventData.nextStage, eventData.scheduledEvent, selected.key);
+        }
+
+        $ctrl.runEventChanged = function (previousStage, nextStage, scheduledEvent, routeId) {
+
+            schedulerDataService.eventChanged({ previousStageId: previousStage.id, nextStageId: nextStage.id, schedulerEvent: scheduledEvent, routeId: routeId })
+            .then(function (result) {
+
+                if (result.error) {
+                    $ctrl.handleWrappedError(result);
+                    return;
+                }
+
+                if (result.data.routeData && result.data.routeData.selection && result.data.routeData.selection.options.length > 0) {
+                    let eventData = {
+                        previousStage: previousStage,
+                        nextStage: nextStage,
+                        scheduledEvent: scheduledEvent
+                    };
+
+                    $ctrl.needSelectRouteService(result.data.routeData.selection.options, eventData);
+                    return;
+                };
+
+                if (result.data.eventData && result.data.eventData.appointmentId) {
+                    scheduledEvent.appointmentId = result.data.eventData.appointmentId;
+                    scheduledEvent.serviceId = result.data.eventData.serviceId;
+                    scheduledEvent.stageId = result.data.eventData.stageId;
+                    scheduledEvent.serviceName = result.data.eventData.serviceName;
+                    $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
+                    let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
+                    if (newStageObj) {
+                        newStageObj.schedulerEvents.push(scheduledEvent);
+                    }
+                    $scope.$apply();
+                    return;
+                }
+                $ctrl.handleError("data doesnot returned, refresh the page");
+
+            }, function (result) {
+                $ctrl.handleError(result);
+                return;
+                });
+        };
 
         $scope.handledrop = function (event, stageobj, data) {
 
@@ -259,32 +314,41 @@
             if (previousStageId == nextStageId) {
                 return;
             }
+            $ctrl.runEventChanged(previousStage, stageobj, scheduledEvent, null);
+       
 
-            schedulerDataService.eventChanged({ previousStageId: previousStageId, nextStageId: nextStageId, schedulerEvent: scheduledEvent })
-                .then(function (result) {
+            //schedulerDataService.eventChanged({ previousStageId: previousStageId, nextStageId: nextStageId, schedulerEvent: scheduledEvent, routeId: routeId })
+            //    .then(function (result) {
 
-                    if (result.error) {
-                        $ctrl.handleWrappedError(result);
-                        return;
-                    }
-                    if (result.data.appointmentId) {
-                        scheduledEvent.appointmentId = result.data.appointmentId;
-                        scheduledEvent.serviceId = result.data.serviceId;
-                        scheduledEvent.stageId = result.data.stageId;
-                        scheduledEvent.serviceName = result.data.serviceName;
-                        $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
-                        let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
-                        if (newStageObj) {
-                            newStageObj.schedulerEvents.push(scheduledEvent);
-                        }
-                        $scope.$apply();
-                    }
+            //        if (result.error) {
+            //            $ctrl.handleWrappedError(result);
+            //            return;
+            //        }
 
-                    console.log('saved');
-                }, function (result) {
-                    $ctrl.handleError(result);
-                    return;
-                });
+            //        if (result.data.routeData && result.data.routeData.selection && result.data.routeData.selection.options.length > 0) {
+            //            $ctrl.needSelectRouteService(stageobj.name, result.data.routeData.selection.options);
+            //            return;
+            //        };
+
+            //        if (result.data.eventData && result.data.eventData.appointmentId) {
+            //            scheduledEvent.appointmentId = result.data.eventData.appointmentId;
+            //            scheduledEvent.serviceId = result.data.eventData.serviceId;
+            //            scheduledEvent.stageId = result.data.eventData.stageId;
+            //            scheduledEvent.serviceName = result.data.eventData.serviceName;
+            //            $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
+            //            let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
+            //            if (newStageObj) {
+            //                newStageObj.schedulerEvents.push(scheduledEvent);
+            //            }
+            //            $scope.$apply();
+            //            return;
+            //        }
+            //        $ctrl.handleError("data doesnot returned, refresh the page");
+                    
+            //    }, function (result) {
+            //        $ctrl.handleError(result);
+            //        return;
+            //    });
 
         }
 
