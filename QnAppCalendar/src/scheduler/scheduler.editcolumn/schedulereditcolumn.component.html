@@ -1,12 +1,28 @@
 ﻿<div class="scheduler-edit-column">
     
     <div class="top-content">
-        <label for="pqstageName">Name</label>
-        <input type="text" id="pqstageName" ng-model="name">
+        <table>
+            <tr>
+                <td>
+                    <label for="pqstageName">Name</label>
+                </td>
+                <td>
+                    <input type="text" id="pqstageName" ng-model="$parent.editingStage.name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pqisservicedefault">Default for services</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="pqisservicedefault" ng-model="$parent.editingStage.isServiceDefault">
+                </td>
+            </tr>
+        </table>
     </div>
     <div class="pq-modal-footer">
         <button type="button" ng-click="$ctrl.closeModal($event, false)" class="btn btn-default" focus-element="autofocus" data-dismiss="pq-modal">Close</button>
-        <button type="button" ng-click="$ctrl.closeModal($event, true)" class="btn btn-primary">Add</button>
+        <button type="button" ng-click="$ctrl.closeModal($event, true)" class="btn btn-primary">{{$parent.editingStage.buttonName}}</button>
     </div>
 
 </div>

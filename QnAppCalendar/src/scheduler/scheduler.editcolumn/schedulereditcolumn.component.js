@@ -9,7 +9,7 @@
             template: require('./schedulereditcolumn.component.html'),
             controller: SchedulerEditColumnController,
             bindings: {
-                onAddStage: '&'
+                onEditStage: '&'
             }
         });
     
@@ -19,12 +19,13 @@
     function SchedulerEditColumnController($scope, $window, $document, $timeout, modalService, schedulerDataService) {
         let $ctrl = this;
         $scope.name = '';
+        $scope.isservicedefault = false;
         let $ctrlAddColumn = $('pq-scheduler-edit-column');
      
         $ctrl.closeModal = function closeModal($event, save) {
             $event.preventDefault();
             if (save) {
-                $ctrl.onAddStage({ stagename: $scope.name });
+                $ctrl.onEditStage();
             }
             $ctrlAddColumn.hide();
         };

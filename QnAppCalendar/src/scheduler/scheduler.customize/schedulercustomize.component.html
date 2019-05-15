@@ -13,7 +13,7 @@
                     Stages
                 </span>
                 <span>
-                    <input type="submit" class="flatbutton" value="+" title="Add Column" ng-click="$ctrl.addStage($event)" />
+                    <input type="submit" class="flatbutton" value="+" title="Add Column" ng-click="$ctrl.editStage($event, null)" />
                 </span>
             </div>
             <div class="stages-container">
@@ -28,7 +28,7 @@
                             <input type="submit" class="flatbutton" value="-" title="Remove Column" ng-click="$ctrl.removeStage($event, stageobj)" />
                         </span>
                         <span ng-if="stageobj.stageType == 3">
-                            <input type="checkbox" title="Default column for new services" ng-model="stageobj.isServiceDefault" ng-change="$ctrl.changeIsServiceDefault($event, stageobj)" />
+                            <input type="submit" class="flatbutton" value="..." title="Edit Column" ng-click="$ctrl.editStage($event, stageobj)" />
                         </span>
                     </div>
 
@@ -46,4 +46,4 @@
     </div>
 
 </div>
-<pq-scheduler-edit-column on-add-stage="$ctrl.onAddStage(stagename)"></pq-scheduler-edit-column>
+<pq-scheduler-edit-column on-edit-stage="$ctrl.onEditStage()" ></pq-scheduler-edit-column>

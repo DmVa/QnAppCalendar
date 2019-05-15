@@ -23,6 +23,8 @@
         let notShownServices = [];
         let unitId = -1;
         let configId = -1;
+        $scope.editingStage = new Stage(-1, '', 3, []);
+        $scope.editingStage.buttonName = '11';
 
         $scope.stages = allStages;
         $scope.notShownServices = notShownServices;
@@ -41,7 +43,7 @@
             let index = -1;
             for (let i = 0; i < $ctrl.allStages.length; i++) {
                 let stage = $ctrl.allStages[i];
-                if (stage.stageType == 3) {
+                if (stage.stageType <= 3) {
                     index = i;
                 }
             }
@@ -67,15 +69,6 @@
                 array.splice(idx, 1);
             }
             return array;
-        };
-
-        $ctrl.onAddStage = function onAddStage(stagename) {
-            let index = getLastIndexOfServiceStage() + 1;
-            let newStageId = getMinStageIdForNewStage() - 1;
-            let newStage = new Stage(newStageId, stagename, 3, []); //3- service.
-
-            $ctrl.allStages.splice(index, 0, newStage);
-            
         };
 
         $ctrl.closeModal = function closeModal(save) {
@@ -117,7 +110,48 @@
             $ctrl.removeFromArray($ctrl.allStages, stageobj);
         };
 
-        $ctrl.changeIsServiceDefault = function changeIsServiceDefault($event, stageobj) {
+        $ctrl.editStage = function editStage($event, stageobj) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            if (!stageobj) {
+                $scope.editingStage.id = -1;
+                $scope.editingStage.name = '';
+                $scope.editingStage.isServiceDefault = false;
+                $scope.editingStage.buttonName = 'Add';
+            }
+            else {
+                $scope.editingStage.id = stageobj.id;
+                $scope.editingStage.name = stageobj.name;
+                $scope.editingStage.isServiceDefault = stageobj.isServiceDefault;
+                $scope.editingStage.buttonName = 'Edit';
+            }
+
+            $ctrlAddColumn.show();
+        };
+
+        $ctrl.onEditStage = function onEditStage() {
+            let stageId = $scope.editingStage.id;
+            if (stageId == -1) {
+                // add new
+                let index = getLastIndexOfServiceStage() + 1;
+                let newStageId = getMinStageIdForNewStage() - 1;
+                let newStage = new Stage(newStageId, $scope.editingStage.name, 3, []); //3- service.
+
+                $ctrl.allStages.splice(index, 0, newStage);
+            }
+            else {
+                //edit
+                let stage = $ctrl.allStages.find(item => item.id == stageId);
+                if (stage) {
+                    stage.name = $scope.editingStage.name;
+                    stage.isServiceDefault = $scope.editingStage.isServiceDefault;
+                    $ctrl.changeIsServiceDefault(stage);
+                }
+            }
+
+        };
+
+        $ctrl.changeIsServiceDefault = function changeIsServiceDefault(stageobj) {
             if (stageobj.isServiceDefault) {
                 for (let i = 0; i < $ctrl.allStages.length; i++) {
                     let stage = $ctrl.allStages[i];
@@ -126,12 +160,6 @@
                     }
                 }
             }
-        };
-
-        $ctrl.addStage = function addStage($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $ctrlAddColumn.show();
         };
 
         $ctrl.getCustomizeData = function getCustomizeData() {
