@@ -88,8 +88,9 @@
             for (var eventIdx = 0; eventIdx < evs.length; eventIdx++) {
                 var ev = evs[eventIdx];
                 let stageId = $ctrl.getStageIdForServiceid(ev.serviceId);
-                if (stageId == -1)
+                if (stageId == -1) {
                     ev.stageId = -1;
+                }
                 else {
                     if (ev.stageType == 3) { //inservice
                         ev.stageId = stageId;
@@ -191,9 +192,10 @@
                         }
                         else {
                             $ctrl.remapEventsToStages();
+                            $ctrl.updateStages();
                         }
 
-                        $ctrl.updateStages();
+                       
                     }
                 }, function (result) {
                     $ctrl.handleError(result);
@@ -263,6 +265,7 @@
                     scheduledEvent.serviceId = result.data.eventData.serviceId;
                     scheduledEvent.stageId = result.data.eventData.stageId;
                     scheduledEvent.serviceName = result.data.eventData.serviceName;
+                    scheduledEvent.stageType = result.data.eventData.stageType;
                     $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
                     let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
                     if (newStageObj) {

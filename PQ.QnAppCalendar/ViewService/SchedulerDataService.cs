@@ -29,7 +29,7 @@ namespace PQ.QnAppCalendar.ViewService
             var dataService = new QNomyDataService();
             var appointments = dataService.GetAppointments(from, to);
             
-            var customizeData = GetCustomizeData(unitId);
+            CustomizeData customizeData = GetCustomizeData(unitId);
             var calendarStages = dataService.GetClendarStages(customizeData.ConfigId);
             var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
 
@@ -37,6 +37,8 @@ namespace PQ.QnAppCalendar.ViewService
             {
                 app.CalendarStageType = statusMapping[app.CurrentEntityStatus];
                 app.StageId = GetStageByServiceId(app.ServiceId, app.CalendarStageType, calendarStages, customizeData);
+                if (app.StageId == -1)
+                    continue;
                 SchedulerEvent se = ToScheduleEvent(app);
                 result.Add(se);
             }

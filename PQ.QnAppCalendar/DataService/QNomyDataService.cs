@@ -288,7 +288,7 @@ namespace PQ.QnAppCalendar.DataService
 
             result.Add(new CalendarStage()
             {
-                Id = -1,
+                Id = -2,
                 Name = "Expected",
                 SortOrder = 1,
                 StageType = CalendarStageType.Expected,
@@ -298,7 +298,7 @@ namespace PQ.QnAppCalendar.DataService
 
             result.Add(new CalendarStage()
             {
-                Id = -1,
+                Id = -3,
                 Name = "Waiting",
                 SortOrder = 2,
                 StageType = CalendarStageType.Waiting,
@@ -308,7 +308,7 @@ namespace PQ.QnAppCalendar.DataService
 
             result.Add(new CalendarStage()
             {
-                Id = -1,
+                Id = -4,
                 Name = "In Service",
                 SortOrder = 3,
                 StageType = CalendarStageType.InService,
@@ -318,7 +318,7 @@ namespace PQ.QnAppCalendar.DataService
 
             result.Add(new CalendarStage()
             {
-                Id = -1,
+                Id = -5,
                 Name = "Completed",
                 SortOrder = 4,
                 StageType = CalendarStageType.Completed,
@@ -328,7 +328,7 @@ namespace PQ.QnAppCalendar.DataService
 
             result.Add(new CalendarStage()
             {
-                Id = -1,
+                Id = -6,
                 Name = "Waiting for Customer Action",
                 SortOrder = 5,
                 StageType = CalendarStageType.WaitingCustomerAction,
