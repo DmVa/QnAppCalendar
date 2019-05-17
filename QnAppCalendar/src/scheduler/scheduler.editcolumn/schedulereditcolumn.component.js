@@ -9,7 +9,8 @@
             template: require('./schedulereditcolumn.component.html'),
             controller: SchedulerEditColumnController,
             bindings: {
-                onEditStage: '&'
+                onEditStage: '&',
+                onDeleteStage: '&'
             }
         });
     
@@ -27,6 +28,11 @@
             if (save) {
                 $ctrl.onEditStage();
             }
+            $ctrlAddColumn.hide();
+        };
+        $ctrl.deleteStage = function deleteStage($event) {
+            $event.preventDefault();
+            $ctrl.onDeleteStage();
             $ctrlAddColumn.hide();
         };
     }

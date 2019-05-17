@@ -24,9 +24,7 @@
                         <span>
                             <input ng-model="stageobj.name" class="stageheadername" />
                         </span>
-                        <span ng-if="stageobj.stageType == 3">
-                            <input type="submit" class="flatbutton" value="-" title="Remove Column" ng-click="$ctrl.removeStage($event, stageobj)" />
-                        </span>
+                       
                         <span ng-if="stageobj.stageType == 3">
                             <input type="submit" class="flatbutton" value="..." title="Edit Column" ng-click="$ctrl.editStage($event, stageobj)" />
                         </span>
@@ -46,4 +44,4 @@
     </div>
 
 </div>
-<pq-scheduler-edit-column on-edit-stage="$ctrl.onEditStage()" ></pq-scheduler-edit-column>
+<pq-scheduler-edit-column on-edit-stage="$ctrl.onEditStage()" on-delete-stage="$ctrl.onDeleteStage()" ></pq-scheduler-edit-column>

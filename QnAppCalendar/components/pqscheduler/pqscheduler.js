@@ -1338,7 +1338,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> <span class=\"availableservice\">Not shown services</span> <div ng-repeat=\"service in notShownServices\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{service.id}}\" serviceid=\"{{service.serviceId}}\"> {{service.name}} </div> </div> <div class=\"stages-block\"> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.editStage($event, null)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.stageType == 3}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"-\" title=\"Remove Column\" ng-click=\"$ctrl.removeStage($event, stageobj)\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"...\" title=\"Edit Column\" ng-click=\"$ctrl.editStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stageservice in stageobj.services\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{stagestatus.id}}\" serviceid=\"{{stageservice.serviceId}}\"> {{stageservice.name}} </div> </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> <pq-scheduler-edit-column on-edit-stage=\"$ctrl.onEditStage()\"></pq-scheduler-edit-column>";
+module.exports = "<div class=\"scheduler-customize-container\"> <div class=\"scheduler-centered-content\"> <div class=\"avaiable-container\" pq-drop-on-me on-drop=\"handledrop(event, null, data)\"> <span class=\"availableservice\">Not shown services</span> <div ng-repeat=\"service in notShownServices\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{service.id}}\" serviceid=\"{{service.serviceId}}\"> {{service.name}} </div> </div> <div class=\"stages-block\"> <div class=\"centered\"> <span> Stages </span> <span> <input type=\"submit\" class=\"flatbutton\" value=\"+\" title=\"Add Column\" ng-click=\"$ctrl.editStage($event, null)\"/> </span> </div> <div class=\"stages-container\"> <div ng-repeat=\"stageobj in stages\" class=\"stage\" pq-drop-on-me=\"{{stageobj.stageType == 3}}\" on-drop=\"handledrop(event, stageobj, data)\" id=\"stage_{{stageobj.id}}\"> <div class=\"stageheader\"> <span> <input ng-model=\"stageobj.name\" class=\"stageheadername\"/> </span> <span ng-if=\"stageobj.stageType == 3\"> <input type=\"submit\" class=\"flatbutton\" value=\"...\" title=\"Edit Column\" ng-click=\"$ctrl.editStage($event, stageobj)\"/> </span> </div> <div ng-repeat=\"stageservice in stageobj.services\" class=\"stageservice\" pq-drag-me=\"serviceid\" id=\"service_{{stagestatus.id}}\" serviceid=\"{{stageservice.serviceId}}\"> {{stageservice.name}} </div> </div> </div> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal(false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal(true)\" class=\"btn btn-primary\">Save changes</button> </div> </div> <pq-scheduler-edit-column on-edit-stage=\"$ctrl.onEditStage()\" on-delete-stage=\"$ctrl.onDeleteStage()\"></pq-scheduler-edit-column>";
 
 /***/ }),
 
@@ -1418,6 +1418,19 @@ __webpack_require__.r(__webpack_exports__);
             return result;
         }
 
+        function getStageById(id) {
+            let result = null;
+            for (let i = 0; i < $ctrl.allStages.length; i++) {
+                let stage = $ctrl.allStages[i];
+                if (stage.id == id) {
+                    result = stage;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
             if (idx !== -1) {
@@ -1448,33 +1461,20 @@ __webpack_require__.r(__webpack_exports__);
             modalService.Close('scheduler-customize-modal');
         };
 
-        $ctrl.removeStage = function removeStage($event, stageobj) {
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            if (!stageobj) {
-                alertService.Error('undefined stage');
-                return;
-            }
-
-
-            stageobj.services.forEach(function (service) {
-                $ctrl.notShownServices.push(service);
-            });
-
-            $ctrl.removeFromArray($ctrl.allStages, stageobj);
-        };
+        
 
         $ctrl.editStage = function editStage($event, stageobj) {
             $event.preventDefault();
             $event.stopPropagation();
             if (!stageobj) {
+                $scope.editingStage.isNew = true;
                 $scope.editingStage.id = -1;
                 $scope.editingStage.name = '';
-                $scope.editingStage.isServiceDefault = false;
+                $scope.editingStage.isServiceDefault = !$ctrl.allStages.some(s => s.isServiceDefault);
                 $scope.editingStage.buttonName = 'Add';
             }
             else {
+                $scope.editingStage.isNew = false;
                 $scope.editingStage.id = stageobj.id;
                 $scope.editingStage.name = stageobj.name;
                 $scope.editingStage.isServiceDefault = stageobj.isServiceDefault;
@@ -1484,24 +1484,45 @@ __webpack_require__.r(__webpack_exports__);
             $ctrlAddColumn.show();
         };
 
-        $ctrl.onEditStage = function onEditStage() {
+        $ctrl.onDeleteStage = function onDeleteStage() {
             let stageId = $scope.editingStage.id;
-            if (stageId == -1) {
+            if (!stageId || stageId == -1) {
+                return;
+            }
+            let stageobj = getStageById(stageId);
+            if (!stageobj)
+                return;
+
+            stageobj.services.forEach(function (service) {
+                $ctrl.notShownServices.push(service);
+            });
+
+            $ctrl.removeFromArray($ctrl.allStages, stageobj);
+        };
+
+        $ctrl.onEditStage = function onEditStage() {
+            let stage = null;
+            if ($scope.editingStage.isNew) {
                 // add new
                 let index = getLastIndexOfServiceStage() + 1;
                 let newStageId = getMinStageIdForNewStage() - 1;
-                let newStage = new Stage(newStageId, $scope.editingStage.name, 3, []); //3- service.
-
-                $ctrl.allStages.splice(index, 0, newStage);
+                stage = new Stage(newStageId, $scope.editingStage.name, 3, []); //3- service.
+                $ctrl.allStages.splice(index, 0, stage);
             }
             else {
                 //edit
-                let stage = $ctrl.allStages.find(item => item.id == stageId);
+                let stageId = $scope.editingStage.id;
+                stage = $ctrl.allStages.find(item => item.id == stageId);
                 if (stage) {
                     stage.name = $scope.editingStage.name;
-                    stage.isServiceDefault = $scope.editingStage.isServiceDefault;
-                    $ctrl.changeIsServiceDefault(stage);
                 }
+                
+                
+            }
+
+            if (stage) {
+                stage.isServiceDefault = $scope.editingStage.isServiceDefault;
+                $ctrl.changeIsServiceDefault(stage);
             }
 
         };
@@ -1770,7 +1791,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scheduler-edit-column\"> <div class=\"top-content\"> <table> <tr> <td> <label for=\"pqstageName\">Name</label> </td> <td> <input type=\"text\" id=\"pqstageName\" ng-model=\"$parent.editingStage.name\"> </td> </tr> <tr> <td> <label for=\"pqisservicedefault\">Default for services</label> </td> <td class=\"checkbox-container\"> <input type=\"checkbox\" id=\"pqisservicedefault\" ng-model=\"$parent.editingStage.isServiceDefault\"> </td> </tr> </table> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, true)\" class=\"btn btn-primary\">{{$parent.editingStage.buttonName}}</button> </div> </div> ";
+module.exports = "<div class=\"scheduler-edit-column\"> <div class=\"top-content\"> <table> <tr> <td class=\"text-container\"> <label for=\"pqstageName\">Name</label> </td> <td class=\"text-container\"> <input type=\"text\" id=\"pqstageName\" ng-model=\"$parent.editingStage.name\"> </td> </tr> <tr> <td class=\"text-container\"> <label for=\"pqisservicedefault\">Default for services</label> </td> <td class=\"checkbox-container\"> <input type=\"checkbox\" id=\"pqisservicedefault\" ng-model=\"$parent.editingStage.isServiceDefault\"> </td> </tr> </table> </div> <div class=\"pq-modal-footer\"> <button ng-if=\"!$parent.editingStage.isNew\" type=\"button\" ng-click=\"$ctrl.deleteStage($event)\" class=\"delete-button btn btn-default\" data-dismiss=\"pq-modal\">Delete</button> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, true)\" class=\"btn btn-primary\">{{$parent.editingStage.buttonName}}</button> </div> </div> ";
 
 /***/ }),
 
@@ -1796,7 +1817,8 @@ __webpack_require__.r(__webpack_exports__);
             template: __webpack_require__(/*! ./schedulereditcolumn.component.html */ "./src/scheduler/scheduler.editcolumn/schedulereditcolumn.component.html"),
             controller: SchedulerEditColumnController,
             bindings: {
-                onEditStage: '&'
+                onEditStage: '&',
+                onDeleteStage: '&'
             }
         });
     
@@ -1814,6 +1836,11 @@ __webpack_require__.r(__webpack_exports__);
             if (save) {
                 $ctrl.onEditStage();
             }
+            $ctrlAddColumn.hide();
+        };
+        $ctrl.deleteStage = function deleteStage($event) {
+            $event.preventDefault();
+            $ctrl.onDeleteStage();
             $ctrlAddColumn.hide();
         };
     }
@@ -1917,7 +1944,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scheduler-select-route\"> <div class=\"top-content\"> <div> There are multiple routes to move to column {{tostagename}}. </div> <div> Select one: </div> <div> <select class=\"select-control\" ng-model=\"selected\" ng-options=\"option as option.value for option in options track by option.key\"></select> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, true)\" class=\"btn btn-primary\">Route</button> </div> </div> ";
+module.exports = "<div class=\"scheduler-select-route\"> <div class=\"top-content\"> <div class=\"text-container\"> There are multiple routes to move to column {{tostagename}}. </div> <div class=\"text-container\"> Select one: </div> <div class=\"text-container\"> <select class=\"select-control\" ng-model=\"selected\" ng-options=\"option as option.value for option in options track by option.key\"></select> </div> </div> <div class=\"pq-modal-footer\"> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, false)\" class=\"btn btn-default\" focus-element=\"autofocus\" data-dismiss=\"pq-modal\">Close</button> <button type=\"button\" ng-click=\"$ctrl.closeModal($event, true)\" class=\"btn btn-primary\">Route</button> </div> </div> ";
 
 /***/ }),
 

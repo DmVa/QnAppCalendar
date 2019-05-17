@@ -84,6 +84,9 @@ pq-modal {
 
 pq-scheduler-select-route .select-control {
   width: 100%;
+  padding: 5px; }
+
+pq-scheduler-select-route .text-container {
   margin: 5px; }
 
 pq-scheduler-select-route .scheduler-select-route {
@@ -197,7 +200,7 @@ pq-scheduler-customize .stageheadername {
   text-align: center;
   font-family: customfont;
   margin: 0 auto;
-  width: 80px; }
+  width: 120px; }
 
 pq-scheduler-customize .stageservice {
   background: LightGray;
@@ -231,8 +234,12 @@ pq-scheduler-edit-column {
     border: 1px solid;
     border-color: cadetblue;
     border-radius: 5px; }
+  pq-scheduler-edit-column .text-container {
+    padding: 5px; }
   pq-scheduler-edit-column .checkbox-container {
     padding: 5px; }
+  pq-scheduler-edit-column .delete-button {
+    margin-right: 40px; }
 
 
 /*# sourceMappingURL=pqscheduler.css.map*/

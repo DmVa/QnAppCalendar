@@ -63,6 +63,19 @@
             return result;
         }
 
+        function getStageById(id) {
+            let result = null;
+            for (let i = 0; i < $ctrl.allStages.length; i++) {
+                let stage = $ctrl.allStages[i];
+                if (stage.id == id) {
+                    result = stage;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
         $ctrl.removeFromArray = function (array, value) {
             var idx = array.indexOf(value);
             if (idx !== -1) {
@@ -93,33 +106,20 @@
             modalService.Close('scheduler-customize-modal');
         };
 
-        $ctrl.removeStage = function removeStage($event, stageobj) {
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            if (!stageobj) {
-                alertService.Error('undefined stage');
-                return;
-            }
-
-
-            stageobj.services.forEach(function (service) {
-                $ctrl.notShownServices.push(service);
-            });
-
-            $ctrl.removeFromArray($ctrl.allStages, stageobj);
-        };
+        
 
         $ctrl.editStage = function editStage($event, stageobj) {
             $event.preventDefault();
             $event.stopPropagation();
             if (!stageobj) {
+                $scope.editingStage.isNew = true;
                 $scope.editingStage.id = -1;
                 $scope.editingStage.name = '';
-                $scope.editingStage.isServiceDefault = false;
+                $scope.editingStage.isServiceDefault = !$ctrl.allStages.some(s => s.isServiceDefault);
                 $scope.editingStage.buttonName = 'Add';
             }
             else {
+                $scope.editingStage.isNew = false;
                 $scope.editingStage.id = stageobj.id;
                 $scope.editingStage.name = stageobj.name;
                 $scope.editingStage.isServiceDefault = stageobj.isServiceDefault;
@@ -129,24 +129,45 @@
             $ctrlAddColumn.show();
         };
 
-        $ctrl.onEditStage = function onEditStage() {
+        $ctrl.onDeleteStage = function onDeleteStage() {
             let stageId = $scope.editingStage.id;
-            if (stageId == -1) {
+            if (!stageId || stageId == -1) {
+                return;
+            }
+            let stageobj = getStageById(stageId);
+            if (!stageobj)
+                return;
+
+            stageobj.services.forEach(function (service) {
+                $ctrl.notShownServices.push(service);
+            });
+
+            $ctrl.removeFromArray($ctrl.allStages, stageobj);
+        };
+
+        $ctrl.onEditStage = function onEditStage() {
+            let stage = null;
+            if ($scope.editingStage.isNew) {
                 // add new
                 let index = getLastIndexOfServiceStage() + 1;
                 let newStageId = getMinStageIdForNewStage() - 1;
-                let newStage = new Stage(newStageId, $scope.editingStage.name, 3, []); //3- service.
-
-                $ctrl.allStages.splice(index, 0, newStage);
+                stage = new Stage(newStageId, $scope.editingStage.name, 3, []); //3- service.
+                $ctrl.allStages.splice(index, 0, stage);
             }
             else {
                 //edit
-                let stage = $ctrl.allStages.find(item => item.id == stageId);
+                let stageId = $scope.editingStage.id;
+                stage = $ctrl.allStages.find(item => item.id == stageId);
                 if (stage) {
                     stage.name = $scope.editingStage.name;
-                    stage.isServiceDefault = $scope.editingStage.isServiceDefault;
-                    $ctrl.changeIsServiceDefault(stage);
                 }
+                
+                
+            }
+
+            if (stage) {
+                stage.isServiceDefault = $scope.editingStage.isServiceDefault;
+                $ctrl.changeIsServiceDefault(stage);
             }
 
         };

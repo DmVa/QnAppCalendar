@@ -24,11 +24,4 @@ CREATE TABLE [pq].[CalendarStageService] (
 CREATE INDEX [IX_CalendarStageId] ON [pq].[CalendarStageService]([CalendarStageId])
 ALTER TABLE [pq].[CalendarStage] ADD CONSTRAINT [FK_pq.CalendarStage_pq.CalendarStageConfig_CalendarStageConfigId] FOREIGN KEY ([CalendarStageConfigId]) REFERENCES [pq].[CalendarStageConfig] ([Id]) ON DELETE CASCADE
 ALTER TABLE [pq].[CalendarStageService] ADD CONSTRAINT [FK_pq.CalendarStageService_pq.CalendarStage_CalendarStageId] FOREIGN KEY ([CalendarStageId]) REFERENCES [pq].[CalendarStage] ([Id]) ON DELETE CASCADE
-CREATE TABLE [dbo].[__MigrationHistory] (
-    [MigrationId] [nvarchar](150) NOT NULL,
-    [ContextKey] [nvarchar](300) NOT NULL,
-    [Model] [varbinary](max) NOT NULL,
-    [ProductVersion] [nvarchar](32) NOT NULL,
-    CONSTRAINT [PK_dbo.__MigrationHistory] PRIMARY KEY ([MigrationId], [ContextKey])
-)
 
