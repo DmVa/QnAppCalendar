@@ -2189,7 +2189,7 @@ __webpack_require__.r(__webpack_exports__);
 
     schedulerDataService.$inject = ['$http','alertService'];
     function schedulerDataService($http, alertService) {
-        var basePath = './ajax/PQAppCalendar.ashx?act=';
+        var basePath = '/ajax/PQAppCalendar.ashx?act=';
 
         return {
             getDate: function (date) {

@@ -32,10 +32,56 @@
             modalService.Open('scheduler-customize-modal');
         };
 
+        $ctrl.openAppointmentWizard = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            window.location.href = '/Tools/AppointmentWizard.aspx';
+        };
+        
         $ctrl.openModal = function (id) {
             modalService.Open(id);
         };
 
+        $ctrl.cancelAppointment = function ($event, scheduledEvent) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            swal({
+                title: "Are you sure?",
+                text: "This action will cancel the appointment, continue?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    let previousStage = $ctrl.getStageObjectById(scheduledEvent.stageId);
+                    if (willDelete) {
+
+                        schedulerDataService.appointmentCancel(scheduledEvent)
+                            .then(function (result) {
+
+                                if (result.error) {
+                                    $ctrl.handleWrappedError(result);
+                                    return;
+                                }
+                                if (result.data.eventData && result.data.eventData.appointmentId) {
+                                    $ctrl.handleAppointmentChangedResult(scheduledEvent, previousStage, result);
+                                    return;
+                                }
+
+                                $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
+                                $scope.$apply();
+
+                            }, function (result) {
+                                $ctrl.handleError(result);
+                                return;
+                            });
+                    } 
+                });
+
+         
+        };
+        
        
 
         $ctrl.closeModal = function closeModal(id) {
@@ -239,6 +285,25 @@
             $ctrl.runEventChanged(eventData.previousStage, eventData.nextStage, eventData.scheduledEvent, selected.key);
         }
 
+        $ctrl.handleAppointmentChangedResult = function (scheduledEvent, previousStage, result) {
+
+            if (result.data.eventData && result.data.eventData.appointmentId) {
+                scheduledEvent.appointmentId = result.data.eventData.appointmentId;
+                scheduledEvent.serviceId = result.data.eventData.serviceId;
+                scheduledEvent.stageId = result.data.eventData.stageId;
+                scheduledEvent.serviceName = result.data.eventData.serviceName;
+                scheduledEvent.stageType = result.data.eventData.stageType;
+                $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
+                let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
+                if (newStageObj) {
+                    newStageObj.schedulerEvents.push(scheduledEvent);
+                }
+                $scope.$apply();
+                return;
+            }
+          
+        };
+
         $ctrl.runEventChanged = function (previousStage, nextStage, scheduledEvent, routeId) {
 
             schedulerDataService.eventChanged({ previousStageId: previousStage.id, nextStageId: nextStage.id, schedulerEvent: scheduledEvent, routeId: routeId })
@@ -260,22 +325,7 @@
                     return;
                 };
 
-                if (result.data.eventData && result.data.eventData.appointmentId) {
-                    scheduledEvent.appointmentId = result.data.eventData.appointmentId;
-                    scheduledEvent.serviceId = result.data.eventData.serviceId;
-                    scheduledEvent.stageId = result.data.eventData.stageId;
-                    scheduledEvent.serviceName = result.data.eventData.serviceName;
-                    scheduledEvent.stageType = result.data.eventData.stageType;
-                    $ctrl.removeFromArray(previousStage.schedulerEvents, scheduledEvent);
-                    let newStageObj = $ctrl.getStageObjectById(scheduledEvent.stageId);
-                    if (newStageObj) {
-                        newStageObj.schedulerEvents.push(scheduledEvent);
-                    }
-                    $scope.$apply();
-                    return;
-                }
-                $ctrl.handleError("data doesnot returned, refresh the page");
-
+                $ctrl.handleAppointmentChangedResult(scheduledEvent, previousStage, result);
             }, function (result) {
                 $ctrl.handleError(result);
                 return;

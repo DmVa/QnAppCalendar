@@ -14,6 +14,7 @@ namespace PQ.QnAppCalendar.ViewService
         public const string GET_CUSTOMIZEDATA = "get-customizedata";
         public const string SAVE_CUSTOMIZEDATA = "save-customizedata";
         public const string APPOINTMENT_CHANGED = "appointment-changed";
+        public const string APPOINTMENT_CANCEL = "appointment-cancel";
 
         public QueryStringParams(NameValueCollection query): base(query)
         {

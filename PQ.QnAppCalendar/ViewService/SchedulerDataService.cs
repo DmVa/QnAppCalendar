@@ -136,6 +136,7 @@ namespace PQ.QnAppCalendar.ViewService
             return result;
         }
 
+
         private SchedulerEvent ToScheduleEvent(AppointmentInfo app)
         {
             var result = new SchedulerEvent();
@@ -217,7 +218,7 @@ namespace PQ.QnAppCalendar.ViewService
             List<CalendarStage> calendarStages = dataService.GetClendarStages(result.ConfigId);
 
             var services = dataService.GetServicesForUnit(currentUnitId);
-            var stageServices = dataService.GetClendarStageServices();
+            var stageServices = dataService.GetClendarStageServices(currentUnitId);
 
 
             foreach (var stage in calendarStages)
@@ -272,9 +273,9 @@ namespace PQ.QnAppCalendar.ViewService
           
             CustomizeData customizeData = GetCustomizeData(currentUnitId);
             // qnomy
-            var calendarStages = dataService.GetClendarStages(customizeData.ConfigId);
+            var calendarStages = customizeData.Stages.ToList<CalendarStage>();
 
-            var allCalendarStageServices = dataService.GetClendarStageServices();
+            //var allCalendarStageServices = customizeData.GetClendarStageServices();
             var prevCalendarStageType = GetStageTypeById(previousStageId, calendarStages);
             var nextCalendarStageType = GetStageTypeById(nextStageId, calendarStages);
             int previousServiceId = theEvent.ServiceId;
@@ -298,8 +299,10 @@ namespace PQ.QnAppCalendar.ViewService
                     case CalendarStageType.Expected:
                         throw new NotSupportedException("Cannot back to expected status");
                     case CalendarStageType.InService:
-
-                        var servicesInStage = GetServiceInStage(nextStageId, allCalendarStageServices);
+                        var nextStage = customizeData.Stages.Find(x => x.Id == nextStageId);
+                        if (nextStage == null)
+                            throw new DataException("stage is not valid");
+                        var servicesInStage = GetServicesIds(nextStage.Services);
 
                         if (servicesInStage.Count == 0)
                             throw new DataException("Cannot find any service for this stage");
@@ -348,7 +351,12 @@ namespace PQ.QnAppCalendar.ViewService
                         {
                             break;
                         }
-                        throw new DataException("This stage accesible only from Expected or Waiting stage");
+                        if (prevCalendarStageType == CalendarStageType.InService)
+                        {
+                            ProcessRequeueInServiceResults requeResult = Process.RequeueInService(theEvent.ProcessId, currentUnitId, delegateId);
+                            break;
+                        }
+                        throw new DataException("Waiting stage does not accessible from this stage");
                     case CalendarStageType.WaitingCustomerAction:
                         ProcessWaitForCustomerActionResults waitResult = Process.WaitForCustomerAction(theEvent.ProcessId, currentUserId, 0);
                         break;
@@ -363,15 +371,60 @@ namespace PQ.QnAppCalendar.ViewService
                 return result;
             }
 
-            var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
+            
+            AdjustStageType(theEvent, calendarStages, customizeData);
 
+            result.EventData = theEvent;
+            return result;
+        }
+
+        private List<int> GetServicesIds(List<CustomizeStageService> services)
+        {
+            var result = new List<int>();
+            services.ForEach(x => result.Add(x.ServiceId));
+            return result;
+        }
+
+        private void AdjustStageType(SchedulerEvent theEvent, List<CalendarStage> calendarStages, CustomizeData customizeData)
+        {
             var qnomyApp = Appointment.Get(theEvent.AppointmentId);
+            var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
             theEvent.StageType = statusMapping[qnomyApp.CurrentEntityStatus];
             theEvent.StageId = GetStageByServiceId(theEvent.ServiceId, theEvent.StageType, calendarStages, customizeData);
             var currentService = Service.Get(theEvent.ServiceId);
             theEvent.ServiceName = currentService.Name;
-            result.EventData = theEvent;
+        }
+
+
+        internal AppointmentChangedResult AppointmentCancel(int userId, int unitId, SchedulerEvent schedulerEvent)
+        {
+            var dataService = new QNomyDataService();
+            AppointmentChangedResult result = new AppointmentChangedResult();
+            int processId = schedulerEvent.ProcessId;
+            ProcessCancelCaseResults cancelResult = Process.CancelCase(processId, userId, 0);
+            
+
+            if (cancelResult.CurrentProcessId > 0)
+            {
+                schedulerEvent.ProcessId = cancelResult.CurrentProcessId;
+
+
+                CustomizeData customizeData = GetCustomizeData(unitId);
+
+                var calendarStages = dataService.GetClendarStages(customizeData.ConfigId);
+                AdjustStageType(schedulerEvent, calendarStages, customizeData);
+
+                result.EventData = schedulerEvent;
+
+            }
+
+            List<AppUser.UserStatus> okStatus = new List<AppUser.UserStatus>() { AppUser.UserStatus.Idle, AppUser.UserStatus.Unknown, AppUser.UserStatus.SignedOut };
+            if (!okStatus.Contains(cancelResult.UserStatus))
+            {
+                throw new DataException($"Not Canceled, user status {cancelResult.UserStatus.ToString()}");
+            }
             return result;
+
         }
 
         private RouteResultData RouteUser(int currentUserId, SchedulerEvent theEvent, QNomyDataService dataService, int delegateId, List<int> servicesInStage, bool callAfterRoute, int? routeId)
@@ -499,19 +552,6 @@ namespace PQ.QnAppCalendar.ViewService
 
 
 
-        private List<int> GetServiceInStage(int stageid, List<CalendarStageService> calendarStageServices)
-        {
-            List<int> result = new List<int>();
-            foreach (var stageService in calendarStageServices)
-            {
-                if (stageService.CalendarStageId == stageid)
-                {
-                    result.Add(stageService.ServiceId);
-                }
-            }
-
-            return result;
-        }
 
         private List<CalendarStageService> GetValidStagesForService(int serviceId, List<CalendarStageService> calendarStageServices)
         {
@@ -526,8 +566,8 @@ namespace PQ.QnAppCalendar.ViewService
 
             return result;
         }
-
-        private CalendarStageType GetStageTypeById(int stageid, List<DataService.CalendarStage> calendarStages)
+        
+        private CalendarStageType GetStageTypeById(int stageid, List<CalendarStage> calendarStages)
         {
             var calendarStage = calendarStages.Find(x => x.Id == stageid);
             if (calendarStage == null)

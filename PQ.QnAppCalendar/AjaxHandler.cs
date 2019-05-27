@@ -70,7 +70,10 @@ namespace PQ.QnAppCalendar
                         var appData = JsonConvert.DeserializeObject<AppointmentChangedData>(objJsonApp);
                         data = dataService.AppointmentChanged(userInfo.UserId, userInfo.UnitId, appData.PreviousStageId, appData.NextStageId, appData.SchedulerEvent, appData.RouteId);
                         break;
-                        
+                    case QueryStringParams.APPOINTMENT_CANCEL:
+                        var eventToCancel = JsonConvert.DeserializeObject<SchedulerEvent>(GetData(context.Request));
+                        data = dataService.AppointmentCancel(userInfo.UserId, userInfo.UnitId, eventToCancel);
+                        break;
                     default:
                         throw new InvalidOperationException($"Action {query.Action} not supported");
                 }

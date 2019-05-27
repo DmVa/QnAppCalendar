@@ -7,9 +7,8 @@
     "developer": "preciseq",
     "logo": "Logos/calendar.png",
     "qflowVersions": [
-        "6.1",
-        "6.2"
-   ],
+        "6.1"
+    ],
    "parameters": [
         {
             "name": "@GroupId",
@@ -73,6 +72,23 @@
                 "instructions": "Download and copy the file to the ajax folder of each Q-Flow web server.",
 				"rollbackInstructions": "Remove the file 'PQAppCalendar.ashx' from the Q-Flow Web server(s) ajax folder(s)."
             }
-        }
+        },
+
+       {
+            "manual": {
+                "name": "pqscheduler.css",
+                "path": "pqscheduler/pqscheduler.css",
+                "instructions": "Download and copy the file to the components/pqscheduler folder of each Q-Flow web server.",
+				"rollbackInstructions": "Remove the file 'pqscheduler.css' from the Q-Flow Web server(s) components/pqscheduler folder(s)."
+            }
+        },
+       {
+            "manual": {
+                "name": "pqscheduler.js",
+                "path": "pqscheduler/pqscheduler.js",
+                "instructions": "Download and copy the file to the components/pqscheduler folder of each Q-Flow web server.",
+				"rollbackInstructions": "Remove the file 'pqscheduler.js' from the Q-Flow Web server(s) components/pqscheduler folder(s)."
+            }
+        },
     ]
 }

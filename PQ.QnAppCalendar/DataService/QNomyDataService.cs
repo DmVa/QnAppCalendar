@@ -384,16 +384,18 @@ namespace PQ.QnAppCalendar.DataService
         }
 
 
-        public List<CalendarStageService> GetClendarStageServices()
+        public List<CalendarStageService> GetClendarStageServices(int configId)
         {
-            var sql = @"select Id, CalendarStageId, ServiceId from pq.[CalendarStageService]";
+            var sql = @"select css.Id, css.CalendarStageId, css.ServiceId from pq.[CalendarStageService] css
+                    INNER JOIN pq.CalendarStage cs on css.CalendarStageId = cs.Id where cs.CalendarStageConfigId = @CalendarStageConfigId";
+
             var result = new List<CalendarStageService>();
             using (SqlConnection connection = new SqlConnection(_settings.QFlowConnectionString))
             {
                 using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
                 {
                     sqlCommand.CommandType = CommandType.Text;
-
+                    sqlCommand.Parameters.AddWithValue("@CalendarStageConfigId", configId);
                     connection.Open();
                     using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
                     {

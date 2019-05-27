@@ -1,5 +1,8 @@
 ﻿<div class="pq-scheduler-board">
-    <button ng-click="$ctrl.openCustomize($event)">Customize</button>
+    <div class="pq-actions-bar">
+        <button class="pq-actions-bar-item" ng-click="$ctrl.openCustomize($event)">Customize</button>
+        <button class="pq-actions-bar-item" ng-click="$ctrl.openAppointmentWizard($event)">New Appointment</button>
+    </div>
 
     <div class="pq-board-container">
         <div class="pq-board-header">
@@ -14,6 +17,7 @@
                 <div class="pq-stagebody">
                     <div ng-repeat="schedulerEvent in stageobj.schedulerEvents" class="pq-stageevent" id="schedulerEvent_{{schedulerEvent.id}}" pq-drag-me="appoitnmnetId" appoitnmnetId="{{schedulerEvent.appointmentId}}">
                         <div class="pq-appointment">
+                            <a href="#" class="event-close" title="Cancel Appointment" ng-click="$ctrl.cancelAppointment($event,schedulerEvent)"></a>
                             <div> {{schedulerEvent.customerName}}</div>
                             <div> {{schedulerEvent.serviceName}}</div>
                         </div>
@@ -26,7 +30,7 @@
     <pq-modal id="scheduler-customize-modal">
         <div class="pq-modal">
             <div class="pq-modal-body">
-                <pq-scheduler-customize on-save-customize="$ctrl.onSaveCustomize()" ></pq-scheduler-customize>
+                <pq-scheduler-customize on-save-customize="$ctrl.onSaveCustomize()"></pq-scheduler-customize>
             </div>
 
         </div>
@@ -36,7 +40,7 @@
     <pq-modal id="scheduler-select-route-modal">
         <div class="pq-modal">
             <div class="pq-modal-body">
-                <pq-scheduler-select-route on-select-route="$ctrl.onSelectRoute(eventData,selected)" ></pq-scheduler-select-route>
+                <pq-scheduler-select-route on-select-route="$ctrl.onSelectRoute(eventData,selected)"></pq-scheduler-select-route>
             </div>
         </div>
         <div class="pq-modal-background"></div>

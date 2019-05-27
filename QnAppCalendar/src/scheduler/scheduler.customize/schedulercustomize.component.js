@@ -100,8 +100,7 @@
                     schedulerDataService.handleError(result);
                     return;
                     });
-
-            };
+                           };
             
             modalService.Close('scheduler-customize-modal');
         };
@@ -161,8 +160,6 @@
                 if (stage) {
                     stage.name = $scope.editingStage.name;
                 }
-                
-                
             }
 
             if (stage) {

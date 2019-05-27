@@ -1,0 +1,23 @@
+<Root>
+  <SystemLevelObjects>
+    <CustomPageCSSs>
+      <CustomPageCSS ID="1" Name="PqCorkBoardResetCss" />
+    </CustomPageCSSs>
+    <CustomPageJavaScripts>
+      <CustomPageJavaScript ID="1" Name="PqCorkBoardJavaScript" />
+    </CustomPageJavaScripts>
+  </SystemLevelObjects>
+  <CustomPages>
+    <CustomPage CustomPageId="1" CustomPageName="PqCorkBoardPage" ExtRef="PqCorkBoard" IsActive="1" Type="0" Title="Cork Board" CustomPageCSSId="1" CustomPageJavaScriptId="1" LanguageCode="en" ShowWizardNavigationButtons="1" ShowWizardNavigationMap="1">
+      <CustomForms>
+        <CustomForm CustomFormId="1" FormName="PqCorkBoardForm" ExtRef="PqCorkBoard" IsActive="1" FormKey="PqCorkBoardForm" />
+      </CustomForms>
+      <CustomPageCSSs>
+        <CustomPageCSS CustomPageCSSId="1" CSSName="PqCorkBoardResetCss" ExtRef="PqCorkBoard" IsActive="1" CSSRules=".FormBody {&#xD;&#xA;&#xD;&#xA;	background: transparent;&#xD;&#xA;&#xD;&#xA;    box-shadow: none;&#xD;&#xA;&#xD;&#xA;    padding: 0;&#xD;&#xA;&#xD;&#xA;    height: auto;&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.PageTitleContainer{&#xD;&#xA;&#xD;&#xA;	display:none;&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;.PageFrameContainer{&#xD;&#xA;&#xD;&#xA;	padding:0;&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;.FormBody{&#xD;&#xA;&#xD;&#xA;	padding:0 !important;&#xD;&#xA;&#xD;&#xA;	background:transparent !important;&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.customCanvas{&#xD;&#xA;&#xD;&#xA;	background:transparent !important;&#xD;&#xA;&#xD;&#xA;}" />
+      </CustomPageCSSs>
+      <CustomPageJavaScripts>
+        <CustomPageJavaScript CustomPageJavaScriptId="1" ScriptName="PqCorkBoardJavaScript" IsActive="1" Script="$(document).ready(function () {&#xD;&#xA;&#xD;&#xA;  $(&quot;body&quot;).find('.customFormContainer').load(qflow.urlRelativePathBase +&#xD;&#xA;&#xD;&#xA;    'api/StaticFiles/QnAppCalendar/app.html', function () {&#xD;&#xA;&#xD;&#xA;  });&#xD;&#xA;&#xD;&#xA;});" />
+      </CustomPageJavaScripts>
+    </CustomPage>
+  </CustomPages>
+</Root>

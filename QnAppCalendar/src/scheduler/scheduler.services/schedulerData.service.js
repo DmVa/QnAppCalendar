@@ -7,7 +7,7 @@
 
     schedulerDataService.$inject = ['$http','alertService'];
     function schedulerDataService($http, alertService) {
-        var basePath = '/ajax/PQAppCalendar.ashx?act=';
+        var basePath = './ajax/PQAppCalendar.ashx?act=';
 
         return {
             getDate: function (date) {
@@ -83,7 +83,16 @@
                     dataType: 'json'
                 });
             },
-
+            appointmentCancel: function (params) {
+                return $.ajax({
+                    url: basePath + 'appointment-cancel',
+                    type: 'post',
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(params),
+                    dataType: 'json'
+                });
+            },
             loadAppointments: function (from, to) {
                 var params = { from: from, to: to };
                return $.ajax({
