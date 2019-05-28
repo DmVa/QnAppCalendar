@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using PQ.QnAppCalendar.Utils;
 using QFlow.Library;
 using PQ.QnAppCalendar.Dto;
-using static QFlow.Library.EntityType;
+
 
 namespace PQ.QnAppCalendar.DataService
 {
@@ -666,7 +666,7 @@ WHERE (process.CurrentEntityStatus not in (15,16,17)) AND
                                     AppointmentTypeName = Converter.ToString(sqlDataReader["AppointmentTypeName"]),
                                     CustomerFirstName = Converter.ToString(sqlDataReader["FirstName"]),
                                     CustomerLastName = Converter.ToString(sqlDataReader["LastName"]),
-                                    CurrentEntityStatus = (EntityStatus) Converter.ToInt32(sqlDataReader["CurrentEntityStatus"]),
+                                    CurrentEntityStatus = (EntityType.EntityStatus) Converter.ToInt32(sqlDataReader["CurrentEntityStatus"]),
                                     ProcessId = Converter.ToInt32(sqlDataReader["ProcessId"]),
                                 });
                         }

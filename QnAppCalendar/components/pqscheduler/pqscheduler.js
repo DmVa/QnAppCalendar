@@ -694,7 +694,8 @@ __webpack_require__.r(__webpack_exports__);
         $ctrl.openAppointmentWizard = function ($event) {
             $event.preventDefault();
             $event.stopPropagation();
-            window.location.href = '/Tools/AppointmentWizard.aspx';
+            let virtualPath = schedulerDataService.getAppVirtualName();
+            window.location.href = virtualPath + '/Tools/AppointmentWizard.aspx';
         };
         
         $ctrl.openModal = function (id) {
@@ -2189,9 +2190,40 @@ __webpack_require__.r(__webpack_exports__);
 
     schedulerDataService.$inject = ['$http','alertService'];
     function schedulerDataService($http, alertService) {
-        var basePath = './ajax/PQAppCalendar.ashx?act=';
+        var _getBasePath = '';
+        var basePath = '/ajax/PQAppCalendar.ashx?act=';
+        var getVirtualNameBasedOnCustomPage = function (href) {
+            var virtualName = "";
+            var hrefItems = href.split('/');
+            if (hrefItems.length > 3) {
+                let customPageItem = hrefItems.find(x => x.toLowerCase() == 'custompage');
+                if (!customPageItem)
+                    return "";
+                let idx = hrefItems.indexOf(customPageItem);
+                if (idx <= 0)
+                    return "";
+                let virtualPathItems = hrefItems.slice(3, idx);
+                virtualName = "/" +  virtualPathItems.join('/');
+            }
+
+            return virtualName; 
+        };
+
+        var getBasePath = function () {
+            if (!_getBasePath) {
+                let virtual = getVirtualNameBasedOnCustomPage(window.location.href);
+                _getBasePath = virtual + basePath;
+            }
+
+            return _getBasePath;
+        }
 
         return {
+            getAppVirtualName: function () {
+                var virtualName = getVirtualNameBasedOnCustomPage(window.location.href);
+                return virtualName; 
+            },
+
             getDate: function (date) {
                 if (!date)
                     return date;
@@ -2227,7 +2259,7 @@ __webpack_require__.r(__webpack_exports__);
             },
            saveCustomizeData: function (params) {
                return $.ajax({
-                   url: basePath + 'save-customizedata',
+                   url: getBasePath() + 'save-customizedata',
                    type: 'post',
                    async: true,
                    contentType: 'application/json; charset=utf-8',
@@ -2237,7 +2269,7 @@ __webpack_require__.r(__webpack_exports__);
            },
             getCustomizeData: function () {
                 return $.ajax({
-                    url: basePath + 'get-customizedata',
+                    url: getBasePath() + 'get-customizedata',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -2247,7 +2279,7 @@ __webpack_require__.r(__webpack_exports__);
             },
             saveAppointment: function (params) {
                return $.ajax({
-                   url: basePath + 'save-appointment',
+                   url: getBasePath() + 'save-appointment',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -2257,7 +2289,7 @@ __webpack_require__.r(__webpack_exports__);
             },
             eventChanged: function (params) {
                 return $.ajax({
-                    url: basePath + 'appointment-changed',
+                    url: getBasePath() + 'appointment-changed',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -2267,7 +2299,7 @@ __webpack_require__.r(__webpack_exports__);
             },
             appointmentCancel: function (params) {
                 return $.ajax({
-                    url: basePath + 'appointment-cancel',
+                    url: getBasePath() + 'appointment-cancel',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -2278,7 +2310,7 @@ __webpack_require__.r(__webpack_exports__);
             loadAppointments: function (from, to) {
                 var params = { from: from, to: to };
                return $.ajax({
-                   url: basePath + 'load-appointmens',
+                   url: getBasePath() + 'load-appointmens',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -2289,7 +2321,7 @@ __webpack_require__.r(__webpack_exports__);
 
             loadTodayAppointments: function () {
                 return $.ajax({
-                    url: basePath + 'load-appointmens',
+                    url: getBasePath() + 'load-appointmens',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -2300,7 +2332,7 @@ __webpack_require__.r(__webpack_exports__);
 
             loadStages: function (params) {
               return  $.ajax({
-                    url: basePath + 'load-stages',
+                  url: getBasePath() + 'load-stages',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',

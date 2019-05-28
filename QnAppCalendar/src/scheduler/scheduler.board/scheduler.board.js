@@ -35,7 +35,8 @@
         $ctrl.openAppointmentWizard = function ($event) {
             $event.preventDefault();
             $event.stopPropagation();
-            window.location.href = '/Tools/AppointmentWizard.aspx';
+            let virtualPath = schedulerDataService.getAppVirtualName();
+            window.location.href = virtualPath + '/Tools/AppointmentWizard.aspx';
         };
         
         $ctrl.openModal = function (id) {

@@ -2,12 +2,12 @@
 using PQ.QnAppCalendar.DataService;
 using PQ.QnAppCalendar.Dto;
 using QFlow.Library;
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-using static QFlow.Library.EntityType;
 
 namespace PQ.QnAppCalendar.ViewService
 {
@@ -96,42 +96,42 @@ namespace PQ.QnAppCalendar.ViewService
         }
 
 
-        private Dictionary<EntityStatus, CalendarStageType> GetMappingCalendarStageTypeToEntityStatus()
+        private Dictionary<EntityType.EntityStatus, CalendarStageType> GetMappingCalendarStageTypeToEntityStatus()
         {
-            var result = new Dictionary<EntityStatus, CalendarStageType>();
-            result.Add(EntityStatus.Expected, CalendarStageType.Expected);
-            result.Add(EntityStatus.Frozen, CalendarStageType.Expected);
-            result.Add(EntityStatus.Suspended, CalendarStageType.Expected);
-            result.Add(EntityStatus.Waiting, CalendarStageType.Waiting);
-            result.Add(EntityStatus.Abandoned, CalendarStageType.Completed);
-            result.Add(EntityStatus.InService, CalendarStageType.InService);
-            result.Add(EntityStatus.OnHold, CalendarStageType.Expected);
-            result.Add(EntityStatus.Completed, CalendarStageType.Completed);
-            result.Add(EntityStatus.Reception, CalendarStageType.Waiting);
-            result.Add(EntityStatus.Pending, CalendarStageType.Expected);
-            result.Add(EntityStatus.WaitingWithRules, CalendarStageType.Waiting);
-            result.Add(EntityStatus.WaitForCustomerAction, CalendarStageType.WaitingCustomerAction);
-            result.Add(EntityStatus.Canceled, CalendarStageType.Completed);
-            result.Add(EntityStatus.Aborted, CalendarStageType.Completed);
-            result.Add(EntityStatus.NoShow, CalendarStageType.Completed);
-            result.Add(EntityStatus.WaitingOnCustomer, CalendarStageType.Waiting);
-            result.Add(EntityStatus.WaitedAndAbsent, CalendarStageType.Waiting);
-            result.Add(EntityStatus.Absent, CalendarStageType.Expected);
-            result.Add(EntityStatus.WaitedAndTransferred, CalendarStageType.Completed);
-            result.Add(EntityStatus.ExpectedAndCanceled, CalendarStageType.Completed);
-            result.Add(EntityStatus.NoShowAndCompleted, CalendarStageType.Completed);
-            result.Add(EntityStatus.WaitedAndReExpected, CalendarStageType.Completed);
-            result.Add(EntityStatus.WaitedAndAborted, CalendarStageType.Completed);
-            result.Add(EntityStatus.ServedAndAborted, CalendarStageType.Completed);
-            result.Add(EntityStatus.PendingAndAborted, CalendarStageType.Completed);
-            result.Add(EntityStatus.HeldAndAborted, CalendarStageType.Completed);
-            result.Add(EntityStatus.ExpectedAndAborted, CalendarStageType.Completed);
-            result.Add(EntityStatus.SuspendedAndAborted, CalendarStageType.Completed);
-            result.Add(EntityStatus.Documented, CalendarStageType.Completed);
-            result.Add(EntityStatus.WrappedUp, CalendarStageType.Completed);
-            result.Add(EntityStatus.SupportingServiceStarted, CalendarStageType.InService);
-            result.Add(EntityStatus.SupportingServiceUndone, CalendarStageType.InService);
-            result.Add(EntityStatus.Unknown, CalendarStageType.Expected);
+            var result = new Dictionary<EntityType.EntityStatus, CalendarStageType>();
+            result.Add(EntityType.EntityStatus.Expected, CalendarStageType.Expected);
+            result.Add(EntityType.EntityStatus.Frozen, CalendarStageType.Expected);
+            result.Add(EntityType.EntityStatus.Suspended, CalendarStageType.Expected);
+            result.Add(EntityType.EntityStatus.Waiting, CalendarStageType.Waiting);
+            result.Add(EntityType.EntityStatus.Abandoned, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.InService, CalendarStageType.InService);
+            result.Add(EntityType.EntityStatus.OnHold, CalendarStageType.Expected);
+            result.Add(EntityType.EntityStatus.Completed, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.Reception, CalendarStageType.Waiting);
+            result.Add(EntityType.EntityStatus.Pending, CalendarStageType.Expected);
+            result.Add(EntityType.EntityStatus.WaitingWithRules, CalendarStageType.Waiting);
+            result.Add(EntityType.EntityStatus.WaitForCustomerAction, CalendarStageType.WaitingCustomerAction);
+            result.Add(EntityType.EntityStatus.Canceled, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.Aborted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.NoShow, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.WaitingOnCustomer, CalendarStageType.Waiting);
+            result.Add(EntityType.EntityStatus.WaitedAndAbsent, CalendarStageType.Waiting);
+            result.Add(EntityType.EntityStatus.Absent, CalendarStageType.Expected);
+            result.Add(EntityType.EntityStatus.WaitedAndTransferred, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.ExpectedAndCanceled, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.NoShowAndCompleted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.WaitedAndReExpected, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.WaitedAndAborted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.ServedAndAborted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.PendingAndAborted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.HeldAndAborted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.ExpectedAndAborted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.SuspendedAndAborted, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.Documented, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.WrappedUp, CalendarStageType.Completed);
+            result.Add(EntityType.EntityStatus.SupportingServiceStarted, CalendarStageType.InService);
+            result.Add(EntityType.EntityStatus.SupportingServiceUndone, CalendarStageType.InService);
+            result.Add(EntityType.EntityStatus.Unknown, CalendarStageType.Expected);
 
             return result;
         }
@@ -483,7 +483,7 @@ namespace PQ.QnAppCalendar.ViewService
             if (routeResult.NewProcessId > 0)
                 theEvent.ProcessId = routeResult.NewProcessId;
 
-            if (callAfterRoute && routeResult.NewEntityStatus == (int)EntityStatus.Waiting)
+            if (callAfterRoute && routeResult.NewEntityStatus == (int)EntityType.EntityStatus.Waiting)
             {
                 try
                 {

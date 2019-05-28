@@ -7,9 +7,40 @@
 
     schedulerDataService.$inject = ['$http','alertService'];
     function schedulerDataService($http, alertService) {
-        var basePath = './ajax/PQAppCalendar.ashx?act=';
+        var _getBasePath = '';
+        var basePath = '/ajax/PQAppCalendar.ashx?act=';
+        var getVirtualNameBasedOnCustomPage = function (href) {
+            var virtualName = "";
+            var hrefItems = href.split('/');
+            if (hrefItems.length > 3) {
+                let customPageItem = hrefItems.find(x => x.toLowerCase() == 'custompage');
+                if (!customPageItem)
+                    return "";
+                let idx = hrefItems.indexOf(customPageItem);
+                if (idx <= 0)
+                    return "";
+                let virtualPathItems = hrefItems.slice(3, idx);
+                virtualName = "/" +  virtualPathItems.join('/');
+            }
+
+            return virtualName; 
+        };
+
+        var getBasePath = function () {
+            if (!_getBasePath) {
+                let virtual = getVirtualNameBasedOnCustomPage(window.location.href);
+                _getBasePath = virtual + basePath;
+            }
+
+            return _getBasePath;
+        }
 
         return {
+            getAppVirtualName: function () {
+                var virtualName = getVirtualNameBasedOnCustomPage(window.location.href);
+                return virtualName; 
+            },
+
             getDate: function (date) {
                 if (!date)
                     return date;
@@ -45,7 +76,7 @@
             },
            saveCustomizeData: function (params) {
                return $.ajax({
-                   url: basePath + 'save-customizedata',
+                   url: getBasePath() + 'save-customizedata',
                    type: 'post',
                    async: true,
                    contentType: 'application/json; charset=utf-8',
@@ -55,7 +86,7 @@
            },
             getCustomizeData: function () {
                 return $.ajax({
-                    url: basePath + 'get-customizedata',
+                    url: getBasePath() + 'get-customizedata',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -65,7 +96,7 @@
             },
             saveAppointment: function (params) {
                return $.ajax({
-                   url: basePath + 'save-appointment',
+                   url: getBasePath() + 'save-appointment',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -75,7 +106,7 @@
             },
             eventChanged: function (params) {
                 return $.ajax({
-                    url: basePath + 'appointment-changed',
+                    url: getBasePath() + 'appointment-changed',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -85,7 +116,7 @@
             },
             appointmentCancel: function (params) {
                 return $.ajax({
-                    url: basePath + 'appointment-cancel',
+                    url: getBasePath() + 'appointment-cancel',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -96,7 +127,7 @@
             loadAppointments: function (from, to) {
                 var params = { from: from, to: to };
                return $.ajax({
-                   url: basePath + 'load-appointmens',
+                   url: getBasePath() + 'load-appointmens',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -107,7 +138,7 @@
 
             loadTodayAppointments: function () {
                 return $.ajax({
-                    url: basePath + 'load-appointmens',
+                    url: getBasePath() + 'load-appointmens',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',
@@ -118,7 +149,7 @@
 
             loadStages: function (params) {
               return  $.ajax({
-                    url: basePath + 'load-stages',
+                  url: getBasePath() + 'load-stages',
                     type: 'post',
                     async: true,
                     contentType: 'application/json; charset=utf-8',

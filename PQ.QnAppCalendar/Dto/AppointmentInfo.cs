@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static QFlow.Library.EntityType;
+using QFlow.Library;
 
 namespace PQ.QnAppCalendar.Dto
 {
@@ -20,7 +20,7 @@ namespace PQ.QnAppCalendar.Dto
         public string AppointmentTypeName { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
-        public EntityStatus CurrentEntityStatus { get; set; }
+        public EntityType.EntityStatus CurrentEntityStatus { get; set; }
         public CalendarStageType CalendarStageType { get; set; }
     }
 }
