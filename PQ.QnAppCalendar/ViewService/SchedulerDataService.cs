@@ -36,24 +36,27 @@ namespace PQ.QnAppCalendar.ViewService
             foreach (var app in appointments)
             {
                 app.CalendarStageType = statusMapping[app.CurrentEntityStatus];
-                app.StageId = GetStageByServiceId(app.ServiceId, app.CalendarStageType, calendarStages, customizeData);
-                if (app.StageId == -1)
+                int? stageId = GetStageByServiceId(app.ServiceId, app.CalendarStageType, calendarStages, customizeData);
+                if (!stageId.HasValue)
                     continue;
+
+                app.StageId = stageId.Value;
                 SchedulerEvent se = ToScheduleEvent(app);
                 result.Add(se);
             }
             return result;
         }
 
-        public int GetStageByServiceId(int serviceId, CalendarStageType stageType, List<DataService.CalendarStage> calendarStages, CustomizeData customizeData)
+        public int? GetStageByServiceId(int serviceId, CalendarStageType stageType, List<DataService.CalendarStage> calendarStages, CustomizeData customizeData)
         {
-            int inServiceStageId = GetInServiceStageByServiceId(serviceId, customizeData);
-            if (inServiceStageId == -1)
-                return -1;
-            if (stageType == CalendarStageType.InService)
-                return inServiceStageId;
+            int? inServiceStageId = GetInServiceStageByServiceId(serviceId, customizeData);
+            if (!inServiceStageId.HasValue)
+                return null;
 
-            int result = -1;
+            if (stageType == CalendarStageType.InService)
+                return inServiceStageId.Value;
+
+            int? result = null;
 
             foreach (var stage in calendarStages)
             {
@@ -63,21 +66,25 @@ namespace PQ.QnAppCalendar.ViewService
                     break;
                 }
             }
+
             return result;
         }
 
         /// <summary>
-        /// Returns id of stage for "InService" calendar stage type,  returns -1 if not one valid type is found.
+        /// Returns id of stage for "InService" calendar stage type,  returns null if not one valid type is found.
         /// </summary>
         /// <param name="serviceId"></param>
         /// <param name="customizeData"></param>
         /// <returns></returns>
-        public int GetInServiceStageByServiceId(int serviceId, CustomizeData customizeData)
+        public int? GetInServiceStageByServiceId(int serviceId, CustomizeData customizeData)
         {
-            int result = -1;
+            int? result = null;
 
             foreach (var stage in customizeData.Stages)
             {
+                if (stage.StageType != CalendarStageType.InService)
+                    continue;
+
                 foreach (var stageService in stage.Services)
                 {
                     if (stageService.ServiceId == serviceId)
@@ -86,7 +93,8 @@ namespace PQ.QnAppCalendar.ViewService
                         break;
                     }
                 }
-                if (result >= 0)
+
+                if (result.HasValue)
                 {
                     break;
                 }
@@ -390,7 +398,8 @@ namespace PQ.QnAppCalendar.ViewService
             var qnomyApp = Appointment.Get(theEvent.AppointmentId);
             var statusMapping = GetMappingCalendarStageTypeToEntityStatus();
             theEvent.StageType = statusMapping[qnomyApp.CurrentEntityStatus];
-            theEvent.StageId = GetStageByServiceId(theEvent.ServiceId, theEvent.StageType, calendarStages, customizeData);
+            int? stageId = GetStageByServiceId(theEvent.ServiceId, theEvent.StageType, calendarStages, customizeData);
+            theEvent.StageId = stageId ?? -1;
             var currentService = Service.Get(theEvent.ServiceId);
             theEvent.ServiceName = currentService.Name;
         }

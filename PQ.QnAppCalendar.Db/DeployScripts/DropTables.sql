@@ -1,4 +1,6 @@
-﻿IF EXISTS (SELECT *   FROM INFORMATION_SCHEMA.TABLES     WHERE TABLE_SCHEMA = 'pq'   AND  TABLE_NAME = 'CalendarStageService')
+﻿DELETE FROM qf.ServiceFilter WHERE ExtRef = 'PQ.Calendar.UnitServices'
+
+IF EXISTS (SELECT *   FROM INFORMATION_SCHEMA.TABLES     WHERE TABLE_SCHEMA = 'pq'   AND  TABLE_NAME = 'CalendarStageService')
 BEGIN
 	DROP TABLE pq.CalendarStageService
 END

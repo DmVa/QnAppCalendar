@@ -617,7 +617,10 @@ namespace PQ.QnAppCalendar.DataService
 
         public List<AppointmentInfo> GetAppointments(DateTime? from, DateTime? to)
         {
-            var sql = @"select app.AppointmentId, app.AppointmentDate, app.AppointmentDuration,
+            var notShowAppoitmetsInStatus = new List<EntityType.EntityStatus>() { EntityType.EntityStatus.Aborted, EntityType.EntityStatus.Canceled, EntityType.EntityStatus.NoShow };
+            string notShowAppoitmetsInStatusStr = string.Join(",", notShowAppoitmetsInStatus.ConvertAll(x=>((int)x).ToString()));
+
+            var sql = $@"select app.AppointmentId, app.AppointmentDate, app.AppointmentDuration,
     s.ServiceId, s.ServiceName, appType.AppointmentTypeName, customer.FirstName, customer.LastName, 
 process.ProcessId, process.CurrentEntityStatus
 FROM qf.AppointmentAll app WITH (NOLOCK) 
@@ -626,7 +629,7 @@ FROM qf.AppointmentAll app WITH (NOLOCK)
 		JOIN qf.Service s WITH (NOLOCK) ON process.CurrentServiceId = s.ServiceId
         LEFT JOIN qf.AppointmentType appType  WITH (NOLOCK) on appType.AppointmentTypeId = app.AppointmentTypeId
         LEFT JOIN qf.Customer   customer WITH (NOLOCK) on customer.PersonalId = process.EntityId
-WHERE (process.CurrentEntityStatus not in (15,16,17)) AND
+WHERE (process.CurrentEntityStatus not in ({notShowAppoitmetsInStatusStr})) AND
 (@fromDate IS NULL OR app.AppointmentDate >= @fromDate) AND (@toDate IS NULL OR app.AppointmentDate<=@toDate)
 ";
             List<AppointmentInfo> serviceList = new List<AppointmentInfo>();
@@ -742,7 +745,7 @@ END
                     sqlCommand.CommandType = CommandType.Text;
                     connection.Open();
                     result = Converter.ToInt32(sqlCommand.ExecuteScalar());
-                    if (result == 0)
+                    if (result <= 0)
                     {
                         AddServicesFilterIfNotExstis();
                         result = Converter.ToInt32(sqlCommand.ExecuteScalar());
