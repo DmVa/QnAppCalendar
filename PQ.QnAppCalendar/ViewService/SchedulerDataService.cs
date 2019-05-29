@@ -226,7 +226,7 @@ namespace PQ.QnAppCalendar.ViewService
             List<CalendarStage> calendarStages = dataService.GetClendarStages(result.ConfigId);
 
             var services = dataService.GetServicesForUnit(currentUnitId);
-            var stageServices = dataService.GetClendarStageServices(currentUnitId);
+            var stageServices = dataService.GetClendarStageServices(result.ConfigId);
 
 
             foreach (var stage in calendarStages)

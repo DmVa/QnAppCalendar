@@ -7,7 +7,6 @@
     "developer": "preciseq",
     "logo": "Logos/calendar.png",
     "qflowVersions": [
-        "6.1",
         "6.2"
    ],
    "parameters": [
