@@ -1,4 +1,8 @@
-﻿DELETE FROM qf.ServiceFilter WHERE ExtRef = 'PQ.Calendar.UnitServices'
+﻿UPDATE qf.ReceptionPointPageItem
+SET ServiceFilterId = NULL WHERE 
+ServiceFilterId IN (SELECT ServiceFilterId FROM qf.ServiceFilter WHERE ExtRef = 'PQ.Calendar.UnitServices')
+
+DELETE FROM qf.ServiceFilter WHERE ExtRef = 'PQ.Calendar.UnitServices'
 
 IF EXISTS (SELECT *   FROM INFORMATION_SCHEMA.TABLES     WHERE TABLE_SCHEMA = 'pq'   AND  TABLE_NAME = 'CalendarStageService')
 BEGIN

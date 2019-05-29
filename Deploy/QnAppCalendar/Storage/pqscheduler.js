@@ -2202,8 +2202,11 @@ __webpack_require__.r(__webpack_exports__);
                 let idx = hrefItems.indexOf(customPageItem);
                 if (idx <= 0)
                     return "";
+
                 let virtualPathItems = hrefItems.slice(3, idx);
-                virtualName = "/" +  virtualPathItems.join('/');
+                if (virtualPathItems.length > 0) {
+                    virtualName = "/" + virtualPathItems.join('/');
+                }
             }
 
             return virtualName; 

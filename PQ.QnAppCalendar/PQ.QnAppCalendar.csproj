@@ -34,9 +34,9 @@
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="QFlow.Library">
+    <Reference Include="QFlow.Library, Version=6.2.17.0, Culture=neutral, PublicKeyToken=01400a8e08865797, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\QFlow\6.2\QFlow.Library.dll</HintPath>
+      <HintPath>..\QFlow\6.1\QFlow.Library.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
